@@ -1,5 +1,2 @@
-import router from "@/router"
-
-export {
-    router
-}
+import './router'
+import './view-design'

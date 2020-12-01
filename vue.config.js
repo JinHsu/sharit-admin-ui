@@ -49,8 +49,9 @@ module.exports = {
     },
 
     // 是一个函数，会接收一个基于 webpack-chain 的 ChainableConfig 实例。允许对内部的 webpack 配置进行更细粒度的修改。
-    chainWebpack: () => {
-
+    chainWebpack: (config) => {
+        // 开启view-desin UI标签，prefix:true 所有标签都可以是i-开头
+        config.module.rule('vue').use('iview').loader('iview-loader').options({prefix: true})
     },
 
     css: {
