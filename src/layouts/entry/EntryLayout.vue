@@ -1,8 +1,8 @@
 <template>
     <div class="i-entry">
-        <EntryHeader/>
+        <EntryHeader class="i-entry-header"/>
         <router-view/>
-        <EntryFooter/>
+        <EntryFooter class="i-entry-footer"/>
     </div>
 </template>
 
@@ -18,8 +18,16 @@
     }
 </script>
 
-<style lang="css" scoped>
+<style lang="less" scoped>
     .i-entry {
 
+        &-header {
+            background-color: green;
+        }
+
+
+        .i-entry-footer {
+            background-color: red;
+        }
     }
 </style>
