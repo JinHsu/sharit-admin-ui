@@ -1,7 +1,7 @@
 <template>
-    <div>
-        登录2
-        <br>
+    <div style="padding: 20px;">
+        登录
+        <Divider/>
         <i-circle :percent="80">
             <span class="demo-Circle-inner" style="font-size:24px">80%</span>
         </i-circle>
@@ -10,7 +10,7 @@
         </Circle>
         <i-switch/>
         <Switch/>
-        <br>
+        <Divider/>
 
         <label>
             <Select v-model="lang" @on-change="locale => $i18n.locale = locale" style="width: 200px;">
@@ -22,9 +22,12 @@
             {{lang}}
         </span>
 
-        <br>
+        <Divider/>
 
         <DatePicker/>
+
+        <Divider/>
+        <Button type="primary">按钮</Button>
 
     </div>
 </template>

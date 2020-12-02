@@ -5,6 +5,7 @@ import '@/use'
 //
 import router from '@/router'
 import i18n from '@/i18n'
+import '@/theme/index.less'
 
 
 Vue.config.productionTip = false

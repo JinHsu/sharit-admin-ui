@@ -69,7 +69,15 @@ module.exports = {
         // 向 CSS 相关的 loader 传递选项
         // 支持的 loader 有：css-loader postcss-loader sass-loader less-loader stylus-loader
         loaderOptions: {
-            // ...
+            less: {
+                lessOptions: {
+                    // 修改全局less变量
+                    // https://cli.vuejs.org/zh/guide/css.html
+                    modifyVars: {},
+                    // css中开启js支持
+                    javascriptEnabled: true
+                }
+            }
         }
 
     },
