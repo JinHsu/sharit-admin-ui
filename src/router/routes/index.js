@@ -1,9 +1,23 @@
 export default [
     {
-        path: '/hello',
-        name: 'hello',
-        component: () => import(/* webpackChunkName: "hello" */ '@/views/hello/Hello'),
+        path: '/',
+        name: 'entry',
+        component: () => import(/* webpackChunkName: "entry" */ '@/layouts/entry'),
         meta: {},
-        children: []
+        children: [
+            {
+                path: 'login',
+                name: 'login',
+                component: () => import(/* webpackChunkName: "entry" */ '@/views/entry/login'),
+                meta: {title: '登录'}
+            },
+            {
+                path: 'recover',
+                name: 'recover',
+                component: () => import(/* webpackChunkName: "entry" */ '@/views/entry/recover'),
+                meta: {title: '找回密码'}
+            }
+        ]
+
     }
 ]

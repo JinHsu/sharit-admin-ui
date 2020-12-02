@@ -5,11 +5,14 @@
 </template>
 
 <script>
+    import {deviceEnquire} from '@/mixins'
+
     export default {
-        name: 'App'
+        name: 'App',
+        mixins: [deviceEnquire]
     }
 </script>
 
-<style>
+<style lang="scss">
 
 </style>
