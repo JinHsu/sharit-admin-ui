@@ -23,7 +23,7 @@
 <style lang="scss" scoped>
     .el-entry {
         height: 100vh;
-        overflow: hidden;
+        /*overflow: hidden;*/
 
         &-wrapper {
             width: 100%;

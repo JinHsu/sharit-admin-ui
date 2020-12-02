@@ -1,5 +1,5 @@
 <template>
-    <div :class="isMobile() ? 'el-entry-content-mobile' : 'el-entry-content'">
+    <div class="el-entry-content">
         <el-form ref="form" :model="form">
 
             <el-tabs v-model="activeTabPane" class="">
@@ -50,7 +50,6 @@
 </template>
 
 <script>
-    import {device} from '@/mixins'
 
     export default {
         name: "Login",
@@ -67,37 +66,25 @@
             }
         },
 
-        mixins: [device],
-
-        watch: {}
-
     }
 </script>
 
 <style lang="scss" scoped>
     .el-entry-content {
         margin: auto;
+        padding: 10px;
         max-width: 400px;
-
-        &-mobile {
-            margin: auto 10px;
-        }
-
     }
 
 </style>
 
 <style lang="scss">
-    .el-entry-content, .el-entry-content-mobile {
-        .el-tabs__nav-wrap {
-            margin: auto;
-            display: table;
+    .el-entry-content .el-tabs__nav-wrap {
+        margin: auto;
+        display: table;
 
-            &::after {
-                background-color: transparent;
-            }
+        &::after {
+            background-color: transparent;
         }
-
-
     }
 </style>
