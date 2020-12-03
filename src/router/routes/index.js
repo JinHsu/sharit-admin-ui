@@ -19,5 +19,28 @@ export default [
             }
         ]
 
+    },
+
+    {
+        path: '/',
+        name: 'frame',
+        component: () => import(/* webpackChunkName: "frame" */ '@/layouts/frame'),
+        meta: {},
+        children: [
+            {
+                path: 'home',
+                name: 'home',
+                component: () => import(/* webpackChunkName: "frame" */ '@/layouts/empty'),
+                meta: {},
+                children: [
+                    {
+                        path: 'workbench',
+                        name: 'workbench',
+                        component: () => import(/* webpackChunkName: "frame" */ '@/views/home/workbench'),
+                        meta: {}
+                    }
+                ]
+            }
+        ]
     }
 ]

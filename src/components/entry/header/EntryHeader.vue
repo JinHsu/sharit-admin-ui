@@ -1,6 +1,6 @@
 <template>
     <div class="el-entry-header">
-        <div class="logo-wrapper">
+        <div class="el-navbar-logo">
             <a href="#">
                 <img src="../../../assets/logo.svg" alt="ElementUI" class="logo">
             </a>
@@ -23,7 +23,7 @@
         margin: 10px 0 60px 0;
 
 
-        .logo-wrapper {
+        .el-navbar-logo {
             height: 50px;
             line-height: 50px;
 
