@@ -5,6 +5,7 @@
             <ToggleButton/>
         </div>
         <div class="el-navbar-right">
+            <Message/>
             <Settings/>
         </div>
     </div>
@@ -16,7 +17,7 @@
     import ToggleButton from "./togglebutton/ToggleButton"
     //右侧
     import Settings from "./settings/Settings"
-
+    import Message from './message/Message'
 
     export default {
         name: "NavBar",
@@ -26,7 +27,7 @@
                 default: true
             }
         },
-        components: {NavBarLogo, ToggleButton, Settings},
+        components: {NavBarLogo, ToggleButton, Settings, Message},
         data() {
             return {}
         },
@@ -57,6 +58,8 @@
             float: right;
             height: 64px;
             line-height: 64px;
+            display: inline-flex;
+            flex-wrap: wrap;
         }
     }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <el-container style="height: 100vh;">
         <el-aside v-if="!isMobile()" :width="sidebarWidth">
-            <SideBar/>
+            <SideBar :collapsed="collapsed"/>
         </el-aside>
         <el-container>
             <el-header height="64px">
@@ -22,7 +22,7 @@
 <script>
     import SideBar from "./siderbar/SideBar"
     import NavBar from "./navbar/NavBar"
-    import menus from './menus'
+    import menus from './siderbar/menus'
     import {device} from '@/mixins'
 
     export default {
@@ -42,11 +42,14 @@
         methods: {
             onToggle(collapsed) {
                 this.collapsed = collapsed
+                console.log("FrameLayout:collapsed:" + collapsed)
+            },
+
+            resize() {
                 const event = document.createEvent('HTMLEvents')
                 event.initEvent('resize', true, true)
                 event.eventType = 'message'
                 window.dispatchEvent(event)
-                console.log("FrameLayout:collapsed:" + collapsed)
             },
 
             // 根据设备自适应（侧边栏自动折叠与展开）
@@ -85,6 +88,7 @@
                 }
 
                 this.sidebarWidth = paddingLeft
+                this.resize()
             },
 
             onCollapse() {
@@ -109,6 +113,7 @@
         },
         watch: {
             device(n, o) {
+                // console.log(n,o)
                 this.adapt(n, o)
             },
 

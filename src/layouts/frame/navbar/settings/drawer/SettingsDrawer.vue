@@ -4,27 +4,6 @@
             :visible="value" :show-close="true" :modal="true" :append-to-body="true"
             @close="onClose">
         <div class="setting-drawer">
-            <!--主题颜色设置-->
-            <div class="setting-drawer-index">
-                <div class="setting-drawer-index-title">主题颜色</div>
-                <div class="setting-drawer-index-theme-color">
-                    <template v-for="(item, index) in colorList">
-                        <el-tooltip placement="top" :open-delay="200"
-                                    class="setting-drawer-index-theme-color-block"
-                                    :key="index">
-                            <template slot="content">
-                                {{ item.title }}
-                            </template>
-                            <el-tag :color="item.value">
-                                <!-- colorTheme: computed property of mixin -->
-                                <i class="el-icon-check"/>
-                            </el-tag>
-                        </el-tooltip>
-                    </template>
-                </div>
-            </div>
-            <el-divider/>
-
             <!--边侧栏颜色设置-->
             <div class="setting-drawer-index">
                 <div class="setting-drawer-index-title">侧边栏外观</div>
@@ -55,7 +34,33 @@
             </div>
             <el-divider/>
 
+            <!--主题颜色设置-->
+            <div class="setting-drawer-index">
+                <div class="setting-drawer-index-title">主题颜色</div>
+                <div class="setting-drawer-index-theme-color">
+                    <template v-for="(item, index) in colorList">
+                        <el-tooltip placement="top" :open-delay="200"
+                                    class="setting-drawer-index-theme-color-block"
+                                    :key="index">
+                            <template slot="content">
+                                {{ item.title }}
+                            </template>
+                            <el-tag :color="item.value">
+                                <!-- colorTheme: computed property of mixin -->
+                                <i class="el-icon-check"/>
+                            </el-tag>
+                        </el-tooltip>
+                    </template>
+                </div>
+            </div>
+            <el-divider/>
+
             <!---->
+            <div class="setting-drawer-index">
+                <div class="setting-drawer-index-title">系统语言</div>
+
+            </div>
+            <el-divider/>
 
         </div>
 
@@ -159,7 +164,7 @@
 </style>
 <style lang="scss">
     .el-drawer:focus, .el-drawer__close-btn:focus {
-        outline: none;
+        /*outline: none;*/
     }
 
     .el-drawer__header {

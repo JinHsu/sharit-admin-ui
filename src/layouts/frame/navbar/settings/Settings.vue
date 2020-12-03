@@ -39,16 +39,14 @@
         width: 40px;
         height: 64px;
         line-height: 64px;
-
         cursor: pointer;
+        padding: 0 10px;
+        text-align: center;
 
         &:hover {
             background: #f9f9f9;
         }
 
-        > i {
-            padding: 12px;
-        }
 
     }
 </style>

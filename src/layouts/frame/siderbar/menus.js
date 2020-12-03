@@ -1,12 +1,12 @@
 export default [
     {
         "title": "Home",
-        "icon": "home",
+        "icon": "el-icon-s-home",
         "path": "/home",
         "children": [
             {
                 "title": "工作台",
-                "icon": "line-chart",
+                "icon": "el-icon-eleme",
                 "path": "/home/workbench"
             },
             {
@@ -18,7 +18,7 @@ export default [
     },
     {
         "title": "平台管理",
-        "icon": "control",
+        "icon": "el-icon-s-platform",
         "path": "/platform",
         "children": [
             {
