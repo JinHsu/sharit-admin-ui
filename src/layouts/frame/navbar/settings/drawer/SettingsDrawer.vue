@@ -1,8 +1,12 @@
 <template>
     <el-drawer
             direction="rtl" size="300px"
-            :visible="value" :show-close="true" :modal="true" :append-to-body="true"
+            :visible="visible" :show-close="true" :modal="true" :append-to-body="true"
             @close="onClose">
+        <span slot="title" style="font-size: 16px;">
+
+        </span>
+
         <div class="setting-drawer">
             <!--边侧栏颜色设置-->
             <div class="setting-drawer-index">
@@ -70,14 +74,10 @@
 <script>
     export default {
         name: "SettingsDrawer",
-        props: {
-            value: {
-                type: Boolean,
-                default: false
-            },
-        },
+
         data() {
             return {
+                visible: false,
                 colorList: [
                     {title: '薄暮', value: '#F5222D'},
                     {title: '火山', value: '#FA541C'},
@@ -91,16 +91,22 @@
             }
         },
         methods: {
+            onShow(visile) {
+                this.visible = visile
+            },
             onClose() {
-                this.$emit('input', false)
+                this.visible = false
             }
-        }
+        },
+
+        mounted() {
+            this.$eventBus.$on(this.$events.on_click_setting, this.onShow)
+        },
     }
 </script>
 <style lang="scss" scoped>
     .setting-drawer {
         padding: 20px;
-
 
         &-index {
             margin-bottom: 24px;
@@ -163,10 +169,6 @@
     }
 </style>
 <style lang="scss">
-    .el-drawer:focus, .el-drawer__close-btn:focus {
-        /*outline: none;*/
-    }
-
     .el-drawer__header {
         margin-bottom: 0;
     }

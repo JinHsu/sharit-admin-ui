@@ -1,6 +1,6 @@
 <template>
     <div class="el-navbar-toggle">
-        <i :class="collapsed ? 'el-icon-s-unfold': 'el-icon-s-fold'" @click="toggle()"></i>
+        <el-icon :name="collapsed ? 'indent' : 'outdent'" :size="24"/>
     </div>
 </template>
 
@@ -9,27 +9,18 @@
 
     export default {
         name: "ToggleButton",
-        props: {},
-        components: {},
+
         data() {
             return {
                 collapsed: false,
             }
         },
         mixins: [device],
-        computed: {},
+
         methods: {
-            toggle() {
-                this.collapsed = !this.collapsed
-                this.$eventBus.$emit(this.$events.on_toggle, this.collapsed)
-            },
 
             onToggle(collapsed) {
                 this.collapsed = collapsed
-                const event = document.createEvent('HTMLEvents')
-                event.initEvent('resize', true, true)
-                event.eventType = 'message'
-                window.dispatchEvent(event)
                 console.log("FrameLayout:collapsed:" + collapsed)
             },
 
@@ -39,11 +30,11 @@
                 }
             }
         },
-        created() {
-        },
+
         mounted() {
-            this.$eventBus.$on(this.$events.on_toggle, this.onToggle)
+            this.$eventBus.$on(this.$events.on_click_toggle, this.onToggle)
         },
+
         watch: {
             device(n, o) {
                 this.adapt(n, o)
@@ -62,12 +53,15 @@
 
         cursor: pointer;
 
-        &:hover {
+        &:hover, &:focus {
             background: #f9f9f9;
         }
 
-        > i {
-            padding: 20px;
+        text-align: center;
+
+        svg {
+            display: inline-block;
+            vertical-align: middle;
         }
 
     }

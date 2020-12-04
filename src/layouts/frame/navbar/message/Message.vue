@@ -1,46 +1,24 @@
 <template>
     <div class="el-navbar-message">
         <el-popover :width="300" placement="top-end">
-            <el-tabs v-model="activeName" stretch>
-                <el-tab-pane label="通知" name="first">
-                    <div>
-                        用户管理
-                        <el-divider/>
-                        用户管理
-                        <el-divider/>
-                        用户管理
-                        <el-divider/>
-                    </div>
-                </el-tab-pane>
-                <el-tab-pane label="消息" name="second">
-                    配置管理
-                    <el-divider/>
-                    配置管理
-                    <el-divider/>
-                    配置管理
-                    <el-divider/>
-
-                </el-tab-pane>
-                <el-tab-pane label="代办" name="third">角色管理</el-tab-pane>
-            </el-tabs>
-
-
-            <el-badge :value="5" slot="reference">
-                <i class="el-icon-message-solid"></i>
-                <!--            <span>消息</span>-->
-            </el-badge>
+            <MessageContentPane/>
+            <div slot="reference">
+                <el-icon name="bell" :size="20"/>
+            </div>
         </el-popover>
-
     </div>
 </template>
 
 <script>
+    import MessageContentPane from "./MessageContentPane"
+
     export default {
         name: "Message",
+
+        components: {MessageContentPane},
+
         data() {
-            return {
-                activeName: 'first'
-            }
+            return {}
         }
     }
 </script>
@@ -49,27 +27,21 @@
     .el-navbar-message {
         font-size: 16px;
         color: #888888;
-        width: 40px;
+        width: 60px;
         height: 64px;
         line-height: 64px;
+
         cursor: pointer;
-        padding: 0 10px;
-        text-align: center;
 
         &:hover {
             background: #f9f9f9;
         }
 
-        .el-badge {
+        text-align: center;
 
-        }
-
-        .el-badge__content.is-fixed {
-            top: 20px;
-        }
-
-        > i {
-            padding: 12px;
+        svg {
+            display: inline-block;
+            vertical-align: middle;
         }
 
     }

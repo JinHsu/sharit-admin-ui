@@ -1,7 +1,7 @@
 <template>
     <div class="el-navbar-settings">
-        <i class="el-icon-setting" @click="showDrawer()"></i>
-        <SettingsDrawer v-model="drawerVisible"/>
+        <el-icon name="setting" :size="20"/>
+        <SettingsDrawer/>
     </div>
 </template>
 
@@ -10,25 +10,7 @@
 
     export default {
         name: "Settings",
-        props: {},
-        components: {SettingsDrawer},
-        data() {
-            return {
-                drawerVisible: false
-            }
-        },
-        mixins: [],
-        computed: {},
-        methods: {
-            showDrawer() {
-                this.drawerVisible = true
-            }
-        },
-        created() {
-        },
-        mounted() {
-        },
-        watch: {}
+        components: {SettingsDrawer}
     }
 </script>
 
@@ -39,14 +21,18 @@
         width: 40px;
         height: 64px;
         line-height: 64px;
+
         cursor: pointer;
-        padding: 0 10px;
-        text-align: center;
 
         &:hover {
             background: #f9f9f9;
         }
 
+        text-align: center;
 
+        svg {
+            display: inline-block;
+            vertical-align: middle;
+        }
     }
 </style>

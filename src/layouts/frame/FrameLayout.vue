@@ -5,7 +5,7 @@
         </el-aside>
         <el-container>
             <el-header height="64px">
-                <NavBar :show-logo="isMobile()"/>
+                <NavBar/>
             </el-header>
             <el-main style="background-color: #F2F2F2">
                 <router-view/>
@@ -59,7 +59,7 @@
                 // <<<<<<<<<<<<<<<<<<<<<<
                 if (o === 'desktop' && (n === 'tablet' || n === 'mobile')) {
                     this.collapsed = true // 响应式：强制折叠
-                    this.$eventBus.$emit(this.$events.on_toggle, this.collapsed)
+                    this.$eventBus.$emit(this.$events.on_click_toggle, this.collapsed)
                     // this.$store.dispatch('settings/setNavbarCollapsed', this.collapsed)
                     paddingLeft = n === 'tablet' ? '64px' : '0px'
                 }
@@ -73,7 +73,7 @@
                 }
                 if ((o === 'tablet' || o === 'mobile') && n === 'desktop') {
                     this.collapsed = false // 响应式：强制展开
-                    this.$eventBus.$emit(this.$events.on_toggle, this.collapsed)
+                    this.$eventBus.$emit(this.$events.on_click_toggle, this.collapsed)
                     // this.$store.dispatch('settings/setNavbarCollapsed', this.collapsed)
                     paddingLeft = '240px'
                 }
@@ -109,7 +109,7 @@
             this.adapt(this.device)
         },
         mounted() {
-            this.$eventBus.$on(this.$events.on_toggle, this.onToggle)
+            this.$eventBus.$on(this.$events.on_click_toggle, this.onToggle)
         },
         watch: {
             device(n, o) {

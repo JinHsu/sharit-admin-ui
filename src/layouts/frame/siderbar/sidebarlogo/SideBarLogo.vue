@@ -1,15 +1,22 @@
 <template>
     <div class="el-sidebar-logo">
-        <img v-if="collapsed" src="~@/assets/logo2.svg" alt="ElementUI" class="img">
-        <img v-else src="~@/assets/logo.svg" alt="ElementUI" class="img">
+        <div class="el-sidebar-logo-img">
+            <ElIcon name="logo-ele" :size="48" color="#409EFF"/>
+        </div>
+        <span v-show="!collapsed" class="el-sidebar-logo-text">
+            ElementUI
+        </span>
     </div>
 </template>
 
 <script>
     import {device} from '@/mixins'
+    import ElIcon from "@/components/iconfont/ElIcon"
 
     export default {
         name: "SideBarLogo",
+
+        components: {ElIcon},
 
         props: {
             collapsed: {
@@ -25,18 +32,28 @@
 
 <style lang="scss" scoped>
     .el-sidebar-logo {
-        /*width: 100%;*/
         height: 64px;
         line-height: 64px;
 
-        .img {
+        display: inline-flex;
+
+        &-img {
+            height: 64px;
+            width: 64px;
+            text-align: center;
+
+            svg {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        &-text {
             height: 64px;
             line-height: 64px;
-            margin: auto;
-            display: grid;
-            padding: 10px;
-
-            cursor: pointer;
+            font-size: 24px;
+            color: #409EFF;
+            font-weight: 600;
         }
 
     }

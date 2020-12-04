@@ -1,19 +1,17 @@
 <template>
     <div class="el-navbar">
         <div class="el-navbar-left">
-            <NavBarLogo v-if="showLogo"/>
-            <ToggleButton/>
+            <ToggleButton @click.native="onClickToggle()"/>
         </div>
         <div class="el-navbar-right">
             <Message/>
-            <Settings/>
+            <Settings @click.native="onClickSetting()"/>
         </div>
     </div>
 </template>
 
 <script>
     // 左侧
-    import NavBarLogo from "./logo/NavBarLogo"
     import ToggleButton from "./togglebutton/ToggleButton"
     //右侧
     import Settings from "./settings/Settings"
@@ -21,19 +19,27 @@
 
     export default {
         name: "NavBar",
-        props: {
-            showLogo: {
-                type: Boolean,
-                default: true
-            }
-        },
-        components: {NavBarLogo, ToggleButton, Settings, Message},
+        props: {},
+        components: {ToggleButton, Settings, Message},
         data() {
-            return {}
+            return {
+                collapsed: false,
+                showDrawer: false,
+            }
         },
         mixins: [],
         computed: {},
-        methods: {},
+        methods: {
+            onClickToggle() {
+                this.collapsed = !this.collapsed
+                this.$eventBus.$emit(this.$events.on_click_toggle, this.collapsed)
+            },
+
+            onClickSetting() {
+                this.showDrawer = true
+                this.$eventBus.$emit(this.$events.on_click_setting, this.showDrawer)
+            }
+        },
         created() {
         },
         mounted() {
