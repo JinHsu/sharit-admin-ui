@@ -1,3 +1,22 @@
+const ThemeColorReplacer = require('webpack-theme-color-replacer')
+const forElementUI = require('webpack-theme-color-replacer/forElementUI')
+const createThemeColorReplacerPlugin = () => new ThemeColorReplacer({
+    matchColors: [
+        ...forElementUI.getElementUISeries('#409EFF')
+    ], // colors array for extracting css file, support rgb and hsl.
+    fileName: 'theme/theme-colors-[contenthash:8].css', //optional. output css file name, suport [contenthash] and [hash].
+    // resolveCss(resultCss) { // optional. Resolve result css code as you wish.
+    //     return resultCss.replace(/#ccc/g, '#eee')
+    // },
+    // externalCssFiles: ['./node_modules/element-ui/lib/theme-chalk/index.css'], // optional, String or string array. Set external css files (such as cdn css) to extract colors.
+    changeSelector(selector, util) { // optional, Funciton. Changing css selectors, in order to raise css priority, to resolve lazy-loading problems.
+        // return util.changeEach(selector, '.el-button--default')
+        return forElementUI.changeSelector(selector, util)
+    },
+    // injectCss: false, // optional. Inject css text into js file, no need to download `theme-colors-xxx.css` any more.
+    isJsUgly: process.env.NODE_ENV !== 'development', // optional. Set to `true` if your js is uglified. Default is set by process.env.NODE_ENV.
+})
+
 module.exports = {
     // 部署应用包时的基本URL
     // process.env.NODE_ENV === 'production' ? '/production-sub-path/' : '/'
@@ -49,8 +68,9 @@ module.exports = {
     },
 
     // 是一个函数，会接收一个基于 webpack-chain 的 ChainableConfig 实例。允许对内部的 webpack 配置进行更细粒度的修改。
-    chainWebpack: () => {
-
+    chainWebpack: (config) => {
+        // 颜色替换器插件
+        config.plugin('colorReplacer').use(createThemeColorReplacerPlugin())
     },
 
     css: {

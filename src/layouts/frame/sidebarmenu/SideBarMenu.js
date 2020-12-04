@@ -59,7 +59,7 @@ export default {
             <el-menu
                 collapse={this.collapsed}
                 uniqueOpened={false}
-                router={true}>
+                router={false}>
                 {menuTree}
             </el-menu>
         )

@@ -49,7 +49,7 @@
                             <template slot="content">
                                 {{ item.title }}
                             </template>
-                            <el-tag :color="item.value">
+                            <el-tag :color="item.value" @click="changeThemeColor(item.value)">
                                 <!-- colorTheme: computed property of mixin -->
                                 <i class="el-icon-check"/>
                             </el-tag>
@@ -73,6 +73,7 @@
 
 <script>
     import {frame} from '@/mixins'
+    import {changeThemeColor} from '@/use/color-replacer'
 
     export default {
         name: "SettingsDrawer",
@@ -97,6 +98,15 @@
         methods: {
             onClose() {
                 this.setDrawerOpened(false)
+            },
+
+            changeThemeColor(newColor) {
+                const callback = () => {
+                    setTimeout(() => {
+                        this.$message.success("切换主题成功！")
+                    }, 500)
+                }
+                changeThemeColor(newColor, callback)
             }
         }
 

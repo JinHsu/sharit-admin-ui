@@ -18,15 +18,28 @@
 </script>
 
 <style lang="scss">
-    .el-sidebar {
-        height: 100vh;
+    .el-sidebar, .el-drawer {
+        /*height: 100vh;*/
 
         .el-menu {
             border-right: none;
 
-            .el-menu-item.is-active {
-                border-right: 2px solid #409EFF;
-                background-color: #ecf5ff;
+            .el-menu-item {
+
+
+                &:hover {
+                    /*background: #409EFF;*/
+                }
+
+                &.is-active {
+                    /*background: #409EFF;*/
+                    border-right: 2px solid #409EFF;
+                }
+
+            }
+
+            .el-submenu__title:hover, .el-submenu__title.is-active {
+                /*background: #409EFF;*/
             }
 
         }
