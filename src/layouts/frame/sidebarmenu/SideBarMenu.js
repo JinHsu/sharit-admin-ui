@@ -1,21 +1,22 @@
+import {frame} from '@/mixins'
+import menus from './menus'
+
+/**
+ * JSX递归渲染菜单树
+ */
 export default {
     name: "SideBarMenu",
-    props: {
-        treeData: {
-            type: Array,
-            required: true,
-        },
-        collapsed: {
-            type: Boolean,
-            default: false
+
+    data() {
+        return {
+            menus: menus
         }
     },
-    components: {},
-    data() {
-        return {}
-    },
+
+    mixins: [frame],
 
     methods: {
+        // 渲染菜单项
         renderMenuItem(menu) {
             return (
                 <el-menu-item key={menu.path} index={menu.path}>
@@ -25,7 +26,9 @@ export default {
             )
         },
 
+        // 渲染子菜单
         renderSubMenu(menu) {
+            // 递归渲染子菜单
             const menuItems = menu.children.map(item => {
                 return item.children ? this.renderSubMenu(item) : this.renderMenuItem(item)
             })
@@ -43,22 +46,23 @@ export default {
     },
 
     render() {
-        if (this.treeData && this.treeData.length > 0) {
-            const menuTree = this.treeData.map(menu => {
-                return menu.children ? this.renderSubMenu(menu) : this.renderMenuItem(menu)
-            })
-
-            return (
-                <el-menu
-                    collapse={this.collapsed}
-                    uniqueOpened={false}
-                    router={false}>
-                    {menuTree}
-                </el-menu>
-            )
-        } else {
+        if (!this.menus || this.menus.length === 0) {
             return (<div/>)
         }
+
+        // 子菜单和菜单项
+        const menuTree = this.menus.map(menu => {
+            return menu.children ? this.renderSubMenu(menu) : this.renderMenuItem(menu)
+        })
+
+        return (
+            <el-menu
+                collapse={this.collapsed}
+                uniqueOpened={false}
+                router={true}>
+                {menuTree}
+            </el-menu>
+        )
     }
 
 }

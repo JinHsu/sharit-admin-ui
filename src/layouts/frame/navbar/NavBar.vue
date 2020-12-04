@@ -11,40 +11,36 @@
 </template>
 
 <script>
+    import {frame} from '@/mixins'
     // 左侧
     import ToggleButton from "./togglebutton/ToggleButton"
     //右侧
-    import Settings from "./settings/Settings"
-    import Message from './message/Message'
+    import Settings from "./settings/Settings" // 系统设置
+    import Message from './message/Message' // 消息中心
 
     export default {
         name: "NavBar",
-        props: {},
-        components: {ToggleButton, Settings, Message},
-        data() {
-            return {
-                collapsed: false,
-                showDrawer: false,
-            }
+
+        components: {
+            ToggleButton,
+            Settings, Message
         },
-        mixins: [],
-        computed: {},
+
+        mixins: [frame],
+
         methods: {
+            // 点击切换按钮
             onClickToggle() {
-                this.collapsed = !this.collapsed
-                this.$eventBus.$emit(this.$events.on_click_toggle, this.collapsed)
+                this.setCollapsed(!this.collapsed)
+                console.log("FrameLayout:collapsed:" + this.collapsed)
             },
 
+            // 点击设置按钮
             onClickSetting() {
-                this.showDrawer = true
-                this.$eventBus.$emit(this.$events.on_click_setting, this.showDrawer)
+                this.setDrawerOpened(true)
             }
-        },
-        created() {
-        },
-        mounted() {
-        },
-        watch: {}
+        }
+
     }
 </script>
 

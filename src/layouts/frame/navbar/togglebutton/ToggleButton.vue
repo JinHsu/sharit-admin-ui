@@ -1,45 +1,27 @@
 <template>
     <div class="el-navbar-toggle">
-        <el-icon :name="collapsed ? 'indent' : 'outdent'" :size="24"/>
+        <el-icon :name="this.collapsed ? 'indent' : 'outdent'" :size="24"/>
+        <DrawerBar v-if="isMobile()"/>
     </div>
 </template>
 
 <script>
-    import {device} from '@/mixins'
+    import DrawerBar from "@/layouts/frame/drawerbar/DrawerBar"
+    import {device, frame} from '@/mixins'
 
     export default {
         name: "ToggleButton",
 
-        data() {
-            return {
-                collapsed: false,
-            }
-        },
-        mixins: [device],
+        components: {DrawerBar},
+
+        mixins: [device, frame],
 
         methods: {
-
-            onToggle(collapsed) {
-                this.collapsed = collapsed
-                console.log("FrameLayout:collapsed:" + collapsed)
-            },
-
-            adapt(n, o) {
-                if (n === 'mobile' && o !== undefined) {
-                    this.collapsed = false
-                }
-            }
-        },
-
-        mounted() {
-            this.$eventBus.$on(this.$events.on_click_toggle, this.onToggle)
-        },
-
-        watch: {
-            device(n, o) {
-                this.adapt(n, o)
+            onClick() {
+                this.$emit('click')
             }
         }
+
     }
 </script>
 
@@ -53,7 +35,7 @@
 
         cursor: pointer;
 
-        &:hover, &:focus {
+        &:hover {
             background: #f9f9f9;
         }
 

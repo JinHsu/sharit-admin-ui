@@ -4,7 +4,7 @@ export default {
 
     computed: {
         ...mapState({
-            device: state => state.app.device
+            device: state => state.frame.device
         })
     },
 

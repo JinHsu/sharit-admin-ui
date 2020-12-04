@@ -1,7 +1,7 @@
 <template>
     <el-container style="height: 100vh;">
         <el-aside v-if="!isMobile()" :width="sidebarWidth">
-            <SideBar :collapsed="collapsed"/>
+            <SideBar/>
         </el-aside>
         <el-container>
             <el-header height="64px">
@@ -12,7 +12,6 @@
             </el-main>
             <!--
             <el-footer height="64px" style="background-color: brown">
-                Footer
             </el-footer>
             -->
         </el-container>
@@ -20,30 +19,26 @@
 </template>
 
 <script>
-    import SideBar from "./siderbar/SideBar"
+    import SideBar from "./sidebar/SideBar"
     import NavBar from "./navbar/NavBar"
-    import menus from './siderbar/menus'
-    import {device} from '@/mixins'
+    import menus from './sidebarmenu/menus'
+    import {device, frame} from '@/mixins'
 
     export default {
         name: "FrameLayout",
 
-        props: {},
         components: {SideBar, NavBar},
+
         data() {
             return {
                 sidebarWidth: '',
-                collapsed: false,
                 menus: menus,
             }
         },
-        mixins: [device],
-        computed: {},
+
+        mixins: [device, frame],
+
         methods: {
-            onToggle(collapsed) {
-                this.collapsed = collapsed
-                console.log("FrameLayout:collapsed:" + collapsed)
-            },
 
             resize() {
                 const event = document.createEvent('HTMLEvents')
@@ -54,13 +49,12 @@
 
             // 根据设备自适应（侧边栏自动折叠与展开）
             adapt(n, o) {
-                console.info(o, '变', n)
+                // console.info(o, '变', n)
                 let paddingLeft
                 // <<<<<<<<<<<<<<<<<<<<<<
                 if (o === 'desktop' && (n === 'tablet' || n === 'mobile')) {
-                    this.collapsed = true // 响应式：强制折叠
-                    this.$eventBus.$emit(this.$events.on_click_toggle, this.collapsed)
-                    // this.$store.dispatch('settings/setNavbarCollapsed', this.collapsed)
+                    // 响应式：强制折叠
+                    this.setCollapsed(true)
                     paddingLeft = n === 'tablet' ? '64px' : '0px'
                 }
                 if (o === 'tablet' && n === 'mobile') {
@@ -72,9 +66,8 @@
                     paddingLeft = this.collapsed ? '64px' : '240px'
                 }
                 if ((o === 'tablet' || o === 'mobile') && n === 'desktop') {
-                    this.collapsed = false // 响应式：强制展开
-                    this.$eventBus.$emit(this.$events.on_click_toggle, this.collapsed)
-                    // this.$store.dispatch('settings/setNavbarCollapsed', this.collapsed)
+                    // 响应式：强制展开
+                    this.setCollapsed(false)
                     paddingLeft = '240px'
                 }
 
@@ -104,16 +97,14 @@
                 this.sidebarWidth = paddingLeft
             }
         },
+
         created() {
-            this.collapsed = false
+            // 注意2个方法的顺序
             this.adapt(this.device)
         },
-        mounted() {
-            this.$eventBus.$on(this.$events.on_click_toggle, this.onToggle)
-        },
+
         watch: {
             device(n, o) {
-                // console.log(n,o)
                 this.adapt(n, o)
             },
 
@@ -121,6 +112,7 @@
                 this.onCollapse()
             }
         }
+
     }
 </script>
 

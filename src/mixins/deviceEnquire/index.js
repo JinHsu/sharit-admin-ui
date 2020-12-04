@@ -8,19 +8,19 @@ export default {
         let response = (deviceType) => {
             switch (deviceType) {
                 case 'desktop':
-                    $store.dispatch('app/setDevice', 'desktop')
+                    $store.dispatch('frame/setDevice', 'desktop')
                     break
 
                 case 'tablet':
-                    $store.dispatch('app/setDevice', 'tablet')
+                    $store.dispatch('frame/setDevice', 'tablet')
                     break
 
                 case 'mobile':
-                    $store.dispatch('app/setDevice', 'mobile')
+                    $store.dispatch('frame/setDevice', 'mobile')
                     break
 
                 default:
-                    $store.dispatch('app/setDevice', undefined)
+                    $store.dispatch('frame/setDevice', undefined)
                     break
             }
         }

@@ -1,7 +1,7 @@
 <template>
     <el-drawer
             direction="rtl" size="300px"
-            :visible="visible" :show-close="true" :modal="true" :append-to-body="true"
+            :visible="this.drawerOpened" :show-close="true" :modal="true" :append-to-body="true"
             @close="onClose">
         <span slot="title" style="font-size: 16px;">
 
@@ -72,12 +72,13 @@
 </template>
 
 <script>
+    import {frame} from '@/mixins'
+
     export default {
         name: "SettingsDrawer",
 
         data() {
             return {
-                visible: false,
                 colorList: [
                     {title: '薄暮', value: '#F5222D'},
                     {title: '火山', value: '#FA541C'},
@@ -90,18 +91,15 @@
                 ]
             }
         },
-        methods: {
-            onShow(visile) {
-                this.visible = visile
-            },
-            onClose() {
-                this.visible = false
-            }
-        },
 
-        mounted() {
-            this.$eventBus.$on(this.$events.on_click_setting, this.onShow)
-        },
+        mixins: [frame],
+
+        methods: {
+            onClose() {
+                this.setDrawerOpened(false)
+            }
+        }
+
     }
 </script>
 <style lang="scss" scoped>

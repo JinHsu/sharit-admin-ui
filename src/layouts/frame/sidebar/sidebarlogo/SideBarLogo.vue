@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import {device} from '@/mixins'
+    import {device, frame} from '@/mixins'
     import ElIcon from "@/components/iconfont/ElIcon"
 
     export default {
@@ -18,22 +18,17 @@
 
         components: {ElIcon},
 
-        props: {
-            collapsed: {
-                type: Boolean,
-                default: false
-            }
-        },
-
-        mixins: [device]
+        mixins: [device, frame]
 
     }
 </script>
 
 <style lang="scss" scoped>
     .el-sidebar-logo {
+        width: 100%;
         height: 64px;
         line-height: 64px;
+        border-bottom: 1px solid #EBEEF5;
 
         display: inline-flex;
 
