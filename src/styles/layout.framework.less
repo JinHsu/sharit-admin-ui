@@ -1,0 +1,63 @@
+//
+//
+//// framework layout
+.a-layout-framework {
+
+    &-right { //
+        min-height: 100vh;
+
+        &-header { // 头部
+            position: fixed; // 固定
+            right: 0;
+            width: 100%;
+            padding: 0;
+            z-index: 9;
+            background-color: @body-background;
+            -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+            box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+        }
+
+        &-content {
+            margin-top: @layout-header-height;
+            padding: @layout-content-padding-20;
+            height: 100%;
+        }
+
+        &-footer {
+            padding: 0;
+        }
+
+    }
+
+}
+
+// 侧边栏
+.ant-layout-framework-sider {
+    position: fixed; // 固定
+    left: 0;
+    height: 100%;
+    z-index: 1000;
+
+    // 边框阴影
+    -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+
+    &-menu {
+        height: calc(100% - @layout-sider-logo-height); // 减去Logo栏的高度
+
+        &:hover {
+            overflow: auto; // 鼠标进入才显示滚动条
+        }
+    }
+}
+
+// 侧边栏->Logo栏
+.ant-layout-framework-sider-header {
+    height: @layout-sider-logo-height;
+    line-height: @layout-sider-logo-height;
+    padding-left: 24px;
+    background-color: @layout-sider-logo-bg;
+    overflow: hidden;
+}
+
+//// framework layout
