@@ -1,3 +1,5 @@
+const createThemeColorReplacerPlugin = require('./config/plugins/color-replacer')
+
 module.exports = {
     // 部署应用包时的基本URL
     // process.env.NODE_ENV === 'production' ? '/production-sub-path/' : '/'
@@ -49,8 +51,9 @@ module.exports = {
     },
 
     // 是一个函数，会接收一个基于 webpack-chain 的 ChainableConfig 实例。允许对内部的 webpack 配置进行更细粒度的修改。
-    chainWebpack: () => {
-        // ...
+    chainWebpack: (config) => {
+        // 颜色替换器插件
+        config.plugin('colorReplacer').use(createThemeColorReplacerPlugin())
     },
 
     css: {

@@ -4,15 +4,18 @@
 
 <script>
     import SettingsButton from "@/layouts/framework/header/SettingsButton"
+    import {framework} from '@/mixins'
 
     export default {
         name: "SettingsButtonWrapper",
 
         components: {SettingsButton},
 
+        mixins: [framework],
+
         methods: {
             onClick() {
-                console.log("onClick")
+                this.setDrawerOpened(true)
             }
         }
     }

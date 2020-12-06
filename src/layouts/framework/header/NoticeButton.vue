@@ -2,7 +2,10 @@
     <a-popover
             v-model="visible"
             trigger="click"
-            placement="bottomRight"
+            :placement="isMobile() ? 'bottom' : 'bottomRight'"
+            arrowPointAtCenter
+            autoAdjustOverflow
+            :getPopupContainer="() => $refs.noticeRef.parentElement"
     >
         <template slot="content">
             <a-spin :spinning="loading">
@@ -38,7 +41,7 @@
                 </a-tabs>
             </a-spin>
         </template>
-        <span class="header-notice" @click="fetchNotice">
+        <span class="header-notice" ref="noticeRef" @click="fetchNotice">
             <a-badge count="12">
                 <a-icon type="bell"/>
             </a-badge>
@@ -47,6 +50,8 @@
 </template>
 
 <script>
+    import {device} from '@/mixins'
+
     export default {
         name: "NoticeButton",
 
@@ -56,6 +61,8 @@
                 loading: false
             }
         },
+
+        mixins: [device],
 
         methods: {
             fetchNotice() {
@@ -72,10 +79,6 @@
         padding: 0 18px;
         transition: all 0.3s;
         cursor: pointer;
-
-        span {
-            /*vertical-align: initial;*/
-        }
 
         &:hover {
             background: rgba(0, 0, 0, 0.02);

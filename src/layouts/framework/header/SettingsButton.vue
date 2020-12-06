@@ -24,8 +24,5 @@
             background: rgba(0, 0, 0, 0.02);
         }
 
-        i {
-        }
-
     }
 </style>

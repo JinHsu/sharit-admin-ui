@@ -6,7 +6,7 @@ export default {
         //
         collapsed: false, // 折叠侧边
         //
-        themeColor: '#1890ff', // 主题颜色
+        themeColor: '#1890FF', // 主题颜色
         themeSider: 'dark', // 侧边栏外观
         // ...
         drawerOpened: false, // 系统设置是否打开

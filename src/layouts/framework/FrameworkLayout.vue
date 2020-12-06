@@ -11,6 +11,7 @@
                 <drawable-sider v-if="isMobile()"/>
                 <toggle-button/>
                 <div class="a-layout-framework-right-header-action">
+                    <DrawableSettings/>
                     <NoticeButton/>
                     <SettingsButton/>
                     <UserButton/>
@@ -20,9 +21,7 @@
             <!--内容区-->
             <a-layout-content class="a-layout-framework-right-content">
 
-                <div style="background-color: #ffffff">
-
-                </div>
+                <router-view/>
 
             </a-layout-content>
 
@@ -35,14 +34,14 @@
 
 <script>
     import {CollapsiableSider} from "./sider"
-    import {DrawableSider, NoticeButton, SettingsButton, ToggleButton, UserButton} from './header'
+    import {DrawableSettings, DrawableSider, NoticeButton, SettingsButton, ToggleButton, UserButton} from './header'
     import {device, framework} from '@/mixins'
 
     export default {
         name: "FrameworkLayout",
 
         components: {
-            CollapsiableSider, DrawableSider, ToggleButton, SettingsButton, NoticeButton, UserButton
+            CollapsiableSider, DrawableSider, ToggleButton, SettingsButton, NoticeButton, UserButton, DrawableSettings
         },
 
         data() {
