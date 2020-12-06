@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #ffffff; ">
+    <div style="background-color: #fff; ">
         <div style="padding: 10px">
             <a-button type="primary">按钮</a-button>
             <a-divider/>
@@ -27,6 +27,6 @@
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
 </style>

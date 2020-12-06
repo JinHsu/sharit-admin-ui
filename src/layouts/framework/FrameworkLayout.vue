@@ -20,9 +20,9 @@
 
             <!--内容区-->
             <a-layout-content class="a-layout-framework-right-content">
-
-                <router-view/>
-
+                <transition name="page-transition">
+                    <router-view/>
+                </transition>
             </a-layout-content>
 
             <!--页脚-->
@@ -138,13 +138,15 @@
 
         &-right { //
             min-height: 100vh;
+            -webkit-transition: all 0.2s;
+            transition: all 0.2s;
 
             &-header { // 头部
                 position: fixed; // 固定
                 right: 0;
                 width: 100%;
                 padding-right: 12px;
-                z-index: 9;
+                z-index: 105;
                 background-color: #ffffff;
                 -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
                 box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
