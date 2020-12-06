@@ -10,6 +10,11 @@
             <a-layout-header class="a-layout-framework-right-header" :style="{paddingLeft: paddingLeft}">
                 <drawable-sider v-if="isMobile()"/>
                 <toggle-button/>
+                <div class="a-layout-framework-right-header-action">
+                    <NoticeButton/>
+                    <SettingsButton/>
+                    <UserButton/>
+                </div>
             </a-layout-header>
 
             <!--内容区-->
@@ -30,14 +35,14 @@
 
 <script>
     import {CollapsiableSider} from "./sider"
-    import {DrawableSider, ToggleButton} from './header'
+    import {DrawableSider, NoticeButton, SettingsButton, ToggleButton, UserButton} from './header'
     import {device, framework} from '@/mixins'
 
     export default {
         name: "FrameworkLayout",
 
         components: {
-            CollapsiableSider, DrawableSider, ToggleButton,
+            CollapsiableSider, DrawableSider, ToggleButton, SettingsButton, NoticeButton, UserButton
         },
 
         data() {
@@ -139,11 +144,15 @@
                 position: fixed; // 固定
                 right: 0;
                 width: 100%;
-                padding: 0;
+                padding-right: 12px;
                 z-index: 9;
                 background-color: #ffffff;
                 -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
                 box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
+                &-action {
+                    float: right;
+                }
             }
 
             &-content {
