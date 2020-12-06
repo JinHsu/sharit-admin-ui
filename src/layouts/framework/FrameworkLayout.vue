@@ -16,47 +16,7 @@
             <a-layout-content class="a-layout-framework-right-content">
 
                 <div style="background-color: #ffffff">
-                    <h1>content1</h1>
-                    <h1>content2</h1>
-                    <h1>content3</h1>
-                    <h1>content4</h1>
-                    <h1>content5</h1>
-                    <h1>content6</h1>
-                    <h1>content7</h1>
-                    <h1>content8</h1>
-                    <h1>content1</h1>
-                    <h1>content2</h1>
-                    <h1>content3</h1>
-                    <h1>content4</h1>
-                    <h1>content5</h1>
-                    <h1>content6</h1>
-                    <h1>content7</h1>
-                    <h1>content8</h1>
-                    <h1>content1</h1>
-                    <h1>content2</h1>
-                    <h1>content3</h1>
-                    <h1>content4</h1>
-                    <h1>content5</h1>
-                    <h1>content6</h1>
-                    <h1>content7</h1>
-                    <h1>content8</h1>
-                    <h1>content1</h1>
-                    <h1>content2</h1>
-                    <h1>content3</h1>
-                    <h1>content4</h1>
-                    <h1>content5</h1>
-                    <h1>content6</h1>
-                    <h1>content7</h1>
-                    <h1>content8</h1>
 
-                    <h1>content1</h1>
-                    <h1>content2</h1>
-                    <h1>content3</h1>
-                    <h1>content4</h1>
-                    <h1>content5</h1>
-                    <h1>content6</h1>
-                    <h1>content7</h1>
-                    <h1>content8</h1>
                 </div>
 
             </a-layout-content>
@@ -170,5 +130,33 @@
 </script>
 
 <style lang="less" scoped>
+    .a-layout-framework {
 
+        &-right { //
+            min-height: 100vh;
+
+            &-header { // 头部
+                position: fixed; // 固定
+                right: 0;
+                width: 100%;
+                padding: 0;
+                z-index: 9;
+                background-color: #ffffff;
+                -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+                box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+            }
+
+            &-content {
+                margin-top: 64px;
+                padding: 20px;
+                height: 100%;
+            }
+
+            &-footer {
+                padding: 0;
+            }
+
+        }
+
+    }
 </style>

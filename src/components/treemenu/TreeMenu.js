@@ -1,4 +1,3 @@
-import {framework} from '@/mixins'
 import menus from './mock-menus'
 
 /**
@@ -30,6 +29,11 @@ export default {
         treeData: {
             type: Array,
             default: () => []
+        },
+        //
+        collapsed: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -38,8 +42,6 @@ export default {
             menus: menus
         }
     },
-
-    mixins: [framework],
 
     methods: {
         // 渲染菜单项
