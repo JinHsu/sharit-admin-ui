@@ -4,6 +4,8 @@ export default {
     state: {
         device: 'desktop', // 设备类型
         //
+        locale: 'zh_CN', // 本地语言：zh_CN, en_US
+        //
         collapsed: false, // 折叠侧边
         //
         themeColor: '#1890FF', // 主题颜色
@@ -15,6 +17,11 @@ export default {
     mutations: {
         setDevice: (state, device) => {
             state.device = device
+        },
+
+        setLocale: (state, locale) => {
+            state.locale = locale
+            // ls
         },
 
         setCollapsed: (state, collapsed) => {
@@ -36,6 +43,7 @@ export default {
 
     actions: {
         setDevice: ({commit}, device) => commit('setDevice', device),
+        setLocale: ({commit}, locale) => commit('setLocale', locale),
         setCollapsed: ({commit}, collapsed) => commit('setCollapsed', collapsed),
         setThemeColor: ({commit}, color) => commit('setThemeColor', color),
         setThemeSider: ({commit}, theme) => commit('setThemeSider', theme),

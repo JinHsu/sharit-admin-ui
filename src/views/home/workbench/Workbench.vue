@@ -9,7 +9,7 @@
             <a-divider/>
             <a-alert description="这是一段描述"></a-alert>
             <a-divider/>
-            <a-button block>按钮</a-button>
+            <a-date-picker block/>
             <a-divider/>
             <a-tag>标签一</a-tag>
             <a-divider/>

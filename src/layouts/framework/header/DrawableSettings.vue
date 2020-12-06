@@ -7,15 +7,13 @@
             :width="300"
             :bodyStyle="{padding: 0}">
         <div class="setting-drawer">
-            <!--边侧栏颜色设置-->
-            <ThemeSider/>
-            <a-divider/>
-
             <!--主题颜色设置-->
             <ThemeColor/>
             <a-divider/>
-
-            <!---->
+            <!--边侧栏颜色设置-->
+            <ThemeSider/>
+            <a-divider/>
+            <!--系统语言-->
             <Language/>
             <a-divider/>
 
@@ -60,15 +58,9 @@
                     float: left;
                     cursor: pointer;
                     margin-right: 8px;
-                    padding-left: 0px;
-                    padding-right: 0px;
+                    padding: 0;
                     text-align: center;
-                    color: #fff;
                     font-weight: 700;
-
-                    i {
-                        font-size: 14px;
-                    }
                 }
             }
 
@@ -92,19 +84,6 @@
                 img {
                     width: 48px;
                 }
-            }
-
-            &-selectIcon {
-                position: absolute;
-                top: 0;
-                right: 0;
-                width: 100%;
-                padding-top: 15px;
-                padding-left: 24px;
-                height: 100%;
-                color: #1890ff;
-                font-size: 14px;
-                font-weight: 700;
             }
 
         }

@@ -2,26 +2,18 @@
     <div class="setting-drawer-index">
         <div class="setting-drawer-index-title">侧边栏外观</div>
         <div class="setting-drawer-index-blockChecbox">
-            <a-tooltip placement="top" :open-delay="200">
-                <template slot="content">
-                    浅色
-                </template>
-                <div class="setting-drawer-index-item" @click="setThemeSider('light')">
-                    <img src="@/assets/icon-light.svg" alt="light">
-                    <div class="setting-drawer-index-selectIcon">
-                        <a-icon type="check" v-if="(themeSider || '') === 'light'"/>
-                    </div>
+            <a-tooltip placement="top" :open-delay="200" title="深色">
+                <div class="setting-drawer-index-item" @click="changeThemeSider('dark')">
+                    <a-badge :offset="[-24, 50]" :dot="(themeSider || '') === 'dark'">
+                        <img src="@/assets/icon-dark.svg" alt="dark">
+                    </a-badge>
                 </div>
             </a-tooltip>
-            <a-tooltip placement="top" :open-delay="200">
-                <template slot="content">
-                    深色
-                </template>
-                <div class="setting-drawer-index-item" @click="setThemeSider('dark')">
-                    <img src="@/assets/icon-dark.svg" alt="dark">
-                    <div class="setting-drawer-index-selectIcon">
-                        <a-icon type="check" v-if="(themeSider || '') === 'dark'"/>
-                    </div>
+            <a-tooltip placement="top" :open-delay="200" title="浅色">
+                <div class="setting-drawer-index-item" @click="changeThemeSider('light')">
+                    <a-badge :offset="[-24, 50]" :dot="(themeSider || '') === 'light'">
+                        <img src="@/assets/icon-light.svg" alt="浅色">
+                    </a-badge>
                 </div>
             </a-tooltip>
         </div>
@@ -35,6 +27,14 @@
         name: "ThemeSider",
 
         mixins: [framework],
+
+        methods: {
+            async changeThemeSider(theme) {
+                this.$message.loading({content: '正在切换侧边栏外观...', key: 'changeThemeSider'})
+                await this.setThemeSider(theme)
+                setTimeout(() => this.$message.success({content: '切换侧边栏外观成功！', key: 'changeThemeSider'}), 500)
+            }
+        }
     }
 </script>
 

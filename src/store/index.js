@@ -1,11 +1,11 @@
 import Vuex from 'vuex'
-import {app, framework} from './modules'
+import {framework} from './modules'
 
 const store = new Vuex.Store({
     strict: false,
 
     modules: {
-        app, framework
+        framework
     }
 
 })
