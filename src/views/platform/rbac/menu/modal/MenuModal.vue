@@ -37,7 +37,7 @@
                     <a-row>
                         <a-col>
                             <a-form-item label="是否虚菜单">
-                                <a-radio-group :disabled="isEdit" v-decorator="['fake', rules.fake]">
+                                <a-radio-group v-decorator="['fake', rules.fake]">
                                     <a-radio :value="true">是</a-radio>
                                     <a-radio :value="false">否</a-radio>
                                 </a-radio-group>
@@ -55,7 +55,7 @@
                     <a-row>
                         <a-col>
                             <a-form-item label="上级菜单">
-                                <MenuRefer :sync="value" :disabled="isEdit"
+                                <MenuRefer :sync="value"
                                            v-decorator="['parentId', rules.parentId]"/>
                             </a-form-item>
                         </a-col>

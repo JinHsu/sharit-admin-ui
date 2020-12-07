@@ -8,14 +8,22 @@
         </div>
 
         <!-- 表格区 -->
-        <a-table :columns="columns" :data-source="data"
-                 :pagination="pagination"
-                 :loading="isTableDataLoading" rowKey="id">
-            <span slot="module" slot-scope="text, record">
-                {{ record.moduleId | moduleFilter(moduleMap) }}
-            </span>
-
-            <span slot="operation" slot-scope="text, record">
+        <a-space align="start" size="large">
+            <div>
+                <a-input-search style="margin-bottom: 8px" placeholder="搜索模块"/>
+                <a-tree
+                        style="width: 240px; border-right: 1px solid #d9d9d9;"
+                        :tree-data="modules"
+                        :blockNode="true"
+                        :replace-fields="{key:'id', title:'title', children: 'children'}"
+                        @select="onTreeSelect"
+                />
+            </div>
+            <!---->
+            <a-table :columns="columns" :data-source="data"
+                     :pagination="pagination"
+                     :loading="isTableDataLoading" rowKey="id">
+                <span slot="operation" slot-scope="text, record">
                 <a @click="onEdit(record)">修改</a>
                 <a-divider type="vertical"/>
                 <a @click="onDelete(record)">删除</a>
@@ -23,7 +31,9 @@
                 <a @click="onShowButtonModal(record)">按钮管理</a>
 
             </span>
-        </a-table>
+            </a-table>
+        </a-space>
+
 
         <!-- 模态框 -->
         <PageModal
@@ -42,13 +52,16 @@
     import {ButtonModal, PageModal} from './modal'
     import service from './service'
     import moduleService from '@/views/platform/rbac/module/service'
-    import {array2Map} from '@/utils/data'
+    import {array2Tree} from '@/utils/data'
 
     export default {
         name: "Page",
         components: {PageModal, ButtonModal},
         data() {
             return {
+                modules: [], // 模块数据
+                moduleId: '',
+
                 columns: columns,
                 data: [],
 
@@ -130,43 +143,48 @@
             },
             //
             async doRefresh() {
-                this.isLoading = true
-                await this.fetchAll()
-                this.$message.success('刷新成功！')
-                this.isLoading = false
+                if (this.moduleId) {
+                    this.isLoading = true
+                    await this.fetchPageByModuleId()
+                    this.$message.success('刷新成功！')
+                    this.isLoading = false
+                } else {
+                    this.$message.error('请选择模块！')
+                }
+
             },
+
+            onTreeSelect(selectedKeys, {selected}) {
+                if (selected) {
+                    this.moduleId = selectedKeys[0]
+                    this.fetchPageByModuleId()
+                } else {
+                    this.moduleId = null
+                    this.data = []
+                }
+            },
+
             //
-            async fetchAll() {
+            async fetchAllModules() {
+                const modules = await moduleService.fetchAll()
+                this.modules = array2Tree(modules, {})
+            },
+
+            async fetchPageByModuleId() {
                 const params = {
                     page: this.pagination.current - 1, // 当前页码
                     size: this.pagination.pageSize, // 每页条数
                     sort: ['code,asc']
                 }
-
-                const moduleFetch = moduleService.fetchAll()
-                const pageFetch = service.fetchAllByPage(params)
-
-                const [modules, pages] = await Promise.all([moduleFetch, pageFetch])
-
-                this.moduleMap = array2Map(modules, 'id')
-                this.data = pages.content
-                this.pagination.total = pages.total
+                const {content, total} = await service.fetchAllByPage({...params, moduleId: this.moduleId})
+                this.data = content
+                this.pagination.total = total
             }
 
-        },
-
-        filters: {
-            // 所属模块过滤器
-            moduleFilter(value, moduleMap) {
-                return moduleMap.has(value) ? moduleMap.get(value).title : ''
-            }
         },
 
         created() {
-            this.isTableDataLoading = true
-            this.fetchAll().then(() => {
-                this.isTableDataLoading = false
-            })
+            this.fetchAllModules()
         }
     }
 </script>

@@ -28,7 +28,7 @@
             <a-row>
                 <a-col>
                     <a-form-item label="所属模块">
-                        <ModuleRefer :sync="value" v-decorator="['moduleId', rules.moduleId]" :disabled="isEdit"/>
+                        <ModuleRefer :sync="value" v-decorator="['moduleId', rules.moduleId]"/>
                     </a-form-item>
                 </a-col>
             </a-row>

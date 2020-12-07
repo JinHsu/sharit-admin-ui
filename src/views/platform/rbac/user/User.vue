@@ -4,9 +4,10 @@
 
         <!-- 按钮区 -->
         <div style="margin-bottom: 10px;">
-            <a-button type="primary" icon="plus" style="margin-right: 5px;" @click="onAdd">新增</a-button>
-            <a-button type="info" icon="sync" style="margin-right: 5px;" :loading="isLoading" @click="doRefresh">刷新
-            </a-button>
+            <a-space>
+                <a-button type="primary" icon="plus" @click="onAdd">新增</a-button>
+                <a-button type="info" icon="sync" :loading="isLoading" @click="doRefresh">刷新</a-button>
+            </a-space>
         </div>
 
         <!-- 表格区 -->
@@ -233,11 +234,5 @@
 </script>
 
 <style lang="less" scoped>
-    /deep/ .ant-card-extra {
-        margin: auto;
-    }
 
-    /deep/ .ant-list-pagination {
-        margin-top: 0;
-    }
 </style>
