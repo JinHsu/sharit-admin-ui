@@ -1,5 +1,5 @@
 <template>
-    <div :class="['ant-layout-framework-logo-header', `theme-${themeSider}`]">
+    <div :class="['framework-sider-logo-header', `theme-${themeSider}`]">
         <router-link :to="{path: '#'}">
             <img src="~@/assets/logo.svg" alt="logo" class="img">
             <h1>{{title}}</h1>
@@ -26,14 +26,14 @@
 </script>
 
 <style lang="less" scoped>
-    .ant-layout-framework-logo-header {
+    .framework-sider-logo-header {
         position: relative;
         height: 64px;
         line-height: 64px;
         padding-left: 24px;
         overflow: hidden;
-        -webkit-transition: all 0.3s;
-        transition: all 0.3s;
+        -webkit-transition: all 0.2s;
+        transition: all 0.2s;
 
         img {
             width: 32px;
@@ -53,12 +53,12 @@
         }
     }
 
-    .ant-layout-framework-logo-header.theme-dark {
+    .framework-sider-logo-header.theme-dark {
         background: #002140;
         box-shadow: none;
     }
 
-    .ant-layout-framework-logo-header.theme-light {
+    .framework-sider-logo-header.theme-light {
         background: #FFFFFF;
         -webkit-box-shadow: 0 1px 0 0 #e8e8e8;
         box-shadow: 0 1px 0 0 #e8e8e8;

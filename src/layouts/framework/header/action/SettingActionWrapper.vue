@@ -1,17 +1,17 @@
 <template>
-    <div class="header-settings">
+    <div class="header-action-setting">
         <a-icon type="unordered-list"/>
     </div>
 </template>
 
 <script>
     export default {
-        name: "SettingsButton"
+        name: "SettingActionWrapper" // 设置按钮
     }
 </script>
 
 <style lang="less" scoped>
-    .header-settings {
+    .header-action-setting {
         display: inline-block;
         line-height: 64px;
         padding: 0 12px;

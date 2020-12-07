@@ -1,32 +1,27 @@
 <template>
     <!--框架整体布局-->
-    <a-layout class="a-layout-framework">
+    <a-layout class="framework">
         <!--左侧：侧边栏-->
         <collapsiable-sider v-if="!isMobile()"/>
 
         <!--右侧-->
-        <a-layout class="a-layout-framework-right" :style="{paddingLeft: paddingLeft}">
+        <a-layout class="framework-right" :style="{paddingLeft: paddingLeft}">
             <!--头部-->
-            <a-layout-header class="a-layout-framework-right-header" :style="{paddingLeft: paddingLeft}">
-                <drawable-sider v-if="isMobile()"/>
-                <toggle-button/>
-                <div class="a-layout-framework-right-header-action">
-                    <DrawableSettings/>
-                    <NoticeButton/>
-                    <SettingsButton/>
-                    <UserButton/>
-                </div>
+            <a-layout-header class="framework-right-header" :style="{paddingLeft: paddingLeft}">
+                <toggle-button/><!--侧边栏切换按钮-->
+                <drawable-sider v-if="isMobile()"/><!--手机端侧边栏-->
+                <header-action/><!--头部右侧action-->
             </a-layout-header>
 
             <!--内容区-->
-            <a-layout-content class="a-layout-framework-right-content">
+            <a-layout-content class="framework-right-content">
                 <transition name="page-transition">
                     <router-view/>
                 </transition>
             </a-layout-content>
 
             <!--页脚-->
-            <a-layout-footer class="a-layout-framework-right-footer">
+            <a-layout-footer class="framework-right-footer">
             </a-layout-footer>
         </a-layout>
     </a-layout>
@@ -34,19 +29,19 @@
 
 <script>
     import {CollapsiableSider} from "./sider"
-    import {DrawableSettings, DrawableSider, NoticeButton, SettingsButton, ToggleButton, UserButton} from './header'
+    import {DrawableSider, HeaderAction, ToggleButton} from './header'
     import {device, framework} from '@/mixins'
 
     export default {
         name: "FrameworkLayout",
 
         components: {
-            CollapsiableSider, DrawableSider, ToggleButton, SettingsButton, NoticeButton, UserButton, DrawableSettings
+            CollapsiableSider, DrawableSider, ToggleButton, HeaderAction
         },
 
         data() {
             return {
-                padding: '256px'
+                siderWidth: '256px'
             }
         },
 
@@ -54,7 +49,7 @@
 
         computed: {
             paddingLeft() {
-                return this.padding
+                return this.siderWidth
             }
         },
 
@@ -69,51 +64,51 @@
             // 根据设备自适应（侧边栏自动折叠与展开）
             adapt(n, o) {
                 // console.info(o, '变', n)
-                let padding
+                let _siderWidth
                 // <<<<<<<<<<<<<<<<<<<<<<
                 if (o === 'desktop' && (n === 'tablet' || n === 'mobile')) {
                     // 响应式：强制折叠
                     this.setCollapsed(true)
-                    padding = n === 'tablet' ? '80px' : '0px'
+                    _siderWidth = n === 'tablet' ? '80px' : '0px'
                 }
                 if (o === 'tablet' && n === 'mobile') {
-                    padding = '0px'
+                    _siderWidth = '0px'
                 }
 
                 // >>>>>>>>>>>>>>>>>>>>>>
                 if (o === 'mobile' && n === 'tablet') {
-                    padding = this.collapsed ? '80px' : '256px'
+                    _siderWidth = this.collapsed ? '80px' : '256px'
                 }
                 if ((o === 'tablet' || o === 'mobile') && n === 'desktop') {
                     // 响应式：强制展开
                     this.setCollapsed(false)
-                    padding = '256px'
+                    _siderWidth = '256px'
                 }
 
                 // ~~~~~~~~~~~~~~~~~~~~~~
                 if (o === undefined) {
                     if (n === 'mobile') {
-                        padding = '0px'
+                        _siderWidth = '0px'
                     } else {
-                        padding = this.collapsed ? '80px' : '256px'
+                        _siderWidth = this.collapsed ? '80px' : '256px'
                     }
                 }
 
-                this.padding = padding
+                this.siderWidth = _siderWidth
                 this.resize()
             },
 
             onCollapse() {
-                let padding
+                let _siderWidth
                 if (this.isMobile()) {
-                    padding = '0px'
+                    _siderWidth = '0px'
                 } else if (this.isTablet()) {
-                    padding = this.collapsed ? '80px' : '256px'
+                    _siderWidth = this.collapsed ? '80px' : '256px'
                 } else if (this.isDesktop()) {
-                    padding = this.collapsed ? '80px' : '256px'
+                    _siderWidth = this.collapsed ? '80px' : '256px'
                 }
 
-                this.padding = padding
+                this.siderWidth = _siderWidth
             }
         },
 
@@ -134,7 +129,7 @@
 </script>
 
 <style lang="less" scoped>
-    .a-layout-framework {
+    .framework {
 
         &-right { //
             min-height: 100vh;
@@ -150,10 +145,6 @@
                 background-color: #ffffff;
                 -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
                 box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-
-                &-action {
-                    float: right;
-                }
             }
 
             &-content {

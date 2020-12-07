@@ -4,7 +4,7 @@
             :closable="false"
             :visible="!collapsed"
             @close="onClose"
-            :bodyStyle="{padding: 0}"
+            :class="['framework-drawer-sider', `theme-${themeSider}`]"
     >
         <collapsiable-sider/>
     </a-drawer>
@@ -32,6 +32,16 @@
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+    .framework-drawer-sider {
+        .ant-drawer-body {
+            padding: 0;
+        }
+    }
 
+    .framework-drawer-sider.theme-dark {
+        .ant-drawer-content {
+            background-color: #000000;
+        }
+    }
 </style>

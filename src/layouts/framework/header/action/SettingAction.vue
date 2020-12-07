@@ -1,15 +1,15 @@
 <template>
-    <SettingsButton @click.native="onClick"/>
+    <setting-action-wrapper @click.native="onClick"/>
 </template>
 
 <script>
-    import SettingsButton from "@/layouts/framework/header/SettingsButton"
+    import SettingActionWrapper from "./SettingActionWrapper"
     import {framework} from '@/mixins'
 
     export default {
-        name: "SettingsButtonWrapper",
+        name: "SettingAction",
 
-        components: {SettingsButton},
+        components: {SettingActionWrapper},
 
         mixins: [framework],
 
@@ -21,6 +21,6 @@
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
 </style>

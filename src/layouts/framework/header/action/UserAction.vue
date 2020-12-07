@@ -1,9 +1,9 @@
 <template>
     <a-dropdown :trigger="['click']">
-        <span class="user-dropdown-menu">
+        <span class="header-action-user">
           <a-avatar class="avatar" size="small" :src="avatar"/>
         </span>
-        <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
+        <a-menu slot="overlay" class="header-action-user-wrapper">
             <a-menu-item key="0">
                 <router-link :to="{ path: 'center' }">
                     <a-icon type="user"/>
@@ -29,7 +29,7 @@
 
 <script>
     export default {
-        name: "UserButton",
+        name: "UserAction",
 
         data() {
             return {
@@ -40,8 +40,8 @@
     }
 </script>
 
-<style lang="less" scoped>
-    .user-dropdown-menu {
+<style lang="less">
+    .header-action-user {
         cursor: pointer;
         padding: 0 12px;
         display: inline-block;
@@ -59,10 +59,8 @@
 
         vertical-align: initial;
     }
-</style>
 
-<style lang="less">
-    .user-dropdown-menu-wrapper.ant-dropdown-menu {
+    .header-action-user-wrapper.ant-dropdown-menu {
         padding: 4px 0;
 
         .ant-dropdown-menu-item {

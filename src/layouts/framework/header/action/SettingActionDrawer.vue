@@ -6,7 +6,7 @@
             @close="onClose"
             :width="300"
             :bodyStyle="{padding: 0}">
-        <div class="setting-drawer">
+        <div class="setting-action-drawer">
             <!--主题颜色设置-->
             <ThemeColor/>
             <a-divider/>
@@ -18,7 +18,6 @@
             <a-divider/>
 
         </div>
-
     </a-drawer>
 </template>
 
@@ -27,7 +26,7 @@
     import {Language, ThemeColor, ThemeSider} from './settings'
 
     export default {
-        name: "DrawableSettings",
+        name: "SettingActionDrawer",
 
         components: {Language, ThemeColor, ThemeSider},
 
@@ -42,7 +41,7 @@
 </script>
 
 <style lang="less">
-    .setting-drawer {
+    .setting-action-drawer {
         padding: 20px;
 
         &-index {

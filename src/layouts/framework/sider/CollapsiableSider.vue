@@ -6,7 +6,7 @@
             :collapsed="collapsed"
             :trigger="null"
             @collapse="onCollapse"
-            :class="['ant-layout-framework-sider', `theme-${themeSider}`]"
+            :class="['framework-sider', `theme-${themeSider}`, `device-${device}`]"
     >
         <!--top-->
         <logo-header/>
@@ -15,13 +15,13 @@
                 mode="inline"
                 :theme="themeSider"
                 :collapsed="collapsed"
-                class="ant-layout-framework-sider-menu"/>
+                class="framework-sider-menu"/>
     </a-layout-sider>
 </template>
 
 <script>
     import {device, framework} from '@/mixins'
-    import LogoHeader from "@/layouts/framework/sider/logoheader/LogoHeader"
+    import LogoHeader from "./logoheader"
 
     export default {
         name: "CollapsiableSider",
@@ -42,7 +42,7 @@
 </script>
 
 <style lang="less" scoped>
-    .ant-layout-framework-sider {
+    .framework-sider {
         position: fixed; // 固定
         left: 0;
         top: 0;
@@ -63,15 +63,20 @@
     }
 
     // 黑色主题阴影
-    .ant-layout-framework-sider.theme-dark {
+    .framework-sider.theme-dark {
         -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
         box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
     }
 
-    .ant-layout-framework-sider.theme-light {
+    .framework-sider.theme-light {
         background: #ffffff;
         -webkit-box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
         box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
         border-right: none;
+    }
+
+    .framework-sider.device-mobile {
+        -webkit-box-shadow: none;
+        box-shadow: none;
     }
 </style>

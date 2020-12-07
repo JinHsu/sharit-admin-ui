@@ -41,7 +41,7 @@
                 </a-tabs>
             </a-spin>
         </template>
-        <span class="header-notice" ref="noticeRef" @click="fetchNotice">
+        <span class="header-action-notice" ref="noticeRef" @click="fetchNotice">
             <a-badge count="12">
                 <a-icon type="bell"/>
             </a-badge>
@@ -53,7 +53,7 @@
     import {device} from '@/mixins'
 
     export default {
-        name: "NoticeButton",
+        name: "NoticeAction",
 
         data() {
             return {
@@ -74,7 +74,7 @@
 </script>
 
 <style lang="less" scoped>
-    .header-notice {
+    .header-action-notice {
         display: inline-block;
         padding: 0 18px;
         transition: all 0.3s;
