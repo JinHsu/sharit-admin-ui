@@ -1,3 +1,3 @@
-import Workbench from "./Workbench"
+import Workbench from "./Workbench";
 
 export default Workbench

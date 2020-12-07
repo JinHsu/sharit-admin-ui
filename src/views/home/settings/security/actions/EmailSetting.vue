@@ -1,12 +1,10 @@
 <template>
-    <div>
-        工作台
-    </div>
+    <div></div>
 </template>
 
 <script>
     export default {
-        name: "Workbench"
+        name: "EmailSetting"
     }
 </script>
 

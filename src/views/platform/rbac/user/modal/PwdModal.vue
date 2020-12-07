@@ -1,12 +1,12 @@
 <template>
-    <div>
-        工作台
-    </div>
+    <a-modal>
+
+    </a-modal>
 </template>
 
 <script>
     export default {
-        name: "Workbench"
+        name: "PwdModal"
     }
 </script>
 

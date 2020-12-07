@@ -19,34 +19,6 @@ export default [
             }
         ]
 
-    },
+    }
 
-    // {
-    //     path: '/',
-    //     name: '',
-    //     component: () => import(/* webpackChunkName: "framework" */ '@/layouts/framework'),
-    //     meta: {},
-    //     children: [
-    //         {
-    //             path: 'home',
-    //             name: 'home',
-    //             component: () => import(/* webpackChunkName: "framework" */ '@/layouts/empty'),
-    //             meta: {},
-    //             children: [
-    //                 {
-    //                     path: 'workbench',
-    //                     name: 'workbench',
-    //                     component: () => import(/* webpackChunkName: "framework" */ '@/views/home/workbench'),
-    //                     meta: {}
-    //                 },
-    //                 {
-    //                     path: 'items',
-    //                     name: 'items',
-    //                     component: () => import(/* webpackChunkName: "framework" */ '@/views/home/setting'),
-    //                     meta: {}
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // }
 ]

@@ -1,8 +1,8 @@
 <template>
     <a-breadcrumb class="header-breadcrumb">
-        <template v-for="(bread, index) in breadList">
-            <a-breadcrumb-item :key="index">
-                {{bread.name}}
+        <template v-for="bread in breadList">
+            <a-breadcrumb-item :key="bread.name">
+                {{bread.meta.title}}
             </a-breadcrumb-item>
         </template>
     </a-breadcrumb>
