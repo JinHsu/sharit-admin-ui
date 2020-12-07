@@ -1,7 +1,8 @@
-import ToggleButton from './ToggleButton'
+import ToggleButton from './ToggleAction'
+import BreadCrumbTab from "./BreadCrumbTab"
 import DrawableSider from './DrawableSider'
 import HeaderAction from './HeaderAction'
 
 export {
-    ToggleButton, DrawableSider, HeaderAction
+    ToggleButton, BreadCrumbTab, DrawableSider, HeaderAction
 }

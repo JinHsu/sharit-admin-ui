@@ -1,24 +1,20 @@
 <template>
-    <a-icon class="header-toggle" :type="iconType" @click="onToggle"/>
+    <div class="header-toggle">
+        <a-icon :type="iconType"/>
+    </div>
 </template>
 
 <script>
-        import {device, framework} from '@/mixins'
+    import {framework} from '@/mixins'
 
-        export default {
-        name: "ToggleButton",
+    export default {
+        name: "ToggleActionWrapper",
 
-        mixins: [device, framework],
+        mixins: [framework],
 
         computed: {
             iconType() {
                 return this.collapsed ? 'menu-unfold' : 'menu-fold'
-            }
-        },
-
-        methods: {
-            onToggle() {
-                this.setCollapsed(!this.collapsed)
             }
         }
 
@@ -28,11 +24,11 @@
 <style lang="less" scoped>
     .header-toggle {
         font-size: 20px;
-        padding: 0 24px;
+        display: inline-block;
         line-height: 64px;
+        padding: 0 24px;
+        transition: all 0.3s;
         cursor: pointer;
-        -webkit-transition: color 0.3s;
-        transition: color 0.3s;
 
         vertical-align: initial;
 

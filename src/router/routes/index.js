@@ -38,6 +38,12 @@ export default [
                         name: 'workbench',
                         component: () => import(/* webpackChunkName: "framework" */ '@/views/home/workbench'),
                         meta: {}
+                    },
+                    {
+                        path: 'settings',
+                        name: 'settings',
+                        component: () => import(/* webpackChunkName: "framework" */ '@/views/home/setting'),
+                        meta: {}
                     }
                 ]
             }

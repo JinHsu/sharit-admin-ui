@@ -8,35 +8,38 @@
         <a-layout class="framework-right" :style="{paddingLeft: paddingLeft}">
             <!--头部-->
             <a-layout-header class="framework-right-header" :style="{paddingLeft: paddingLeft}">
-                <toggle-button/><!--侧边栏切换按钮-->
+                <div class="framework-right-header-left">
+                    <toggle-button/><!--侧边栏切换按钮-->
+                    <bread-crumb-tab v-if="!isMobile()"/><!--面包屑-->
+                </div>
                 <drawable-sider v-if="isMobile()"/><!--手机端侧边栏-->
                 <header-action/><!--头部右侧action-->
             </a-layout-header>
-
             <!--内容区-->
             <a-layout-content class="framework-right-content">
+                <!--页面-->
                 <transition name="page-transition">
-                    <router-view/>
+                    <keep-alive>
+                        <router-view class="framework-right-content-page"/>
+                    </keep-alive>
                 </transition>
             </a-layout-content>
 
             <!--页脚-->
-            <a-layout-footer class="framework-right-footer">
-            </a-layout-footer>
         </a-layout>
     </a-layout>
 </template>
 
 <script>
-    import {CollapsiableSider} from "./sider"
-    import {DrawableSider, HeaderAction, ToggleButton} from './header'
     import {device, framework} from '@/mixins'
+    import {CollapsiableSider} from "./sider"
+    import {BreadCrumbTab, DrawableSider, HeaderAction, ToggleButton} from './header'
 
     export default {
         name: "FrameworkLayout",
 
         components: {
-            CollapsiableSider, DrawableSider, ToggleButton, HeaderAction
+            CollapsiableSider, DrawableSider, ToggleButton, BreadCrumbTab, HeaderAction
         },
 
         data() {
@@ -145,16 +148,19 @@
                 background-color: #ffffff;
                 -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
                 box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
+                &-left {
+                    display: inline-flex;
+                }
             }
 
             &-content {
-                margin-top: 64px;
-                padding: 20px;
-                height: 100%;
-            }
+                padding-top: 64px;
+                z-index: 103;
 
-            &-footer {
-                padding: 0;
+                &-page {
+                    margin: 24px;
+                }
             }
 
         }
