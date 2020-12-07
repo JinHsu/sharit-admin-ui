@@ -4,14 +4,18 @@
         <div class="setting-action-drawer-index-blockChecbox">
             <a-tooltip placement="top" :open-delay="200" title="简体中文">
                 <div class="setting-action-drawer-index-item" @click="setLocale('zh_CN')">
-                    <a-badge :offset="[-24, 40]" :dot="(locale || '') === 'zh_CN'">
+                    <a-badge :offset="[-24, 40]"
+                             :number-style="{backgroundColor: '#52C41A'}"
+                             :dot="(locale || '') === 'zh_CN'">
                         <img src="@/assets/locales/zh_CN.svg" alt="简体中文" @click="setLocales('zh_CN')">
                     </a-badge>
                 </div>
             </a-tooltip>
             <a-tooltip placement="top" :open-delay="200" title="English">
                 <div class="setting-action-drawer-index-item" @click="setLocale('en_US')">
-                    <a-badge :offset="[-24, 40]" :dot="(locale || '') === 'en_US'">
+                    <a-badge :offset="[-24, 40]"
+                             :number-style="{backgroundColor: '#52C41A'}"
+                             :dot="(locale || '') === 'en_US'">
                         <img src="@/assets/locales/en_US.svg" alt="English" @click="setLocales('en_US')">
                     </a-badge>
                 </div>

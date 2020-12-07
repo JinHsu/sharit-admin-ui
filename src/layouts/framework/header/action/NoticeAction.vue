@@ -42,7 +42,7 @@
             </a-spin>
         </template>
         <span class="header-action-notice" ref="noticeRef" @click="fetchNotice">
-            <a-badge count="12">
+            <a-badge count="12" :offset="['-5', '5']" dot="">
                 <a-icon type="bell"/>
             </a-badge>
         </span>
@@ -76,7 +76,7 @@
 <style lang="less" scoped>
     .header-action-notice {
         display: inline-block;
-        padding: 0 18px;
+        padding: 0 12px;
         transition: all 0.3s;
         cursor: pointer;
 

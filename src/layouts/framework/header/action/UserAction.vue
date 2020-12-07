@@ -1,6 +1,8 @@
 <template>
-    <a-dropdown :trigger="['click']">
-        <span class="header-action-user">
+    <a-dropdown :trigger="['click']"
+                placement="bottomRight"
+                :getPopupContainer="()=>$refs.dropdownRef.parentElement">
+        <span class="header-action-user" ref="dropdownRef">
           <a-avatar class="avatar" size="small" :src="avatar"/>
         </span>
         <a-menu slot="overlay" class="header-action-user-wrapper">

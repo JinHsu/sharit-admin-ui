@@ -4,14 +4,18 @@
         <div class="setting-action-drawer-index-blockChecbox">
             <a-tooltip placement="top" :open-delay="200" title="深色">
                 <div class="setting-action-drawer-index-item" @click="changeThemeSider('dark')">
-                    <a-badge :offset="[-24, 50]" :dot="(themeSider || '') === 'dark'">
+                    <a-badge :offset="[-24, 50]"
+                             :number-style="{backgroundColor: '#52C41A'}"
+                             :dot="(themeSider || '') === 'dark'">
                         <img src="@/assets/icon-dark.svg" alt="dark">
                     </a-badge>
                 </div>
             </a-tooltip>
             <a-tooltip placement="top" :open-delay="200" title="浅色">
                 <div class="setting-action-drawer-index-item" @click="changeThemeSider('light')">
-                    <a-badge :offset="[-24, 50]" :dot="(themeSider || '') === 'light'">
+                    <a-badge :offset="[-24, 50]"
+                             :number-style="{backgroundColor: '#52C41A'}"
+                             :dot="(themeSider || '') === 'light'">
                         <img src="@/assets/icon-light.svg" alt="浅色">
                     </a-badge>
                 </div>
