@@ -1,5 +1,3 @@
-import menus from './mock-menus'
-
 /**
  * JSX递归渲染菜单树
  *
@@ -26,7 +24,7 @@ export default {
         },
         // 封装好的树形结构的菜单数据。
         // [key: '', title: '', path: '', icon: '', children: []]
-        treeData: {
+        menus: {
             type: Array,
             default: () => []
         },
@@ -34,12 +32,6 @@ export default {
         collapsed: {
             type: Boolean,
             default: false
-        }
-    },
-
-    data() {
-        return {
-            menus: menus
         }
     },
 

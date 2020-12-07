@@ -15,12 +15,13 @@
                 mode="inline"
                 :theme="themeSider"
                 :collapsed="collapsed"
+                :menus="menus"
                 class="framework-sider-menu"/>
     </a-layout-sider>
 </template>
 
 <script>
-    import {device, framework} from '@/mixins'
+    import {app, device, framework} from '@/mixins'
     import LogoHeader from "./logoheader"
 
     export default {
@@ -30,7 +31,7 @@
             LogoHeader
         },
 
-        mixins: [device, framework],
+        mixins: [app, device, framework],
 
         methods: {
             onCollapse(collapsed) {

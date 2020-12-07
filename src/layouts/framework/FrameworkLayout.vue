@@ -8,11 +8,7 @@
         <a-layout class="framework-right" :style="{paddingLeft: paddingLeft}">
             <!--头部-->
             <a-layout-header class="framework-right-header" :style="{paddingLeft: paddingLeft}">
-                <div class="framework-right-header-left">
-                    <toggle-button/><!--侧边栏切换按钮-->
-                    <bread-crumb-tab v-if="!isMobile()"/><!--面包屑-->
-                </div>
-                <drawable-sider v-if="isMobile()"/><!--手机端侧边栏-->
+                <header-control/>
                 <header-action/><!--头部右侧action-->
             </a-layout-header>
             <!--内容区-->
@@ -32,14 +28,14 @@
 
 <script>
     import {device, framework} from '@/mixins'
-    import {CollapsiableSider} from "./sider"
-    import {BreadCrumbTab, DrawableSider, HeaderAction, ToggleButton} from './header'
+    import CollapsiableSider from "./sider"
+    import {HeaderAction, HeaderControl} from './header'
 
     export default {
         name: "FrameworkLayout",
 
         components: {
-            CollapsiableSider, DrawableSider, ToggleButton, BreadCrumbTab, HeaderAction
+            CollapsiableSider, HeaderControl, HeaderAction
         },
 
         data() {

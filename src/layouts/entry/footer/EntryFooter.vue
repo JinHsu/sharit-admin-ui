@@ -1,5 +1,5 @@
 <template>
-    <div class="a-layout-entry-footer">
+    <div class="entry-footer">
         <div class="links">
             <a href="#">帮助</a>
             <a href="#">隐私</a>
@@ -18,7 +18,7 @@
 </script>
 
 <style lang="less" scoped>
-    .a-layout-entry-footer {
+    .entry-footer {
         position: absolute;
         width: 100%;
         bottom: 0;

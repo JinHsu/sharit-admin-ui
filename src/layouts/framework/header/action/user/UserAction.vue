@@ -19,17 +19,19 @@
                 </router-link>
             </a-menu-item>
             <a-menu-divider/>
-            <a-menu-item key="3">
-                <a>
-                    <a-icon type="logout"/>
-                    <span>退出登录</span>
-                </a>
+            <a-menu-item key="3" @click="onLogout">
+                <a-icon type="logout"/>
+                <span>退出登录</span>
             </a-menu-item>
         </a-menu>
     </a-dropdown>
 </template>
 
 <script>
+    import {fetchUser, postLogout} from '@/auth/authc'
+    import {app} from '@/mixins'
+    import {LOGIN_URL} from "@/config/auth"
+
     export default {
         name: "UserAction",
 
@@ -38,7 +40,36 @@
                 nickname: '天野远子',
                 avatar: 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png'
             }
-        }
+        },
+
+        mixins: [app],
+
+        methods: {
+            onLogout() {
+                this.$confirm({
+                    title: '提示',
+                    content: '真的要注销登录吗？',
+                    onOk: () => this.doLogout()
+                })
+            },
+
+            async doLogout() {
+                await postLogout()
+                // 1.跳转到登录页面
+                await this.$router.push({
+                    path: LOGIN_URL,
+                    query: {redirect: this.$route.path}
+                })
+                // 2.刷新路由
+                window.location.reload()
+            }
+        },
+
+        created() {
+            if (!this.userInfo) {
+                fetchUser()
+            }
+        },
     }
 </script>
 

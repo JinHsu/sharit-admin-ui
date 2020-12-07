@@ -1,5 +1,6 @@
+import app from './app'
 import framework from './framework'
 
 export {
-    framework
+    app, framework
 }

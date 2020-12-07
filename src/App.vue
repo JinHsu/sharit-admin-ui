@@ -10,6 +10,7 @@
     import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
     import enUS from 'ant-design-vue/lib/locale-provider/en_US'
     import {deviceEnquire, framework} from '@/mixins'
+    import bootstrap from "@/bootstrap"
 
     export default {
         name: 'App',
@@ -33,7 +34,7 @@
 
         created() {
             // ...
-
+            bootstrap()
         }
 
     }

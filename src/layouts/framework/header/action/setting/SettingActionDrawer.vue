@@ -23,7 +23,7 @@
 
 <script>
     import {framework} from '@/mixins'
-    import {Language, ThemeColor, ThemeSider} from './settings'
+    import {Language, ThemeColor, ThemeSider} from './items'
 
     export default {
         name: "SettingActionDrawer",

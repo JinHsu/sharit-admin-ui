@@ -2,18 +2,19 @@
     <div class="framework-right-header-action">
         <notice-action/><!--系统通知-->
         <setting-action/><!--系统设置-->
-        <setting-action-drawer/>
         <user-action/><!--用户设置-->
     </div>
 </template>
 
 <script>
-    import {NoticeAction, SettingAction, SettingActionDrawer, UserAction} from './action'
+    import NoticeAction from './notice'
+    import SettingAction from './setting'
+    import UserAction from './user'
 
     export default {
         name: "HeaderAction",
         components: {
-            NoticeAction, SettingAction, SettingActionDrawer, UserAction
+            NoticeAction, SettingAction, UserAction
         }
     }
 </script>

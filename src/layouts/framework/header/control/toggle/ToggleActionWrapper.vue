@@ -1,16 +1,20 @@
 <template>
     <div class="header-toggle">
         <a-icon :type="iconType"/>
+        <drawable-sider v-if="isMobile()"/><!--手机端侧边栏-->
     </div>
 </template>
 
 <script>
-    import {framework} from '@/mixins'
+    import {device, framework} from '@/mixins'
+    import DrawableSider from './DrawableSider'
 
     export default {
         name: "ToggleActionWrapper",
 
-        mixins: [framework],
+        components: {DrawableSider},
+
+        mixins: [device, framework],
 
         computed: {
             iconType() {

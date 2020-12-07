@@ -1,5 +1,5 @@
 <template>
-    <div class="a-layout-entry-header">
+    <div class="entry-header">
         <div class="top">
             <a href="#">
                 <img class="logo" src="../../../assets/logo.svg" alt="Ant Design">
@@ -19,7 +19,7 @@
 </script>
 
 <style lang="less" scoped>
-    .a-layout-entry-header {
+    .entry-header {
         text-align: center;
 
         .top {

@@ -1,3 +1,3 @@
-import HeaderLogo from './LogoHeader'
+import LogoHeader from './LogoHeader'
 
-export default HeaderLogo
+export default LogoHeader

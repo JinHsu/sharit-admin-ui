@@ -1,5 +1,5 @@
 <template>
-    <div class="ant-layout-entry">
+    <div class="entry">
         <div class="wrapper">
             <entry-header/>
             <router-view/>
@@ -22,7 +22,7 @@
 </script>
 
 <style lang="less" scoped>
-    .ant-layout-entry {
+    .entry {
         height: 100vh;
 
         .wrapper {

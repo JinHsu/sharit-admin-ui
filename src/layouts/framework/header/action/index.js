@@ -1,8 +1,3 @@
-import NoticeAction from './NoticeAction'
-import SettingAction from './SettingAction'
-import SettingActionDrawer from "./SettingActionDrawer"
-import UserAction from "./UserAction"
+import HeaderAction from './HeaderAction'
 
-export {
-    NoticeAction, SettingAction, SettingActionDrawer, UserAction
-}
+export default HeaderAction

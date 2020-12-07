@@ -9,11 +9,15 @@
   },
   "dependencies": {
     "ant-design-vue": "^1.7.2",
+    "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "enquire.js": "^2.1.6",
     "moment": "^2.29.1",
+    "nprogress": "^0.2.0",
+    "qs": "^6.9.4",
     "vue": "^2.6.11",
     "vue-i18n": "^8.22.2",
+    "vue-ls": "^3.2.1",
     "vue-router": "^3.4.9",
     "vuex": "^3.6.0"
   },

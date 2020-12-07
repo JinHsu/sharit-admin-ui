@@ -12,7 +12,7 @@
 
 <script>
     import {framework} from '@/mixins'
-    import CollapsiableSider from '../sider/CollapsiableSider'
+    import CollapsiableSider from '../../../sider/CollapsiableSider'
 
     export default {
         name: "DrawableSider",

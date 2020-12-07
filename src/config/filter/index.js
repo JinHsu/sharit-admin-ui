@@ -1,0 +1,7 @@
+const FORMAT_DATE = 'YYYY-MM-DD'
+const FORMAT_TIME = 'HH:mm:ss'
+const FORMAT_DATETIME = 'YYYY-MM-DD HH:mm:ss'
+
+export {
+    FORMAT_DATE, FORMAT_TIME, FORMAT_DATETIME
+}

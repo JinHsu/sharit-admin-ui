@@ -12,7 +12,7 @@ export default [
             {
                 "title": "个人设置",
                 "icon": "setting",
-                "path": "/home/settings"
+                "path": "/home/items"
             }
         ]
     },

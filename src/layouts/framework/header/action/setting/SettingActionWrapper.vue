@@ -1,12 +1,16 @@
 <template>
     <div class="header-action-setting">
         <a-icon type="unordered-list"/>
+        <setting-action-drawer/>
     </div>
 </template>
 
 <script>
+    import SettingActionDrawer from './SettingActionDrawer'
+
     export default {
-        name: "SettingActionWrapper" // 设置按钮
+        name: "SettingActionWrapper", // 设置按钮
+        components: {SettingActionDrawer}
     }
 </script>
 
