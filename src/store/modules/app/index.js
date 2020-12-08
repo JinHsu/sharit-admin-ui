@@ -7,10 +7,10 @@ export default {
     state: {
         accessToken: '', // x-auth-token
         // { username: '', mobile: '', emial: '', enabled: true, locked: false, expiryDate: '', remark: '',
-        // userId: '', avatar: '', nickname: '', birthday: '', sex: 'sex', area: '', lang: '', timeZone: '' }
+        // userId: '', cropper: '', nickname: '', birthday: '', sex: 'sex', area: '', lang: '', timeZone: '' }
         routes: [], // 动态路由表
         menus: [], // 动态菜单
-        userInfo: {}, // 用户信息
+        userInfo: null, // 用户信息,默认为null不要修改为{}
     },
 
     getters: {},

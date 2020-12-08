@@ -3,7 +3,11 @@
                 placement="bottomRight"
                 :getPopupContainer="()=>$refs.dropdownRef.parentElement">
         <span class="header-action-user" ref="dropdownRef">
-          <a-avatar class="avatar" size="small" :src="avatar"/>
+            <a-tooltip :title="userInfo.nickname">
+                <a-avatar class="avatar" size="small" :src="userInfo.avatar">
+                    {{userInfo.nickname}}
+                </a-avatar>
+            </a-tooltip>
         </span>
         <a-menu slot="overlay" class="header-action-user-wrapper">
             <a-menu-item key="0">
@@ -28,9 +32,10 @@
 </template>
 
 <script>
-    import {fetchUser, postLogout} from '@/auth/authc'
+    import {postLogout} from '@/auth/authc'
     import {app} from '@/mixins'
     import {LOGIN_URL} from "@/config/auth"
+    import authService from "@/auth/service";
 
     export default {
         name: "UserAction",
@@ -38,7 +43,6 @@
         data() {
             return {
                 nickname: '天野远子',
-                avatar: 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png'
             }
         },
 
@@ -67,9 +71,14 @@
 
         created() {
             if (!this.userInfo) {
-                fetchUser()
+                authService.fetchUser().then(userInfo => {
+                    this.setUserInfo(userInfo)
+                })
             }
         },
+
+        watch: {}
+
     }
 </script>
 

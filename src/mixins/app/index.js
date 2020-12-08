@@ -1,4 +1,4 @@
-import {mapState} from 'vuex'
+import {mapActions, mapState} from 'vuex'
 
 export default {
     computed: {
@@ -7,5 +7,12 @@ export default {
             menus: state => state.app.menus,
             userInfo: state => state.app.userInfo
         })
+    },
+
+    methods: {
+        ...mapActions({
+            setUserInfo: 'app/setUserInfo'
+        })
     }
+
 }
