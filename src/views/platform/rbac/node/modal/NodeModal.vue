@@ -21,7 +21,7 @@
             <a-row>
                 <a-col>
                     <a-form-item label="所属模块">
-                        <ModuleRefer :sync="value" v-decorator="['moduleId', rules.moduleId]" disabled/>
+                        <ModuleRefer :sync="value" v-decorator="['moduleId', rules.moduleId]"/>
                     </a-form-item>
                 </a-col>
             </a-row>
@@ -38,12 +38,12 @@
 
 <script>
     import ModuleRefer from "@/views/platform/rbac/module/refer"
-    import rules from "@/views/platform/rbac/page/rules"
-    import moduleService from "@/views/platform/rbac/module/service"
-    import {array2Tree} from "@/utils/data"
+    import moduleService from '@/views/platform/rbac/module/service'
+    import {array2Tree} from "@/utils/data";
+    import rules from '../rules'
 
     export default {
-        name: "NodeModal",
+        name: "PageModal",
         components: {ModuleRefer},
         props: {
             value: {
@@ -146,6 +146,6 @@
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
 </style>

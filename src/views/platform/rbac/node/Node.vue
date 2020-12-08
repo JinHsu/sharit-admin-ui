@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #fff; padding: 10px; ">
+    <div style="background-color: #fff; padding: 10px;">
         <!-- 按钮区 -->
         <div style="margin-bottom: 10px;">
             <a-button type="primary" icon="plus" style="margin-right: 5px;" @click="onAdd">新增</a-button>
@@ -7,64 +7,57 @@
             </a-button>
         </div>
 
-        <a-row :gutter="10">
-            <a-col :span="6">
-                <div>
-                    <a-input-search style="margin-bottom: 8px" placeholder="搜索模块" @change="onSearch"/>
-                    <a-tree
-                            :treeData="modules"
-                            :replaceFields="{key: 'id', title: 'title', children: 'children'}"
-                            :show-line="false"
-                            :show-icon="false"
-                            :blockNode="true"
-                            @select="onSelectNode"
-                            style="border-right: 1px solid #d9d9d9;"
-                    >
-                        <template slot="custom" slot-scope="{ selected, title, code }">
-                            {{code + " " + title}}
-                        </template>
-                    </a-tree>
-                </div>
-            </a-col>
-            <a-col :span="18">
-                <a-table
-                        :columns="columns"
-                        :data-source="nodes"
-                        :loading="isTableDataLoading"
-                        :pagination="pagination"
-                        rowKey="id"
-                >
-                    <span slot="operation" slot-scope="text, record">
-                        <a @click="onEdit(record)">修改</a>
-                        <a-divider type="vertical"/>
-                        <a @click="onDelete(record)">删除</a>
-                    </span>
-                </a-table>
-            </a-col>
-        </a-row>
+        <!-- 表格区 -->
+        <a-space align="start" size="large">
+            <div>
+                <a-input-search style="margin-bottom: 8px" placeholder="搜索模块"/>
+                <a-tree
+                        style="width: 240px; border-right: 1px solid #d9d9d9;"
+                        :tree-data="modules"
+                        :blockNode="true"
+                        :replace-fields="{key:'id', title:'title', children: 'children'}"
+                        @select="onTreeSelect"
+                />
+            </div>
+            <!---->
+            <a-table :columns="columns" :data-source="data"
+                     :pagination="pagination"
+                     :loading="isTableDataLoading" rowKey="id">
+                <span slot="operation" slot-scope="text, record">
+                <a @click="onEdit(record)">修改</a>
+                <a-divider type="vertical"/>
+                <a @click="onDelete(record)">删除</a>
+            </span>
+            </a-table>
+        </a-space>
+
+        <!-- 模态框 -->
+        <node-modal
+                v-model="nodeModalVisible"
+                :modal-data="selectedData"
+                :modal-type="nodeModalType"
+                @doSave="doSave"/>
     </div>
 </template>
 
 <script>
-    import moduleService from '@/views/platform/rbac/module/service'
-    import array2Tree from "@/utils/data/array2Tree"
     import columns from './columns'
+    import {NodeModal} from './modal'
     import service from './service'
+    import moduleService from '@/views/platform/rbac/module/service'
+    import {array2Tree} from '@/utils/data'
 
     export default {
         name: "Node",
-
-        props: {},
-
-        components: {},
+        components: {NodeModal},
         data() {
             return {
-                isLoading: false,
-                modules: [],
+                modules: [], // 模块数据
+                moduleId: '',
 
                 columns: columns,
-                nodes: [],
-                isTableDataLoading: false,
+                data: [],
+
                 pagination: {
                     current: 1, // 当前页码
                     pageSize: 10, //
@@ -76,85 +69,109 @@
                     onChange: (page, pageSize) => {
                         this.pagination.current = page
                         this.pagination.pageSize = pageSize
-                        this.fetchNode()
+                        this.fetchAll()
                     },
                     // pageSize变化
                     onShowSizeChange: (current, size) => {
                         this.pagination.current = current
                         this.pagination.pageSize = size
-                        this.fetchNode()
+                        this.fetchAll()
                     }
                 },
+                isLoading: false,
+                isTableDataLoading: false,
+                moduleMap: null,
 
-                selectedKey: null
+                selectedData: null,
+                nodeModalVisible: false,
+                nodeModalType: ''
             }
         },
-
         methods: {
-            onSearch() {
+            //
+            onAdd() {
+                this.nodeModalType = 'add'
+                this.nodeModalVisible = true
+            },
+            //
+            onEdit(data) {
+                this.selectedData = data
+                this.nodeModalType = 'edit'
+                this.nodeModalVisible = true
             },
 
-            async onSelectNode(selectedKeys) {
-                this.selectedKey = selectedKeys[0]
-                if (this.selectedKey) {
-                    this.isTableDataLoading = true
-                    await this.fetchNode()
-                    this.isTableDataLoading = false
+            //
+            async doSave(data, callback) {
+                if (data.id) { // 修改
+                    await service.create(data)
+                    await this.fetchNodeByModuleId()
+                    this.$message.success({content: '修改成功！'})
+                } else { // 新增
+                    await service.update(data)
+                    await this.fetchNodeByModuleId()
+                    this.$message.success({content: '新增成功！'})
+                }
+                callback && callback()
+            },
+            //
+            onDelete(data) {
+                let {doDelete} = this
+                this.$confirm({
+                    title: '提示', content: '确定要删除吗？', okType: 'danger',
+                    onOk: () => doDelete(data)
+                })
+            },
+            //
+            async doDelete(data) {
+                await service.delete(data)
+                await this.fetchNodeByModuleId()
+                this.$message.success({content: '删除成功！'})
+            },
+            //
+            async doRefresh() {
+                if (this.moduleId) {
+                    this.isLoading = true
+                    await this.fetchNodeByModuleId()
+                    this.$message.success('刷新成功！')
+                    this.isLoading = false
                 } else {
-                    this.isTableDataLoading = true
-                    this.nodes = []
-                    this.pagination.total = 0
-                    this.isTableDataLoading = false
+                    this.$message.error('请选择模块！')
+                }
+
+            },
+
+            onTreeSelect(selectedKeys, {selected}) {
+                if (selected) {
+                    this.moduleId = selectedKeys[0]
+                    this.fetchNodeByModuleId()
+                } else {
+                    this.moduleId = null
+                    this.data = []
                 }
             },
 
-            onAdd() {
-            },
-
-            doRefresh() {
-            },
-
-            onEdit() {
-            },
-
-            onDelete() {
-            },
-
+            //
             async fetchAllModules() {
-                const modules = await moduleService.fetchAll();
-
-                (modules || []).forEach(module => module.scopedSlots = {title: 'custom', code: 'custom'})
-
-                const sortedModules = array2Tree(modules, {});
-
-                (modules || []).forEach(module => module.disabled = module.children !== undefined)
-
-                this.modules = sortedModules
-
+                const modules = await moduleService.fetchAll()
+                this.modules = array2Tree(modules, {})
             },
 
-            async fetchNode() {
+            async fetchNodeByModuleId() {
                 const params = {
                     page: this.pagination.current - 1, // 当前页码
                     size: this.pagination.pageSize, // 每页条数
-                    sort: ['code,asc'],
-                    moduleId: this.selectedKey
+                    sort: ['code,asc']
                 }
-                const nodes = await service.fetchAllByPage(params)
-                this.nodes = nodes.content
-                this.pagination.total = nodes.total
+                const {content, total} = await service.fetchAllByPage({...params, moduleId: this.moduleId})
+                this.data = content
+                this.pagination.total = total
             }
+
         },
 
         created() {
             this.fetchAllModules()
-        },
-
-        mounted() {
-        },
-
-        watch: {}
-
+        }
     }
 </script>
 

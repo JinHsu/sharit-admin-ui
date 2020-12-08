@@ -7,7 +7,7 @@ export default {
     },
     title: {
         rules: [
-            {required: true, message: '请输入节点名称'}
+            {required: true, message: '请输入页面名称'}
         ],
         validateTrigger: ['change', 'blur']
     },
@@ -16,6 +16,7 @@ export default {
             {required: true, message: '请选择所属模块'}
         ],
         validateTrigger: ['change', 'blur']
-    }
+    },
+    remark: {}
 
 }
