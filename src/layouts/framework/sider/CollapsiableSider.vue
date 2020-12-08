@@ -11,11 +11,11 @@
         <!--top-->
         <logo-header/>
         <!---->
-        <a-tree-menu
+        <tree-menu
                 mode="inline"
                 :theme="themeSider"
                 :collapsed="collapsed"
-                :menus="menus"
+                :tree-data="menus"
                 class="framework-sider-menu"/>
     </a-layout-sider>
 </template>
@@ -23,12 +23,13 @@
 <script>
     import {app, device, framework} from '@/mixins'
     import LogoHeader from "./logoheader"
+    import TreeMenu from '../treemenu'
 
     export default {
         name: "CollapsiableSider",
 
         components: {
-            LogoHeader
+            LogoHeader, TreeMenu
         },
 
         mixins: [app, device, framework],

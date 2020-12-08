@@ -2,10 +2,11 @@
     <a-popover
             v-model="visible"
             trigger="click"
-            :placement="isMobile() ? 'bottom' : 'bottomRight'"
             arrowPointAtCenter
             autoAdjustOverflow
+            :placement="isMobile() ? 'bottom' : 'bottomRight'"
             :getPopupContainer="() => $refs.noticeRef.parentElement"
+            :overlayStyle="{ width: '300px' }"
     >
         <template slot="content">
             <a-spin :spinning="loading">
