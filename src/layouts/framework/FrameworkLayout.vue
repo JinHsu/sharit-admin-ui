@@ -22,7 +22,8 @@
                 <!--页面-->
                 <transition name="page-transition">
                     <keep-alive>
-                        <router-view class="framework-right-content-page"/>
+                        <!--设置key解决keep-alive失效的问题-->
+                        <router-view :key="this.$route.fullPath" class="framework-right-content-page"/>
                     </keep-alive>
                 </transition>
             </a-layout-content>
