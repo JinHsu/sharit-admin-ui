@@ -16,12 +16,15 @@ Router.prototype.push = function push(location, onResolve, onReject) {
 
 Vue.use(Router)
 
-const router = new Router({
+
+const createRouter = () => new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     scrollBehavior: () => ({y: 0}),
     routes: staticRoutes
 })
+
+const router = createRouter()
 
 router.afterEach(() => {
     NProgress.done()
@@ -66,6 +69,12 @@ function loginOrDirect(to, next) {
     } else {
         next({path: LOGIN_URL})
     }
+}
+
+// 注销时重置路由匹配
+export function resetRouter() {
+    const newRouter = createRouter()
+    router.matcher = newRouter.matcher // reset router
 }
 
 export default router

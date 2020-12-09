@@ -10,7 +10,7 @@ export default async function bootstrap() {
     process.env.NODE_ENV !== 'production' && console.log("[antd] bootstrap.")
 
     //
-    let themeColor = Vue.ls.get('themeSider', config.themeColor)
+    let themeColor = Vue.ls.get('themeColor', config.themeColor)
     await store.dispatch('framework/setThemeColor', themeColor)
     changeColor(themeColor)
 
@@ -21,5 +21,9 @@ export default async function bootstrap() {
     //
     let collapsed = Vue.ls.get('collapsed', config.collapsed)
     await store.dispatch('framework/setCollapsed', collapsed)
+
+    //
+    let locale = Vue.ls.get('locale', config.locale)
+    await store.dispatch('framework/setLocale', locale)
 
 }

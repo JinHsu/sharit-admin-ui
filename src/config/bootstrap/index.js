@@ -6,6 +6,8 @@ export default {
     // 默认侧边栏外观
     themeSider: 'dark',
     //
+    locale: 'zh_CN',
+    //
     colorList: [
         {title: '薄暮', value: '#F5222D'},
         {title: '火山', value: '#FA541C'},

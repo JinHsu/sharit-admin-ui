@@ -34,7 +34,8 @@
     import {postLogout} from '@/auth/authc'
     import {app} from '@/mixins'
     import {LOGIN_URL} from "@/config/auth"
-    import authService from "@/auth/service";
+    import authService from "@/auth/service"
+    import {resetRouter} from '@/router'
 
     export default {
         name: "UserAction",
@@ -62,7 +63,8 @@
                     query: {redirect: this.$route.path}
                 })
                 // 2.刷新路由
-                window.location.reload()
+                resetRouter()
+                // window.location.reload()
             }
         },
 

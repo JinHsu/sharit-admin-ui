@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export default {
     namespaced: true,
 
@@ -21,19 +23,22 @@ export default {
 
         setLocale: (state, locale) => {
             state.locale = locale
-            // ls
+            Vue.ls.set('locale', locale)
         },
 
         setCollapsed: (state, collapsed) => {
             state.collapsed = collapsed
+            Vue.ls.set('collapsed', collapsed)
         },
 
         setThemeColor: (state, color) => {
             state.themeColor = color
+            Vue.ls.set('themeColor', color)
         },
 
         setThemeSider: (state, theme) => {
             state.themeSider = theme
+            Vue.ls.set('themeSider', theme)
         },
 
         setDrawerOpened: (state, drawerOpened) => {
