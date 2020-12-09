@@ -11,6 +11,6 @@ export default {
         ],
         validateTrigger: ['change', 'blur']
     },
-    birthdate: {},
+    birthday: {},
     area: {}
 }

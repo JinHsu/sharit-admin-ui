@@ -3,10 +3,9 @@
                 placement="bottomRight"
                 :getPopupContainer="()=>$refs.dropdownRef.parentElement">
         <span class="header-action-user" ref="dropdownRef">
-            <a-tooltip :title="userInfo.nickname">
-                <a-avatar class="avatar" size="small" :src="userInfo.avatar">
-                    {{userInfo.nickname}}
-                </a-avatar>
+            <a-tooltip :title="nickname">
+                <a-avatar class="avatar" size="small" icon="user"
+                          :src="avatar"/>
             </a-tooltip>
         </span>
         <a-menu slot="overlay" class="header-action-user-wrapper">
@@ -41,9 +40,7 @@
         name: "UserAction",
 
         data() {
-            return {
-                nickname: '天野远子',
-            }
+            return {}
         },
 
         mixins: [app],
@@ -90,12 +87,10 @@
         -webkit-transition: all 0.3s;
         transition: all 0.3s;
         height: 100%;
-        color: #000000a6;
+        color: rgba(0, 0, 0, 0.65);
 
         .avatar {
-            color: #1890ff;
             font-size: 16px;
-            background: hsla(0, 0%, 100%, 0.85);
             vertical-align: middle;
         }
 

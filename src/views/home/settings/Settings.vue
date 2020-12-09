@@ -2,7 +2,7 @@
     <a-card :bordered="false" :bodyStyle="{ padding: '10px' }">
         <a-tabs default-active-key="basic">
             <template v-for="tab in tabs">
-                <a-tab-pane :key="tab.key" forceRender>
+                <a-tab-pane :key="tab.key" :disabled="tab.disabled" forceRender>
                     <span slot="tab">{{tab.title}}</span>
                     <div class="settings-info-right">
                         <component :is="tab.component"/>
@@ -29,8 +29,8 @@
             return {
                 tabs: [
                     {key: 'basic', title: '基础信息', component: 'basic'},
-                    {key: 'security', title: '安全设置', component: 'security'},
-                    {key: 'account', title: '账号绑定', component: 'account'}
+                    {key: 'security', title: '安全设置', component: 'security', disabled: true},
+                    {key: 'account', title: '账号关联', component: 'account', disabled: true}
                 ]
             }
         }
@@ -39,5 +39,8 @@
 </script>
 
 <style lang="less" scoped>
-
+    .settings-info-right {
+        /*display: table;*/
+        margin: auto;
+    }
 </style>

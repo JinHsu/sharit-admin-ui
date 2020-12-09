@@ -1,10 +1,11 @@
 <template>
     <div style="padding: 10px;">
-        <a-space align="start" :size="100">
-            <div style="width: 500px;">
+        <a-space direction="horizontal" align="start" :size="50">
+            <div style="width: 400px;">
+                <!---->
                 <a-form layout="horizontal" id="form" :form="form" ref="form">
                     <a-form-item label="昵称">
-                        <a-input v-decorator="['nickname', rules.nickname]"/>
+                        <a-input v-decorator="['nickname', rules.nickname]" autocomplete="off"/>
                     </a-form-item>
                     <a-form-item label="性别">
                         <a-radio-group v-decorator="['sex', rules.sex]">
@@ -15,23 +16,24 @@
                     </a-form-item>
                     <a-form-item label="生日">
                         <a-date-picker style="width:100%;" placeholder="请填写生日"
-                                       v-decorator="['birthdate', rules.birthdate]"/>
+                                       v-decorator="['birthday', rules.birthday]"/>
                     </a-form-item>
                     <a-form-item label="所在地区">
-                        <a-input v-decorator="['area', rules.area]"/>
+                        <a-input v-decorator="['area', rules.area]" autocomplete="off"/>
                     </a-form-item>
 
                     <a-form-item>
                         <a-space size="large">
-                            <a-button @click="onCancel"> 取消</a-button>
-                            <a-button type="primary" :loading="loading" @click="onSave" :disabled="!changed">
+                            <a-button type="danger" :loading="loading" @click="onSave" :disabled="!changed">
                                 保存
                             </a-button>
+                            <a-button @click="onCancel"> 取消</a-button>
                         </a-space>
                     </a-form-item>
                 </a-form>
             </div>
-            <cropper :imageUrl="userInfo.avatar" @success="onAvatarSaveSuccess"/>
+            <!---->
+            <cropper :imageUrl="avatar" @success="onAvatarSaveSuccess"/>
         </a-space>
     </div>
 </template>
@@ -41,6 +43,7 @@
     import rules from './rules'
     import Cropper from "@/components/cropper"
     import userService from '@/views/platform/rbac/user/service'
+    import {formatDate, momentDate} from "@/utils/datetime"
 
     export default {
         name: "BasicSetting",
@@ -56,33 +59,77 @@
                     onFieldsChange: this.onFieldsChange
                 }),
                 loading: false,
-                changed: false,
+                changed: false
             }
         },
 
         methods: {
             onFieldsChange(props, fields) {
-                console.log(props, fields)
-                this.changed = true
-            },
-
-            setavatar(url) {
-                this.option.img = url
+                this.changed = false
+                const keys = Object.keys(fields)
+                for (let index = 0; index < keys.length; index++) {
+                    const key = keys[index]
+                    // eslint-disable-next-line no-prototype-builtins
+                    if (fields.hasOwnProperty(key)) {
+                        const {value: formValue} = fields[key]
+                        const originValue = this.userInfo[key]
+                        // eslint-disable-next-line no-prototype-builtins
+                        if (fields[key].hasOwnProperty('dirty')
+                            && formValue !== originValue) {
+                            this.changed = true
+                            break
+                        }
+                    }
+                }
             },
 
             onSave() {
+                this.loading = true
+                // eslint-disable-next-line no-unused-vars
+                this.form.validateFields({force: true}, (err, values) => {
+                        if (!err) {
+                            const saveData = {...this.userInfo}
+
+                            // 处理日期时间字段的格式
+                            Object.keys(values).forEach(key => {
+                                const value = values[key]
+                                if (value && value['_isAMomentObject']) {
+                                    values[key] = formatDate(value)
+                                }
+                            })
+                            // 添加界面上的数据
+                            Object.assign(saveData, values)
+                            userService.update(saveData).then(user => {
+                                this.setUserInfo(user)
+                                this.$message.success({content: '保存成功！'})
+                            }).finally(() => this.loading = false)
+                        } else {
+                            this.loading = false
+                        }
+                    }
+                )
             },
 
             onCancel() {
+                this.update(this.userInfo)
             },
 
             async onAvatarSaveSuccess(url) {
                 this.userInfo.avatar = url
                 const newUser = await userService.update(this.userInfo)
                 this.setUserInfo(newUser)
+                this.$message.success('设置头像成功！')
             },
 
-
+            update(userInfo) {
+                if (userInfo) {
+                    const {nickname, sex, birthday, area} = userInfo
+                    const values = {nickname, sex, birthday: momentDate(birthday), area}
+                    this.$nextTick(() => {
+                        this.form.setFieldsValue(values)
+                    })
+                }
+            }
         },
 
         created() {
@@ -90,61 +137,18 @@
         },
 
         mounted() {
+            this.update(this.userInfo)
         },
 
-        watch: {}
+        watch: {
+            userInfo(userInfo) {
+                this.update(userInfo)
+            }
+        }
 
     }
 </script>
 
 <style lang="less" scoped>
-    .ant-upload-preview {
-        position: relative;
-        margin: 0 auto;
-        width: 100%;
-        max-width: 180px;
-        border-radius: 50%;
-        box-shadow: 0 0 4px #ccc;
 
-        .upload-icon {
-            position: absolute;
-            top: 0;
-            right: 10px;
-            font-size: 1.4rem;
-            padding: 0.5rem;
-            background: rgba(222, 221, 221, 0.7);
-            border-radius: 50%;
-            border: 1px solid rgba(0, 0, 0, 0.2);
-        }
-
-        .mask {
-            opacity: 0;
-            position: absolute;
-            background: rgba(0, 0, 0, 0.4);
-            cursor: pointer;
-            transition: opacity 0.4s;
-
-            &:hover {
-                opacity: 1;
-            }
-
-            i {
-                font-size: 2rem;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                margin-left: -1rem;
-                margin-top: -1rem;
-                color: #d6d6d6;
-            }
-        }
-
-        img, .mask {
-            width: 100%;
-            max-width: 180px;
-            height: 100%;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-    }
 </style>

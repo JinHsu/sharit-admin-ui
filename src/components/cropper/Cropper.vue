@@ -1,14 +1,14 @@
 <template>
-    <div :style="{width: previewSize}">
+    <div :style="{width: '100%'}">
         <div class="ant-upload-preview" @click="edit">
             <a-icon type="cloud-upload-o" class="upload-icon"/>
             <div class="mask">
                 <a-icon type="plus"/>
             </div>
-            <img :src="imageUrl" alt="头像"/>
+            <img :src="imageUrl" alt=""/>
         </div>
         <a-modal ref="cropperModal" :title="title" :visible="visible"
-                 :maskClosable="false" :destroyOnClose="true"
+                 :maskClosable="false" :destroyOnClose="true" :width="360"
                  @cancel="onClose">
             <template slot="footer">
                 <a-button @click="onClose">取消</a-button>
@@ -51,13 +51,13 @@
         name: 'Cropper',
 
         props: {
-            title: {type: String, default: '修改头像'},
+            title: {type: String, default: '设置头像'},
             previewSize: {type: String, default: '200px'},
-            cropWidth: {type: Number, default: 100},
-            cropHeight: {type: Number, default: 100},
+            cropWidth: {type: Number, default: 120},
+            cropHeight: {type: Number, default: 120},
             imageUrl: {
                 type: String,
-                default: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+                default: ''
             }
         },
 
@@ -65,7 +65,7 @@
             return {
                 visible: false,
                 options: {
-                    img: this.imageUrl,
+                    img: '',
                     autoCrop: true,
                     fixedBox: true
                 },
@@ -79,6 +79,7 @@
 
         methods: {
             edit() {
+                this.options.img = this.imageUrl
                 this.visible = true
             },
             // 缩放
@@ -108,56 +109,22 @@
 
             // 关闭
             onClose() {
-                this.options.img = this.image
                 this.visible = false
-            },
-
-            getRandomFileFile() {
-                const strArray = this.file.name.split('.')
-                return UUID() + "." + strArray[strArray.length - 1]
-            },
-
-            getFileInfo() {
-                return {
-                    type: this.file.type,
-                    lastModified: Date.now()
-                }
             },
 
             async onSave() {
                 this.loading = true
                 try {
-                    this.$message.loading({content: '正在准备上传文件...', key: 'uploadImage'})
-                    // 获取policy
-                    const policyData = await ossService.getPolicy()
-                    const {accessid, policy, signature, dir, host, callback} = policyData
-                    // 组装FormData
-                    const formData = new FormData()
-                    formData.append("policy", policy)
-                    formData.append("OSSAccessKeyId", accessid)
-                    formData.append("signature", signature)
-                    formData.append("dir", dir)
-                    formData.append("success_action_status", "200")
-                    formData.append("callback", callback)
-
-                    const fileName = this.getRandomFileFile()
-                    formData.append("key", dir + fileName) // 文件名
-
-                    //
-                    const cb = (blob) => {
-                        const croppedFile = new File([blob], fileName, this.getFileInfo()) // blob转file
-                        formData.append('file', croppedFile)
-                        // 上传图片到服务器
-                        this.$message.loading({content: '正在上传文件...', key: 'uploadImage'})
-                        ossService.upload(host, formData).then((res) => {
-                            this.$message.success({content: '上传文件成功...', key: 'uploadImage'})
-                            this.options.img = res.data.url
-                            this.$emit('success', res.data.url)
+                    this.$refs.cropper.getCropBlob(blob => {
+                        ossService.uploadBlobFile(blob, {
+                            fileName: UUID() + ".jpg",
+                            fileType: this.file.type,
+                            lastModified: Date.now()
+                        }).then(url => {
+                            this.$emit('success', url)
                             this.visible = false
                         })
-                    }
-
-                    this.$refs.cropper.getCropBlob(cb)
+                    })
                 } catch (e) {
                     this.$message.error(e)
                 } finally {

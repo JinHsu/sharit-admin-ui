@@ -5,7 +5,9 @@ export default {
         ...mapState({
             routes: state => state.app.routes,
             menus: state => state.app.menus,
-            userInfo: state => state.app.userInfo
+            userInfo: state => state.app.userInfo,
+            avatar: state => (state.app.userInfo || {}).avatar,
+            nickname: state => (state.app.userInfo || {}).nickname,
         })
     },
 
