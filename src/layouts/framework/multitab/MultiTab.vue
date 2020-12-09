@@ -8,12 +8,12 @@
                 :tabBarGutter="10"
                 :tabBarStyle="{borderBottom: 'unset', margin: 0,}"
                 @edit="onEdit">
-            <template v-for="tab in panes">
-                <a-tab-pane :key="tab.key">
+            <template v-for="page in pages">
+                <a-tab-pane :key="page.fullPath">
                     <template slot="tab">
                         <a-dropdown :trigger="['contextmenu']">
-                            <span>{{tab.title}}</span>
-                            <a-menu slot="overlay" @click="onContextClick">
+                            <span>{{page.meta.title}}</span>
+                            <a-menu slot="overlay" @click="({key}) => onContextClick(key, page.fullPath)">
                                 <a-menu-item key="closeLeft">
                                     <a-icon type="arrow-left"/>
                                     <span>关闭左侧</span>
@@ -46,13 +46,9 @@
         components: {},
 
         data() {
-            const panes = []
-            for (let index = 0; index < 20; index++) {
-                panes.push({key: index, title: 'Tab ' + index})
-            }
-
             return {
-                panes,
+                fullPathList: [],
+                pages: [],
                 activeKey: 0
             }
         },
@@ -63,44 +59,92 @@
             },
 
             remove(targetKey) {
-                let activeKey = this.activeKey;
-                let lastIndex;
-                this.panes.forEach((pane, i) => {
-                    if (pane.key === targetKey) {
-                        lastIndex = i - 1;
-                    }
-                });
-                const panes = this.panes.filter(pane => pane.key !== targetKey);
-                if (panes.length && activeKey === targetKey) {
-                    if (lastIndex >= 0) {
-                        activeKey = panes[lastIndex].key;
-                    } else {
-                        activeKey = panes[0].key;
-                    }
+                this.pages = this.pages.filter(page => page.fullPath !== targetKey)
+                this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
+                if (!this.fullPathList.includes(this.activeKey)) {
+                    this.selectedLastPath()
                 }
-                this.panes = panes;
-                this.activeKey = activeKey;
             },
 
-            onContextClick({key, keyPath}) {
-                console.log(keyPath)
-                this[key]()
+            selectedLastPath() {
+                this.activeKey = this.fullPathList[this.fullPathList.length - 1]
+            },
+
+            onContextClick(key, fullPath) {
+                this[key](fullPath)
             },
 
             //
-            closeLeft() {
-                console.log("closeLeft")
-            },
-            closeRight() {
-                console.log("closeRight")
-            },
-            closeOther() {
-                console.log("closeOther")
-            },
-            closeAll() {
-                console.log("closeAll")
+            closeLeft(fullPath) {
+                const currentIndex = this.fullPathList.indexOf(fullPath)
+                if (currentIndex > 0) {
+                    this.fullPathList.forEach((item, index) => {
+                        if (index < currentIndex) {
+                            this.remove(item)
+                        }
+                    })
+                }
             },
 
+            closeRight(fullPath) {
+                const currentIndex = this.fullPathList.indexOf(fullPath)
+                if (currentIndex < (this.fullPathList.length - 1)) {
+                    this.fullPathList.forEach((item, index) => {
+                        if (index > currentIndex) {
+                            this.remove(item)
+                        }
+                    })
+                }
+            },
+
+            closeOther(fullPath) {
+                const currentIndex = this.fullPathList.indexOf(fullPath)
+                this.fullPathList.forEach((item, index) => {
+                    if (index !== currentIndex) {
+                        this.remove(item)
+                    }
+                })
+            },
+
+            closeAll() {
+                this.fullPathList.forEach((item) => {
+                    this.remove(item)
+                })
+            }
+
+        },
+
+        /* eslint-disable */
+        /**
+         * this.$route:
+         * {
+         *  fullPath: "/home/settings",
+         *  hash: "" ,
+         *  meta: {icon: '' , title: ''} ,
+         *  name: "settings" ,
+         *  params: {} ,
+         *  path: "/home/settings" ,
+         *  query: {}
+         * }
+         */
+        created() {
+            this.pages.push(this.$route)
+            this.fullPathList.push(this.$route.fullPath)
+            this.selectedLastPath()
+        },
+
+        watch: {
+            '$route'(newVal) {
+                this.activeKey = newVal.fullPath
+                if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
+                    this.fullPathList.push(newVal.fullPath)
+                    this.pages.push(newVal)
+                }
+            },
+
+            activeKey(newPathKey) {
+                this.$router.push({path: newPathKey})
+            }
         }
 
     }
