@@ -1,7 +1,7 @@
 <template>
-    <div style="padding: 10px;">
+    <div class="settings">
         <a-space direction="horizontal" align="start" :size="50">
-            <div style="width: 400px;">
+            <div class="main">
                 <!---->
                 <a-form layout="horizontal" id="form" :form="form" ref="form">
                     <a-form-item label="昵称">
@@ -150,5 +150,14 @@
 </script>
 
 <style lang="less" scoped>
+    .settings {
+        padding: 10px;
+        margin: 0 auto;
+        width: 600px;
 
+        .main {
+            max-width: 400px;
+            width: 400px;
+        }
+    }
 </style>
