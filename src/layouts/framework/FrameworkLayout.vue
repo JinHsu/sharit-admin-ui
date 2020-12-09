@@ -11,6 +11,12 @@
                 <header-control/>
                 <header-action/><!--头部右侧action-->
             </a-layout-header>
+
+            <!--多页签栏-->
+            <div class="framework-right-multi-tab" :style="{paddingLeft: paddingLeft}">
+                <multi-tab/>
+            </div>
+
             <!--内容区-->
             <a-layout-content class="framework-right-content">
                 <!--页面-->
@@ -29,13 +35,14 @@
 <script>
     import {device, framework} from '@/mixins'
     import CollapsiableSider from "./sider"
+    import MultiTab from './multitab'
     import {HeaderAction, HeaderControl} from './header'
 
     export default {
         name: "FrameworkLayout",
 
         components: {
-            CollapsiableSider, HeaderControl, HeaderAction
+            CollapsiableSider, MultiTab, HeaderControl, HeaderAction
         },
 
         data() {
@@ -150,12 +157,23 @@
                 }
             }
 
+            &-multi-tab {
+                position: fixed; // 固定
+                top: 64px;
+                right: 0;
+                width: 100%;
+                background: #f0f2f5;
+                z-index: 100;
+            }
+
             &-content {
-                padding-top: 64px;
-                z-index: 103;
+                padding-top: 100px;
+                z-index: 50;
 
                 &-page {
-                    margin: 24px;
+                    margin: 12px 24px 24px 24px;
+                    border-radius: 4px;
+                    z-index: 100;
                 }
             }
 
