@@ -79,7 +79,8 @@
             },
 
             async syncData() {
-                const menus = await service.fetchAll()
+                const params = {fake: true}
+                const menus = await service.fetchAll(params)
                 this.treeData = array2Tree(menus, {})
             }
         },

@@ -5,39 +5,24 @@
             :show-search="true"
             :show-select-all="true"
             :titles="['待选', '已选']"
-            :filter-option="(inputValue, item) => {
-                // 按用户名或昵称过滤
-                return item['username'].indexOf(inputValue) !== -1
-                    || item['nickname'].indexOf(inputValue) !== -1
-            }"
-            @change="onChange"
-            style="max-width: 844px;"
-    >
+            :filter-option="filterOption"
+            @change="keys => this.targetKeys = keys">
 
         <template slot="children" slot-scope="{
             props: { direction, filteredItems, selectedKeys, disabled: listDisabled },
-            on: { itemSelectAll, itemSelect },
-        }">
+            on: { itemSelectAll, itemSelect }  }">
             <a-table rowKey="id" size="small"
                      :data-source="filteredItems"
-                     :columns="direction === 'left' ? leftColumns : rightColumns"
-
-                     :row-selection="getRowSelection({
-                        disabled: listDisabled,
-                        selectedKeys,
-                        itemSelectAll,
-                        itemSelect
-                     })"
-
+                     :columns="columns"
+                     :row-selection="getRowSelection({ disabled: listDisabled, selectedKeys, itemSelectAll, itemSelect})"
                      :custom-row="({key, disabled: itemDisabled}) => ({
-                         on: {
+                         on:
+                         {
                             click: () => {
-                                if (itemDisabled || listDisabled) {
-                                    return
-                                }
+                                if (itemDisabled || listDisabled) { return }
                                 itemSelect(key, !selectedKeys.includes(key))
-                            },
-                         },
+                            }
+                         }
                      })"
             />
         </template>
@@ -45,10 +30,12 @@
 </template>
 
 <script>
+    import difference from 'lodash/difference'
     import userService from '@/views/platform/rbac/user/service'
-    import difference from 'lodash/difference';
+    import {EventBus, REFRESH, SAVE} from "../eventbus"
     import service from '../service'
-    import {EventBus, REFRESH, SAVE} from "@/views/platform/rbac/roleauth/eventbus";
+    import columns from '../columns'
+    import {arraySort} from "@/utils/data";
 
     export default {
         name: "UserTabPane",
@@ -65,27 +52,13 @@
             return {
                 users: [],
                 targetKeys: [],
-
-                //
-                leftColumns: [
-                    {dataIndex: 'username', title: '用户名', width: 150, ellipsis: true},
-                    {dataIndex: 'nickname', title: '昵称', ellipsis: true}
-                ],
-                rightColumns: [
-                    {dataIndex: 'username', title: '用户名', width: 150, ellipsis: true},
-                    {dataIndex: 'nickname', title: '昵称', ellipsis: true}
-                ]
+                columns: columns
             }
         },
 
         computed: {},
 
         methods: {
-            // 移动选项事件
-            onChange(targetKeys) {
-                this.targetKeys = targetKeys
-            },
-
             // 获取表格行选中事件
             getRowSelection({disabled, selectedKeys, itemSelectAll, itemSelect}) {
                 return {
@@ -110,6 +83,10 @@
                 }
             },
 
+            filterOption(inputValue, item) {
+                // 按用户名或昵称过滤
+                return (item['username'] || '').indexOf(inputValue) > -1 || (item['nickname'] || '').indexOf(inputValue) > -1
+            },
             async onSave() {
                 if (this.roleId) {
                     const data = (this.targetKeys || []).map(userId => {
@@ -132,15 +109,15 @@
             },
 
             async fetchAllUser() {
-                const params = {page: 0, size: 2147483647, sort: "username,asc"}
-                const users = await userService.fetchAllByPage(params)
-                users.content.forEach(user => {
+                let users = await userService.fetchAll()
+                users = arraySort(users, 'username')
+                users.forEach(user => {
                     const {id, username} = user
                     // 添加transfer组件必须的2个属性：key，title
                     Object.assign(user, {key: id, title: username})
                 })
                 //
-                this.users = users.content
+                this.users = users
             },
 
             // 查询角色关联的用户

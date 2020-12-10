@@ -5,39 +5,24 @@
             :show-search="true"
             :show-select-all="true"
             :titles="['待选', '已选']"
-            :filter-option="(inputValue, item) => {
-                // 按用户名或昵称过滤
-                return item['title'].indexOf(inputValue) !== -1
-                    || item['code'].indexOf(inputValue) !== -1
-            }"
-            @change="onChange"
-            style="max-width: 844px;"
-    >
+            :filter-option="filterOption"
+            @change="keys => this.targetKeys = keys">
 
         <template slot="children" slot-scope="{
             props: { direction, filteredItems, selectedKeys, disabled: listDisabled },
-            on: { itemSelectAll, itemSelect },
-        }">
+            on: { itemSelectAll, itemSelect }  }">
             <a-table rowKey="id" size="small"
                      :data-source="filteredItems"
-                     :columns="direction === 'left' ? leftColumns : rightColumns"
-
-                     :row-selection="getRowSelection({
-                        disabled: listDisabled,
-                        selectedKeys,
-                        itemSelectAll,
-                        itemSelect
-                     })"
-
+                     :columns="columns"
+                     :row-selection="getRowSelection({ disabled: listDisabled, selectedKeys, itemSelectAll, itemSelect})"
                      :custom-row="({key, disabled: itemDisabled}) => ({
-                         on: {
+                         on:
+                         {
                             click: () => {
-                                if (itemDisabled || listDisabled) {
-                                    return
-                                }
+                                if (itemDisabled || listDisabled) { return }
                                 itemSelect(key, !selectedKeys.includes(key))
-                            },
-                         },
+                            }
+                         }
                      })"
             />
         </template>
@@ -45,10 +30,12 @@
 </template>
 
 <script>
+    import difference from "lodash/difference"
     import roleService from '@/views/platform/rbac/role/service'
+    import {arraySort} from "@/utils/data"
+    import {EventBus, REFRESH, SAVE} from "../eventbus"
     import service from '../service'
-    import difference from "lodash/difference";
-    import {EventBus, REFRESH, SAVE} from "../eventbus";
+    import columns from '../columns'
 
     export default {
         name: "RoleTabPane",
@@ -64,25 +51,11 @@
             return {
                 roles: [],
                 targetKeys: [],
-
-                //
-                leftColumns: [
-                    {dataIndex: 'code', title: '角色编码', width: 150, ellipsis: true},
-                    {dataIndex: 'title', title: '角色名称', ellipsis: true}
-                ],
-                rightColumns: [
-                    {dataIndex: 'code', title: '角色编码', width: 150, ellipsis: true},
-                    {dataIndex: 'title', title: '角色名称', ellipsis: true}
-                ]
+                columns: columns,
             }
         },
 
         methods: {
-            // 移动选项事件
-            onChange(targetKeys) {
-                this.targetKeys = targetKeys
-            },
-
             // 获取表格行选中事件
             getRowSelection({disabled, selectedKeys, itemSelectAll, itemSelect}) {
                 return {
@@ -115,8 +88,13 @@
                     await service.saveUserRole(this.userId, data)
                     this.$message.success({content: '保存成功！'})
                 } else {
-                    this.$message.error({content: '请选择角色！'})
+                    this.$message.error({content: '请选择用户！'})
                 }
+            },
+
+            filterOption(inputValue, item) {
+                // 按角色编码或名称过滤
+                return (item['title'] || '').indexOf(inputValue) > -1 || (item['code'] || '').indexOf(inputValue) > -1
             },
 
             async onRefresh() {
@@ -124,21 +102,19 @@
                     await this.refresh()
                     this.$message.success({content: '刷新成功！'})
                 } else {
-                    this.$message.error({content: '请选择角色！'})
+                    this.$message.error({content: '请选择用户！'})
                 }
             },
 
             async fetchAllRole() {
-                const params = {page: 0, size: 2147483647, sort: "code,asc"}
-                const roles = await roleService.fetchAllByPage(params);
-
-                (roles.content || []).forEach(role => {
+                let roles = await roleService.fetchAll()
+                roles = arraySort(roles, 'code')
+                roles.forEach(role => {
                     const {id, code} = role
                     // 添加transfer组件必须的2个属性：key，title
                     Object.assign(role, {key: id, code})
                 })
-
-                this.roles = roles.content
+                this.roles = roles
             },
 
             // 查询用户分配的角色

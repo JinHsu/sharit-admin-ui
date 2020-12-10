@@ -1,20 +1,9 @@
 <template>
-    <a-modal
-            :visible="value"
-            :title="modalTitle"
-            @cancel="onCancel">
-
+    <a-modal :visible="value" :title="modalTitle" :maskClosable="false"
+             @cancel="onCancel">
         <template slot="footer">
-            <a-button
-                    @click="onCancel">
-                取消
-            </a-button>
-            <a-button
-                    type="primary"
-                    :loading="loading"
-                    @click="onSave">
-                保存
-            </a-button>
+            <a-button icon="undo" @click="onCancel">取消</a-button>
+            <a-button type="primary" icon="save" :loading="loading" @click="onSave">保存</a-button>
         </template>
 
         <a-form layout="horizontal"
@@ -47,16 +36,16 @@
                     <a-row>
                         <a-col>
                             <a-form-item label="关联页面">
-                                <PageRefer :sync="value" :disabled="formData.fake"
-                                           v-decorator="['pageId', rules.pageId]"/>
+                                <page-refer :sync="value" :disabled="formData.fake"
+                                            v-decorator="['pageId', rules.pageId]"/>
                             </a-form-item>
                         </a-col>
                     </a-row>
                     <a-row>
                         <a-col>
                             <a-form-item label="上级菜单">
-                                <MenuRefer :sync="value"
-                                           v-decorator="['parentId', rules.parentId]"/>
+                                <menu-refer :sync="value"
+                                            v-decorator="['parentId', rules.parentId]"/>
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -107,7 +96,7 @@
 </template>
 
 <script>
-    import MenuRefer from "@/views/platform/rbac/menu/refer";
+    import MenuRefer from "@/views/platform/rbac/menu/refer"
     import PageRefer from '@/views/platform/rbac/page/refer'
 
     export default {
@@ -125,10 +114,6 @@
             modalType: {
                 type: String,
                 default: 'add'
-            },
-            treeData: {
-                type: Array,
-                default: null
             }
         },
 
@@ -198,7 +183,7 @@
             onSave() {
                 this.loading = true
                 // eslint-disable-next-line no-unused-vars
-                this.form.validateFields({force: true}, (err, values) => {
+                this.form.validateFields({force: true}, (err) => {
                         if (!err) {
                             const saveData = {}
                             if (this.modalType === 'edit') {
@@ -224,9 +209,6 @@
         },
 
         computed: {
-            treeSelectData() {
-                return this.treeData ? this.treeData : []
-            },
             modalTitle() {
                 return this.modalType === 'add' ? '新增菜单' : '修改菜单'
             },

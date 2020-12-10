@@ -1,48 +1,45 @@
 <template>
-    <div style="background-color: #fff; padding: 10px;">
-        <!-- 按钮区 -->
-        <div style="margin-bottom: 10px;">
-            <a-button type="primary" icon="plus" style="margin-right: 5px;" @click="onAdd">新增</a-button>
-            <a-button type="info" icon="sync" style="margin-right: 5px;" :loading="isLoading" @click="doRefresh">刷新
-            </a-button>
-        </div>
-
-        <!-- 表格区 -->
-        <a-table :columns="columns" :data-source="data"
-                 :pagination="false"
-                 :loading="isTableDataLoading" rowKey="id"
-        >
+    <div class="rbac-menu">
+        <a-card :bordered="false" size="small">
+            <template slot="title">
+                <a-button type="primary" icon="plus" @click="onAdd" class="left-button">新增</a-button>
+                <a-button icon="reload" :loading="isLoading" @click="doRefresh" class="left-button">刷新</a-button>
+            </template>
+            <a-table :columns="columns" :data-source="data"
+                     :pagination="false"
+                     :loading="isTableDataLoading" rowKey="id"
+            >
 
             <span slot="name" slot-scope="text, record">
                 <a-icon :type="record.icon" v-if="record.icon"/>
                 {{ record.title }}
             </span>
 
-            <span slot="fake" slot-scope="text, record">
+                <span slot="fake" slot-scope="text, record">
                 <a-checkbox :default-checked="record.fake" :disabled="true"/>
             </span>
 
-            <span slot="page" slot-scope="text, record">
+                <span slot="page" slot-scope="text, record">
                 <a-icon type="link" v-if="record.pageId"/>
                 {{ record.pageId | pageFilter(pageMap) }}
             </span>
 
-            <span slot="operation" slot-scope="text, record">
+                <span slot="operation" slot-scope="text, record">
                 <a @click="onEdit(record)">修改</a>
                 <template v-if="!record.children || record.children.length === 0">
                     <a-divider type="vertical"/>
                     <a @click="onDelete(record)">删除</a>
                 </template>
             </span>
-        </a-table>
+            </a-table>
+        </a-card>
 
-        <MenuModal
+        <menu-modal
                 v-model="modalVisible"
-                :modal-data="selectedData"
+                :modal-data="menu"
                 :modal-type="modalType"
-                :tree-data="treeData"
                 @doSave="doSave">
-        </MenuModal>
+        </menu-modal>
 
     </div>
 </template>
@@ -71,7 +68,7 @@
 
                 //
                 treeData: null, // 树渲染数据
-                selectedData: null, // 选中的数据
+                menu: null, // 选中的数据
                 modalVisible: false, // 模态框状态
                 modalType: null, // 模块框标题
                 searchLoading: false
@@ -86,7 +83,7 @@
             },
 
             onEdit(data) {
-                this.selectedData = data
+                this.menu = data
                 this.modalType = 'edit'
                 this.modalVisible = true
             },
@@ -173,7 +170,9 @@
 </script>
 
 <style lang="less" scoped>
-    /deep/ .ant-card-extra {
-        margin: auto;
+    .rbac-menu {
+        .left-button {
+            margin-right: 8px;
+        }
     }
 </style>

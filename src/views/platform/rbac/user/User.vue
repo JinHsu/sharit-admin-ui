@@ -1,42 +1,32 @@
 <template>
-    <div style="background-color: #fff; padding: 10px;">
-        <!-- 查询区 -->
+    <div class="rbac-user">
+        <a-card :bordered="false" size="small">
+            <template slot="title">
+                <a-button type="primary" icon="plus" @click="onAdd" class="left-button">新增</a-button>
+                <a-button icon="reload" :loading="isLoading" @click="doRefresh" class="left-button">刷新</a-button>
+            </template>
+            <template slot="extra">
+                <a-input-search placeholder="搜索"/>
+            </template>
 
-        <!-- 按钮区 -->
-        <div style="margin-bottom: 10px;">
-            <a-space>
-                <a-button type="primary" icon="plus" @click="onAdd">新增</a-button>
-                <a-button type="info" icon="sync" :loading="isLoading" @click="doRefresh">刷新</a-button>
-            </a-space>
-        </div>
-
-        <!-- 表格区 -->
-        <a-table :columns="columns" :data-source="data"
-                 :pagination="pagination"
-                 :loading="isTableDataLoading" rowKey="id">
+            <a-table :columns="columns" :data-source="data"
+                     :pagination="pagination"
+                     :loading="isTableDataLoading" rowKey="id">
             <span slot="enabled" slot-scope="text, record">
                 <a-tag :color="record.enabled ? 'green' : 'red'">
                     {{record.enabled ? '已启用' : '已停用'}}
                 </a-tag>
             </span>
-            <span slot="locked" slot-scope="text, record">
+                <span slot="locked" slot-scope="text, record">
                 <a-tag :color="record.locked ? 'red' : 'green'">
                     {{record.locked ? '已锁定' : '未锁定'}}
                 </a-tag>
             </span>
-            <span slot="operation" slot-scope="text, record">
+                <span slot="operation" slot-scope="text, record">
                 <a @click="onEdit(record)">修改</a>
                 <a-divider type="vertical"/>
 
                 <a @click="onDelete(record)">删除</a>
-                <a-divider type="vertical"/>
-
-                <a v-if="record.enabled" @click="onDisable(record)">停用</a>
-                <a v-else @click="onEnable(record)">启用</a>
-                <a-divider type="vertical"/>
-
-                <a v-if="record.locked" @click="onUnLock(record)">解锁</a>
-                <a v-else @click="onLock(record)">锁定</a>
                 <a-divider type="vertical"/>
 
                 <a-dropdown :trigger="['click']">
@@ -46,15 +36,24 @@
                     </a>
                     <a-menu slot="overlay">
                         <a-menu-item>
+                            <a v-if="record.enabled" @click="onDisable(record)">停用</a>
+                            <a v-else @click="onEnable(record)">启用</a>
+                        </a-menu-item>
+                        <a-menu-item>
+                            <a v-if="record.locked" @click="onUnLock(record)">解锁</a>
+                            <a v-else @click="onLock(record)">锁定</a>
+                        </a-menu-item>
+                        <a-menu-divider/>
+                        <a-menu-item>
                             <a @click="onModifyPwd(record)">修改密码</a>
                         </a-menu-item>
                     </a-menu>
                 </a-dropdown>
             </span>
-        </a-table>
+            </a-table>
+        </a-card>
 
-        <!-- 模态框 -->
-        <UserModal
+        <user-modal
                 v-model="modalVisible"
                 :modal-data="modalData"
                 :modal-type="modalType"
@@ -63,7 +62,6 @@
 </template>
 
 <script>
-    import {device} from '@/mixins'
     import columns from './columns'
     import service from './service'
     import {UserModal} from './modal'
@@ -221,8 +219,6 @@
 
         },
 
-        mixins: [device],
-
         created() {
             this.isTableDataLoading = true
             this.fetchAll().then(() => {
@@ -234,5 +230,9 @@
 </script>
 
 <style lang="less" scoped>
-
+    .rbac-user {
+        .left-button {
+            margin-right: 8px;
+        }
+    }
 </style>

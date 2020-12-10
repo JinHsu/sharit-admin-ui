@@ -1,23 +1,32 @@
 <template>
-    <div style="background-color: #fff; padding: 10px; display: flex; flex-direction: column; ">
-        <UserRefer style="max-width: 400px;" v-model="userId"/>
-
-        <a-tabs :activeKey="activeKey" @change="onTabChange">
-            <div slot="tabBarExtraContent">
-                <a-button type="primary" icon="save" style="margin-left: 10px;" @click="onSave" :loading="saving">
+    <div class="rbac-userauth">
+        <a-card :bordered="false" size="small">
+            <template slot="title">
+                <a-button type="primary" icon="save" @click="onSave" :loading="refreshing" class="left-button">
                     保存
                 </a-button>
-                <a-button type="info" icon="sync" style="margin-left: 10px;" @click="onRefresh" :loading="refreshing">
+                <a-button icon="reload" @click="onRefresh" :loading="refreshing" class="left-button">
                     刷新
                 </a-button>
-            </div>
+            </template>
+            <template slot="extra">
+                <span>选择用户：</span>
+                <user-refer v-model="userId" class="user-refer"/>
+                <a-radio-group
+                        default-value="role"
+                        button-style="solid"
+                        @change="e => this.activeKey = e.target.value">
+                    <a-radio-button value="role">分配角色</a-radio-button>
+                    <a-radio-button value="org">分配组织</a-radio-button>
+                </a-radio-group>
+            </template>
 
-            <a-tab-pane key="role" tab="角色" force-render>
-                <RoleTabPane :user-id="userId"/>
-            </a-tab-pane>
-            <a-tab-pane key="org" tab="组织" force-render disabled>
-            </a-tab-pane>
-        </a-tabs>
+
+            <role-tab-pane v-show="activeKey === 'role'" :user-id="userId"/>
+            <div v-show="activeKey === 'org'">
+                分配组织
+            </div>
+        </a-card>
     </div>
 </template>
 
@@ -34,6 +43,7 @@
         data() {
             return {
                 userId: '',
+                tabList: [{key: 'role', tab: '角色'}, {key: 'org', tab: '组织'}],
                 activeKey: 'role',
                 saving: false,
                 refreshing: false
@@ -42,10 +52,6 @@
 
 
         methods: {
-            onTabChange(activeKey) {
-                this.activeKey = activeKey
-            },
-
             onSave() {
                 this.saving = true
                 EventBus.$emit(SAVE, this.activeKey, () => this.saving = false)
@@ -61,6 +67,15 @@
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+    .rbac-userauth {
+        .left-button {
+            margin-right: 8px;
+        }
 
+        .user-refer {
+            width: 256px;
+            margin-right: 8px;
+        }
+    }
 </style>

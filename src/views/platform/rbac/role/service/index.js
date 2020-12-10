@@ -16,12 +16,6 @@ export default {
         params: params
     }),
 
-    fetch: (params) => axios({
-        url: '/rbac/role',
-        method: 'GET',
-        params: params
-    }),
-
     create: (data) => axios({
         url: baseUrl,
         method: 'POST',

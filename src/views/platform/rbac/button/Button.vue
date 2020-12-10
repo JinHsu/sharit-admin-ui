@@ -13,7 +13,7 @@
             <!-- 表格区 -->
             <a-card :bordered="false" size="small">
                 <template slot="title">
-                    <a-button type="primary" icon="plus" @click="onAdd" class="right-button">新增</a-button>
+                    <a-button type="primary" icon="plus" @click="onAdd" class="left-button">新增</a-button>
                     <a-button icon="reload" :loading="isLoading" @click="doRefresh">刷新</a-button>
                 </template>
                 <template slot="extra">
@@ -240,7 +240,7 @@
             align-items: stretch;
         }
 
-        .left, .right-button {
+        .left, .left-button {
             margin-right: 8px;
         }
 

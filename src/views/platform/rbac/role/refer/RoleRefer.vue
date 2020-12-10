@@ -1,12 +1,11 @@
 <template>
-    <a-select
-            :value="value"
-            placeholder="选择角色"
-            @change="onChange"
-            @search="onSearch"
-            allowClear
-            :filter-option="filterOption">
-
+    <a-select :value="value"
+              show-search
+              allowClear
+              placeholder="选择角色"
+              option-filter-prop="children"
+              :filter-option="filterOption"
+              @select="onSelect">
         <template v-for="(role, index) in roles">
             <a-select-option :key="index" :value="role.id">
                 {{role.title}}
@@ -17,6 +16,7 @@
 
 <script>
     import service from '../service'
+    import {arraySort} from "@/utils/data"
 
     export default {
         name: "RoleRefer",
@@ -35,21 +35,17 @@
         },
 
         methods: {
-            onChange(value) {
+            onSelect(value) {
                 this.$emit('input', value)
             },
 
-            onSearch() {
-
-            },
-
-            // eslint-disable-next-line no-unused-vars
-            filterOption(value, option) {
-
+            filterOption(input, option) {
+                return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
             },
 
             async fetchAll() {
-                this.roles = await service.fetch()
+                const roles = await service.fetchAll()
+                this.roles = arraySort(roles, 'code')
             }
 
         },

@@ -1,15 +1,12 @@
 <template>
-    <div>
+    <div class="rbac-module">
         <a-card :bordered="false" size="small">
             <template slot="title">
-                模块管理
+                <a-button type="primary" icon="plus" @click="onAdd" class="left-button">新增</a-button>
+                <a-button icon="reload" @click="doRefresh" class="left-button">刷新</a-button>
             </template>
             <template slot="extra">
-                <a-space>
-                    <a-button type="primary" icon="plus" @click="onAdd">新增</a-button>
-                    <a-button icon="reload" @click="doRefresh">刷新</a-button>
-                    <a-button icon="search">查询</a-button>
-                </a-space>
+                <a-input-search placeholder="搜索"/>
             </template>
             <a-table :columns="columns" :data-source="data" :loading="isTableDataLoading" :pagination="false"
                      rowKey="id">
@@ -112,6 +109,10 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+    .rbac-module {
+        .left-button {
+            margin-right: 8px;
+        }
+    }
 </style>

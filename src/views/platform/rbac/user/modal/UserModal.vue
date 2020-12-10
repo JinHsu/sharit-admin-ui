@@ -1,8 +1,9 @@
 <template>
-    <a-modal :visible="value" :title="modalTitle" centered @cancel="onCancel">
+    <a-modal :visible="value" :title="modalTitle" :maskClosable="false"
+             @cancel="onCancel">
         <template slot="footer">
-            <a-button @click="onCancel">取消</a-button>
-            <a-button type="primary" :loading="loading" @click="onSave">保存</a-button>
+            <a-button icon="undo" @click="onCancel">取消</a-button>
+            <a-button type="primary" icon="save" :loading="loading" @click="onSave">保存</a-button>
         </template>
 
         <a-form id="form" :form="form" ref="form">

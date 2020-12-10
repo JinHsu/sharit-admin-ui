@@ -13,7 +13,7 @@ export default [
     {dataIndex: 'expiryDate', title: '失效日期', ellipsis: true},
     {dataIndex: 'remark', title: '备注', width: 100, ellipsis: true},
     {
-        dataIndex: 'operation', title: '操作', width: 300, ellipsis: true,
+        dataIndex: 'operation', title: '操作', width: 200, ellipsis: true,
         fixed: 'right',
         scopedSlots: {customRender: 'operation'},
     },

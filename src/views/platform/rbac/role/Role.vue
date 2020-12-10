@@ -1,29 +1,25 @@
 <template>
-    <div style="background-color: #fff; padding: 10px;">
-        <!-- 查询区 -->
+    <div class="rbac-role">
+        <a-card :bordered="false" size="small">
+            <template slot="title">
+                <a-button type="primary" icon="plus" @click="onAdd" class="left-button">新增</a-button>
+                <a-button icon="reload" :loading="isLoading" @click="doRefresh" class="left-button">刷新</a-button>
+            </template>
+            <template slot="extra">
+                <a-input-search placeholder="搜索"/>
+            </template>
 
-        <!-- 按钮区 -->
-        <div style="margin-bottom: 10px;">
-            <a-button type="primary" icon="plus" style="margin-right: 5px;" @click="onAdd">新增</a-button>
-            <a-button type="info" icon="sync" style="margin-right: 5px;" :loading="isLoading" @click="doRefresh">刷新
-            </a-button>
-        </div>
-
-        <!-- 表格区 -->
-        <a-table :columns="columns" :data-source="data"
-                 :pagination="pagination"
-                 :loading="isTableDataLoading" rowKey="id">
+            <a-table :columns="columns" :data-source="data"
+                     :pagination="pagination"
+                     :loading="isTableDataLoading" rowKey="id">
             <span slot="operation" slot-scope="text, record">
                 <a @click="onEdit(record)">修改</a>
                 <a-divider type="vertical"/>
-
                 <a @click="onDelete(record)">删除</a>
-                <a-divider type="vertical"/>
-
             </span>
-        </a-table>
+            </a-table>
+        </a-card>
 
-        <!-- 模态框 -->
         <role-modal
                 v-model="modalVisible"
                 :modal-data="modalData"
@@ -149,6 +145,10 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+    .rbac-role {
+        .left-button {
+            margin-right: 8px;
+        }
+    }
 </style>
