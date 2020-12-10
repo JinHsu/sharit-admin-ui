@@ -1,7 +1,7 @@
 import arraySort from "../arraySort";
 import array2Map from '../array2Map'
 
-let idField = '', pIdField = '', sortField = ''
+let idField = '', pIdField = '', sortField = '', disableNonLeaf, leafField
 
 /**
  * 数组转为树
@@ -9,16 +9,27 @@ let idField = '', pIdField = '', sortField = ''
  * @param idFieldName 主键字段名称
  * @param parentIdFieldName 上级主键字段名称
  * @param sortFieldName 排序字段名称
+ * @param leafFieldName
+ * @param nonLeafDisabled Disable非叶子节点
  * @returns {tree}
  */
 export default function array2Tree(array = [],
-                                   {idFieldName = 'id', parentIdFieldName = 'parentId', compareFieldName: sortFieldName = 'code'}) {
+                                   {
+                                       idFieldName = 'id',
+                                       parentIdFieldName = 'parentId',
+                                       compareFieldName: sortFieldName = 'code',
+                                       leafFieldName = '',
+                                       nonLeafDisabled = false,
+                                   }) {
+
     if (array.length === 0) {
         return null
     }
     idField = idFieldName
     pIdField = parentIdFieldName
     sortField = sortFieldName
+    disableNonLeaf = nonLeafDisabled
+    leafField = leafFieldName
 
     const dataMap = array2Map(array, idField)
 
@@ -58,6 +69,13 @@ function array2Tree2(dataMap, treeNode) {
     // 没有下级,删除children属性
     if (treeNode.children.length === 0) {
         delete treeNode.children
+        if (leafField && treeNode[leafField]) {
+            treeNode.isLeaf = true // 设置叶子节点属性
+        }
+    }
+
+    if (leafField && !treeNode[leafField]) {
+        treeNode.disabled = disableNonLeaf
     }
 
 }

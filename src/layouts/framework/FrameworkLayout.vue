@@ -135,7 +135,7 @@
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
     .framework {
 
         &-right { //
@@ -168,13 +168,17 @@
             }
 
             &-content {
-                padding-top: 100px;
+                padding-top: 112px;
                 z-index: 50;
 
                 &-page {
-                    margin: 12px 24px 24px 24px;
+                    margin: 0 24px 24px 24px;
                     border-radius: 4px;
                     z-index: 100;
+
+                    .ant-card {
+                        border-radius: 4px;
+                    }
                 }
             }
 

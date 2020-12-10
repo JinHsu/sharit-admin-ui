@@ -1,69 +1,64 @@
 <template>
-    <div style="background-color: #fff; padding: 10px;">
-        <!-- 按钮区 -->
-        <div style="margin-bottom: 10px;">
-            <a-button type="primary" icon="plus" style="margin-right: 5px;" @click="onAdd">新增</a-button>
-            <a-button type="info" icon="sync" style="margin-right: 5px;" :loading="isLoading" @click="doRefresh">刷新
-            </a-button>
+    <div class="rbac-page">
+        <div class="content">
+            <a-card :bordered="false" size="small" :bodyStyle="{width: '300px'}" class="left">
+                <a-input-search placeholder="搜索模块" class="module-search"/>
+                <a-directory-tree
+                        :defaultExpandAll="true"
+                        :treeData="modules"
+                        :replace-fields="{key:'id', title:'title', children: 'children'}"
+                        @select="onTreeSelect"/>
+            </a-card>
+            <!-- 表格区 -->
+            <a-card :bordered="false" size="small">
+                <template slot="title">
+                    <a-button type="primary" icon="plus" @click="onAdd" class="right-button">新增</a-button>
+                    <a-button icon="reload" :loading="isLoading" @click="doRefresh">刷新</a-button>
+                </template>
+                <template slot="extra">
+                    <a-input-search placeholder="搜索"/>
+                </template>
+                <a-table :columns="columns" :data-source="pages"
+                         :pagination="pagination"
+                         :loading="isTableDataLoading" rowKey="id">
+                    <template slot="usePerm" slot-scope="text, record">
+                        <a-checkbox :default-checked="record.usePerm" :disabled="true"/>
+                    </template>
+                    <template slot="operation" slot-scope="text, record">
+                        <a @click="onEdit(record)">修改</a>
+                        <a-divider type="vertical"/>
+                        <a @click="onDelete(record)">删除</a>
+                    </template>
+                </a-table>
+            </a-card>
         </div>
 
-        <!-- 表格区 -->
-        <a-space align="start" size="large">
-            <div>
-                <a-input-search style="margin-bottom: 8px" placeholder="搜索模块"/>
-                <a-tree
-                        style="width: 240px; border-right: 1px solid #d9d9d9;"
-                        :tree-data="modules"
-                        :blockNode="true"
-                        :replace-fields="{key:'id', title:'title', children: 'children'}"
-                        @select="onTreeSelect"
-                />
-            </div>
-            <!---->
-            <a-table :columns="columns" :data-source="data"
-                     :pagination="pagination"
-                     :loading="isTableDataLoading" rowKey="id">
-                <span slot="operation" slot-scope="text, record">
-                <a @click="onEdit(record)">修改</a>
-                <a-divider type="vertical"/>
-                <a @click="onDelete(record)">删除</a>
-                <a-divider type="vertical"/>
-                <a @click="onShowButtonModal(record)">按钮管理</a>
-
-            </span>
-            </a-table>
-        </a-space>
-
-
-        <!-- 模态框 -->
-        <PageModal
-                v-model="pageModalVisible"
-                :modal-data="selectedData"
-                :modal-type="pageModalType"
-                @doSave="doSave"/>
-        <ButtonModal
-                v-model="buttonModalVisibel"
-                :page-data="selectedData"/>
+        <page-modal v-model="modalVisible"
+                    :modal-data="page"
+                    :modal-type="modalType"
+                    @onSave="doSave"/>
     </div>
 </template>
 
 <script>
-    import columns from './columns'
-    import {ButtonModal, PageModal} from './modal'
-    import service from './service'
     import moduleService from '@/views/platform/rbac/module/service'
     import {array2Tree} from '@/utils/data'
+    import columns from './columns/page'
+    import service from './service'
+    import PageModal from "./modal"
 
     export default {
         name: "Page",
-        components: {PageModal, ButtonModal},
+
+        components: {PageModal},
+
         data() {
             return {
                 modules: [], // 模块数据
                 moduleId: '',
 
                 columns: columns,
-                data: [],
+                pages: [],
 
                 pagination: {
                     current: 1, // 当前页码
@@ -76,76 +71,67 @@
                     onChange: (page, pageSize) => {
                         this.pagination.current = page
                         this.pagination.pageSize = pageSize
-                        this.fetchAll()
+                        this.fetchPages()
                     },
                     // pageSize变化
                     onShowSizeChange: (current, size) => {
                         this.pagination.current = current
                         this.pagination.pageSize = size
-                        this.fetchAll()
+                        this.fetchPages()
                     }
                 },
                 isLoading: false,
                 isTableDataLoading: false,
-                moduleMap: null,
 
-                selectedData: null,
-                pageModalVisible: false,
-                pageModalType: '',
-                buttonModalVisibel: false
+                page: null,
+                modalVisible: false,
+                modalType: ''
             }
         },
         methods: {
             //
             onAdd() {
-                this.pageModalType = 'add'
-                this.pageModalVisible = true
+                this.modalType = 'add'
+                this.modalVisible = true
             },
             //
             onEdit(data) {
-                this.selectedData = data
-                this.pageModalType = 'edit'
-                this.pageModalVisible = true
-            },
-
-            //
-            onShowButtonModal(data) {
-                this.selectedData = data
-                this.buttonModalVisibel = true
+                this.page = data
+                this.modalType = 'edit'
+                this.modalVisible = true
             },
 
             //
             async doSave(data, callback) {
                 if (data.id) { // 修改
                     await service.create(data)
-                    await this.fetchAll()
+                    await this.fetchPages()
                     this.$message.success({content: '修改成功！'})
                 } else { // 新增
                     await service.update(data)
-                    await this.fetchAll()
+                    await this.fetchPages()
                     this.$message.success({content: '新增成功！'})
                 }
                 callback && callback()
             },
             //
             onDelete(data) {
-                let {doDelete} = this
                 this.$confirm({
                     title: '提示', content: '确定要删除吗？', okType: 'danger',
-                    onOk: () => doDelete(data)
+                    onOk: () => this.doDelete(data)
                 })
             },
             //
             async doDelete(data) {
                 await service.delete(data)
-                await this.fetchAll()
+                await this.fetchPages()
                 this.$message.success({content: '删除成功！'})
             },
             //
             async doRefresh() {
                 if (this.moduleId) {
                     this.isLoading = true
-                    await this.fetchPageByModuleId()
+                    await this.fetchPages()
                     this.$message.success('刷新成功！')
                     this.isLoading = false
                 } else {
@@ -154,41 +140,53 @@
 
             },
 
-            onTreeSelect(selectedKeys, {selected}) {
-                if (selected) {
+            onTreeSelect(selectedKeys) {
+                if (this.moduleId !== selectedKeys[0]) {
                     this.moduleId = selectedKeys[0]
-                    this.fetchPageByModuleId()
-                } else {
-                    this.moduleId = null
-                    this.data = []
+                    this.fetchPages()
                 }
             },
 
             //
-            async fetchAllModules() {
-                const modules = await moduleService.fetchAll()
+            async fetchModules() {
+                let modules = await moduleService.fetchAll()
+
                 this.modules = array2Tree(modules, {})
             },
 
-            async fetchPageByModuleId() {
+            async fetchPages() {
                 const params = {
                     page: this.pagination.current - 1, // 当前页码
                     size: this.pagination.pageSize, // 每页条数
                     sort: ['code,asc']
                 }
-                const {content, total} = await service.fetchAllByPage({...params, moduleId: this.moduleId})
-                this.data = content
+                const {content, total} = await service.fetchAllByPage(
+                    {...params, moduleId: this.moduleId})
+                this.pages = content
                 this.pagination.total = total
             }
 
         },
 
         created() {
-            this.fetchAllModules()
+            this.fetchModules()
         }
     }
 </script>
 
 <style lang="less" scoped>
+    .rbac-page {
+        .content {
+            display: flex;
+            align-items: stretch;
+        }
 
+        .left, .right-button {
+            margin-right: 8px;
+        }
+
+        .module-search {
+            margin-bottom: 8px;
+        }
+    }
 </style>

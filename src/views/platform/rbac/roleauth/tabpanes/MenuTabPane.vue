@@ -10,7 +10,6 @@
                 :replaceFields=replaceFields
                 :checkable="true"
                 :show-icon="true"
-                checkStrictly
                 @check="checkedKeys => this.checkedKeys = checkedKeys"
         >
             <template slot="custom" slot-scope="{ selected, title, icon }">

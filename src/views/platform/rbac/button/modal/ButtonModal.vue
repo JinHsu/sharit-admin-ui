@@ -1,27 +1,46 @@
 <template>
-    <a-modal centered :visible="value" :title="modalTitle" @cancel="onCancel">
+    <a-modal :visible="value" :title="modalTitle" :maskClosable="false"
+             @cancel="onCancel">
         <template slot="footer">
-            <a-button @click="onCancel">取消</a-button>
-            <a-button type="primary" :loading="loading" @click="onSave">保存</a-button>
+            <a-button icon="undo" @click="onCancel">取消</a-button>
+            <a-button type="primary" icon="save" :loading="loading" @click="onSave">保存</a-button>
         </template>
 
         <a-form layout="horizontal" id="form" :form="form" ref="form">
-            <a-row :gutter="8">
+            <a-row :gutter="[8, 8]">
                 <a-col :span="12">
-                    <a-form-item label="节点编码">
+                    <a-form-item label="按钮编码">
                         <a-input v-decorator="['code', rules.code]" autoComplete="off"/>
                     </a-form-item>
                 </a-col>
                 <a-col :span="12">
-                    <a-form-item label="节点名称">
+                    <a-form-item label="按钮名称">
                         <a-input v-decorator="['title', rules.title]" autoComplete="off"/>
                     </a-form-item>
                 </a-col>
             </a-row>
-            <a-row>
-                <a-col>
-                    <a-form-item label="所属模块">
-                        <ModuleRefer :sync="value" v-decorator="['moduleId', rules.moduleId]"/>
+            <a-row :gutter="[8, 8]">
+                <a-col :span="12">
+                    <a-form-item label="Url">
+                        <a-input v-decorator="['url', rules.url]" autoComplete="off"/>
+                    </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                    <a-form-item label="Method">
+                        <a-select v-decorator="['method', rules.method]" autoComplete="off">
+                            <a-select-option :value="1">GET</a-select-option>
+                            <a-select-option :value="2">POST</a-select-option>
+                            <a-select-option :value="3">PUT</a-select-option>
+                            <a-select-option :value="4">DELETE</a-select-option>
+                        </a-select>
+                    </a-form-item>
+                </a-col>
+            </a-row>
+
+            <a-row :gutter="[8, 8]">
+                <a-col :span="12">
+                    <a-form-item label="所属页面">
+                        <page-refer :sync="value" v-decorator="['pageId', rules.pageId]"/>
                     </a-form-item>
                 </a-col>
             </a-row>
@@ -37,14 +56,14 @@
 </template>
 
 <script>
-    import ModuleRefer from "@/views/platform/rbac/module/refer"
-    import moduleService from '@/views/platform/rbac/module/service'
-    import {array2Tree} from "@/utils/data";
-    import rules from '../rules'
+    import PageRefer from "@/views/platform/rbac/page/refer/PageRefer"
+    import rules from "../rules"
 
     export default {
-        name: "PageModal",
-        components: {ModuleRefer},
+        name: "ButtonModal",
+
+        components: {PageRefer},
+
         props: {
             value: {
                 type: Boolean,
@@ -57,6 +76,10 @@
             modalType: {
                 type: String,
                 default: 'add'
+            },
+            pageId: {
+                type: String,
+                required: false
             }
         },
         data() {
@@ -66,8 +89,7 @@
                 }),
                 rules: rules,
                 loading: false,
-                formData: {},
-                treeData: []
+                formData: {}
             }
 
         },
@@ -81,8 +103,7 @@
 
             onSave() {
                 this.loading = true
-                // eslint-disable-next-line no-unused-vars
-                this.form.validateFields({force: true}, (err, values) => {
+                this.form.validateFields({force: true}, (err) => {
                         if (!err) {
                             const saveData = {}
                             if (this.modalType === 'edit') {
@@ -95,7 +116,11 @@
                                 this.$emit('input', false)
                             }
 
-                            this.$emit('doSave', saveData, callback)
+                            try {
+                                this.$emit('onSave', saveData, callback)
+                            } finally {
+                                this.loading = false
+                            }
 
                         } else {
                             this.loading = false
@@ -106,40 +131,30 @@
 
             onCancel() {
                 this.$emit('input', false)
-            },
-
-            async syncData() {
-                const modules = await moduleService.fetchAll()
-                // 转换为树形结构数据
-                this.treeData = array2Tree(modules, {})
             }
 
         },
+
         computed: {
             modalTitle() {
-                return this.modalType === 'add' ? '新增节点' : '修改节点'
+                return this.modalType === 'add' ? '新增页面' : '修改页面'
             },
             isEdit() {
                 return this.modalType === 'edit'
             }
         },
 
-        mounted() {
-            this.syncData()
-        },
-
         watch: {
             value(visible) {
-                if (visible) {
-                    this.syncData()
-                }
                 if (!visible) {
                     this.form.resetFields()
                     this.loading = false
                 } else if (this.modalType === 'edit') {
-                    const {code, title, component, moduleId, remark} = this.modalData || {}
-                    const values = {code, title, component, moduleId, remark}
+                    const {code, title, url, method, pageId, remark} = this.modalData || {}
+                    const values = {code, title, url, method, pageId, remark}
                     this.$nextTick(() => this.form.setFieldsValue(values))
+                } else if (this.modalType === 'add') {
+                    this.$nextTick(() => this.form.setFieldsValue({pageId: this.pageId}))
                 }
             }
         }

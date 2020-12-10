@@ -1,11 +1,11 @@
 import axios from '@/axios'
 
-const baseUrl = '/rbac/node'
+const baseUrl = '/rbac/button'
 
 export default {
 
     fetchAllByPage: (params) => axios({
-        url: '/rbac/nodes',
+        url: '/rbac/buttons',
         method: 'GET',
         params: params
     }),
@@ -14,6 +14,11 @@ export default {
         url: `${baseUrl}`,
         method: 'GET',
         params: params
+    }),
+
+    fetchOne: (buttonId) => axios({
+        url: `${baseUrl}/${buttonId}`,
+        method: 'GET'
     }),
 
     create: (data) => axios({
