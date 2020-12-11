@@ -79,7 +79,8 @@
 
         methods: {
             edit() {
-                this.options.img = this.imageUrl
+                this.getBase64(this.imageUrl,
+                    (dataUrl) => this.options.img = dataUrl)
                 this.visible = true
             },
             // 缩放
@@ -131,6 +132,23 @@
                     this.loading = false
                 }
 
+            },
+
+            getBase64(url, callback) {
+                const image = new Image()
+                let dataURL = ''
+                image.src = url + '?v=' + Math.random()
+                image.setAttribute('crossOrigin', 'Anonymous')
+                image.onload = () => {
+                    const canvas = document.createElement('canvas')
+                    const width = image.width
+                    const height = image.height
+                    canvas.width = width
+                    canvas.height = height
+                    canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+                    dataURL = canvas.toDataURL('image/jpeg')
+                    return callback ? callback(dataURL) : null
+                }
             }
 
         }
