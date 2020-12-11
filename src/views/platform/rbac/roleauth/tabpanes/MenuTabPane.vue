@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="menu-tab-pane">
         <a-tree
-                style="width: 400px;"
+                class="tree"
                 :blockNode="true"
                 :showIcon="true"
                 :checkable="true"
@@ -10,15 +10,38 @@
                 :selectedKeys="selectedKeys"
                 :checkedKeys="checkedKeys"
                 :treeData="treeData"
+                :expandedKeys="expandedKeys"
                 @check="onCheck"
-                @select="onSelect">
+                @select="onSelect"
+                @expand="onExpand">
             <template slot="custom" slot-scope="{ selected, title, icon }">
                 <a-icon v-if="icon" :type="icon"/>
                 <a-icon v-else type="question-circle"/>
             </template>
         </a-tree>
-        <a-descriptions>
 
+        <a-descriptions title="菜单详情" size="middle" class="desc">
+            <a-descriptions-item label="菜单编码">
+                {{this.selectedMenu.code}}
+            </a-descriptions-item>
+            <a-descriptions-item label="菜单名称">
+                {{this.selectedMenu.title}}
+            </a-descriptions-item>
+            <a-descriptions-item label="路由path">
+                {{this.selectedMenu.path}}
+            </a-descriptions-item>
+            <a-descriptions-item label="路由name">
+                {{this.selectedMenu.name}}
+            </a-descriptions-item>
+            <a-descriptions-item label="重定向路径">
+                {{this.selectedMenu.redirect}}
+            </a-descriptions-item>
+            <a-descriptions-item label="是否虚菜单">
+                {{this.selectedMenu.fake ? '是' : '否'}}
+            </a-descriptions-item>
+            <a-descriptions-item label="备注">
+                {{this.selectedMenu.remark}}
+            </a-descriptions-item>
         </a-descriptions>
     </div>
 </template>
@@ -28,6 +51,7 @@
     import array2Tree from "@/utils/data/array2Tree"
     import {EventBus, REFRESH, SAVE} from '../eventbus'
     import service from "../service"
+    import {array2Map} from "@/utils/data";
 
     export default {
         name: "MenuTabPane",
@@ -39,10 +63,12 @@
         data() {
             return {
                 //
+                menuMap: null,
                 treeData: [], // 树型结构菜单数据
                 selectedKeys: [], // 勾选的数据
                 checkedKeys: {checked: [], halfChecked: []},
-                selectedMenu: {}
+                selectedMenu: {},
+                expandedKeys: []
             }
         },
 
@@ -70,6 +96,20 @@
                 }
             },
 
+            // 勾选时, 勾选所有下级
+            checkSub(node, checkedKeys) {
+                const children = node.$children
+                children.forEach(node => {
+                    if (node['checked'] !== undefined) {
+                        const key = node['eventKey']
+                        if (checkedKeys.checked.indexOf(key) === -1) {
+                            checkedKeys.checked.push(key)
+                        }
+                        this.checkSub(node, checkedKeys)
+                    }
+                })
+            },
+
             // 取消勾勾选且当前同级仅有自身被勾选时，默认也取消勾选上级
             uncheckParent(node, checkedKeys) {
                 const parent = node.$parent
@@ -90,9 +130,13 @@
                 }
             },
 
-            onSelect(selectedKeys, e) {
+            onSelect(selectedKeys) {
                 this.selectedKeys = selectedKeys
-                this.selectedMenu = e
+                this.selectedMenu = this.menuMap.get(selectedKeys[0])
+            },
+
+            onExpand(expandedKeys) {
+                this.expandedKeys = expandedKeys
             },
 
             async onSave() {
@@ -118,8 +162,9 @@
 
             async fetchAllMenus() {
                 const menus = await menuService.fetchAll()
+                this.menuMap = array2Map(menus, 'id')
                 menus.forEach(menu => {
-                    menu.disabled = menu.fake
+                    menu.checkable = !menu.fake
                     menu.scopedSlots = {icon: 'custom'}
                 })
                 this.treeData = array2Tree(menus, {})
@@ -130,6 +175,7 @@
                 if (this.roleId) {
                     const rolemenus = await service.fetchRoleMenu(this.roleId)
                     this.checkedKeys.checked = (rolemenus || []).map(rolemenu => rolemenu.menuId)
+                    this.expandedKeys = this.checkedKeys.checked
                 } else {
                     this.checkedKeys.checked = []
                 }
@@ -163,7 +209,7 @@
         watch: {
             roleId(value) {
                 if (value) {
-                    this.refresh()
+                    value && this.refresh()
                 } else {
                     this.checkedKeys.checked = []
                 }
@@ -175,5 +221,23 @@
 </script>
 
 <style lang="less" scoped>
+    .menu-tab-pane {
+        display: flex;
+        align-items: stretch;
 
+        .tree {
+            width: 400px;
+            margin-right: 10px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+        }
+
+        .desc {
+            flex: 1;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+    }
 </style>
