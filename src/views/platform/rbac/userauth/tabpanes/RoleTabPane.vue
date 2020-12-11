@@ -41,10 +41,7 @@
         name: "RoleTabPane",
 
         props: {
-            userId: {
-                type: String,
-                required: true
-            }
+            userId: {}
         },
 
         data() {

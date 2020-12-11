@@ -9,8 +9,9 @@
             @change="keys => this.targetKeys = keys">
 
         <template slot="children" slot-scope="{
-            props: { direction, filteredItems, selectedKeys, disabled: listDisabled },
+            props: { filteredItems, selectedKeys, disabled: listDisabled },
             on: { itemSelectAll, itemSelect }  }">
+
             <a-table rowKey="id" size="small"
                      :data-source="filteredItems"
                      :columns="columns"

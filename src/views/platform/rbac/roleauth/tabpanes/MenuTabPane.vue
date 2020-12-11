@@ -1,59 +1,103 @@
 <template>
     <div>
-        <!--<a-input-search
-                style="margin-bottom: 10px; max-width: 400px;"
-                placeholder="搜索菜单"
-                @change="onChange"/>-->
         <a-tree
-                :treeData="menus"
-                :checkedKeys="checkedKeys"
-                :replaceFields=replaceFields
+                style="width: 400px;"
+                :blockNode="true"
+                :showIcon="true"
                 :checkable="true"
-                :show-icon="true"
-                @check="checkedKeys => this.checkedKeys = checkedKeys"
-        >
+                checkStrictly
+                :replaceFields="{key:'id', value: 'id', title: 'title', children: 'children'}"
+                :selectedKeys="selectedKeys"
+                :checkedKeys="checkedKeys"
+                :treeData="treeData"
+                @check="onCheck"
+                @select="onSelect">
             <template slot="custom" slot-scope="{ selected, title, icon }">
                 <a-icon v-if="icon" :type="icon"/>
                 <a-icon v-else type="question-circle"/>
             </template>
         </a-tree>
+        <a-descriptions>
+
+        </a-descriptions>
     </div>
 </template>
 
 <script>
-    import menuService from "@/views/platform/rbac/menu/service";
-    import service from "@/views/platform/rbac/roleauth/service";
-    import {array2Tree} from "@/utils/data";
+    import menuService from "@/views/platform/rbac/menu/service"
+    import array2Tree from "@/utils/data/array2Tree"
     import {EventBus, REFRESH, SAVE} from '../eventbus'
+    import service from "../service"
 
     export default {
         name: "MenuTabPane",
 
         props: {
-            roleId: {
-                type: String,
-                required: true,
-                default: ''
-            }
+            roleId: {}
         },
 
         data() {
             return {
                 //
-                menus: [],
-                replaceFields: {key: 'id', title: 'title', children: 'children'},
-                checkedKeys: []
+                treeData: [], // 树型结构菜单数据
+                selectedKeys: [], // 勾选的数据
+                checkedKeys: {checked: [], halfChecked: []},
+                selectedMenu: {}
             }
         },
 
-        methods: {
-            onChange() {
+        computed: {},
 
+        methods: {
+            onCheck(checkedKeys, e) {
+                if (e.checked) {
+                    this.checkParent(e.node, checkedKeys)
+                } else {
+                    this.uncheckParent(e.node, checkedKeys)
+                }
+                this.checkedKeys = checkedKeys
+            },
+
+            // 勾选时，默认勾选所有上级
+            checkParent(node, checkedKeys) {
+                const parent = node.$parent
+                if (parent['checked'] === false) {
+                    const parentKey = parent['eventKey']
+                    if (checkedKeys.checked.indexOf(parentKey) === -1) {
+                        checkedKeys.checked.unshift(parentKey)
+                    }
+                    this.checkParent(parent, checkedKeys)
+                }
+            },
+
+            // 取消勾勾选且当前同级仅有自身被勾选时，默认也取消勾选上级
+            uncheckParent(node, checkedKeys) {
+                const parent = node.$parent
+                const children = parent.$children
+                let count = 0
+
+                children.forEach(node => {
+                    if (node.checked) {
+                        count++
+                    }
+                })
+
+                if (count === 1) { // 有且仅有1个
+                    const parentKey = parent['eventKey']
+                    const index = checkedKeys.checked.indexOf(parentKey)
+                    checkedKeys.checked.splice(index, 1)
+                    this.uncheckParent(parent, checkedKeys)
+                }
+            },
+
+            onSelect(selectedKeys, e) {
+                this.selectedKeys = selectedKeys
+                this.selectedMenu = e
             },
 
             async onSave() {
                 if (this.roleId) {
-                    const data = (this.checkedKeys || []).map(menuId => {
+                    const data = (this.checkedKeys.checked || []).map(menuId => {
                         return {roleId: this.roleId, menuId}
                     })
                     await service.saveRoleMenu(this.roleId, data)
@@ -73,21 +117,21 @@
             },
 
             async fetchAllMenus() {
-                const menus = await menuService.fetchAll();
-                // 添加scopedSlots属性
-                (menus || []).forEach(menu => {
+                const menus = await menuService.fetchAll()
+                menus.forEach(menu => {
+                    menu.disabled = menu.fake
                     menu.scopedSlots = {icon: 'custom'}
                 })
-                this.menus = array2Tree(menus, {})
+                this.treeData = array2Tree(menus, {})
             },
 
             // 查询角色分配的菜单
             async fetchRoleMenu() {
                 if (this.roleId) {
-                    const rolemenus = await service.fetchRoleMenu(this.roleId);
-                    this.checkedKeys = (rolemenus || []).map(rolemenu => rolemenu.menuId)
+                    const rolemenus = await service.fetchRoleMenu(this.roleId)
+                    this.checkedKeys.checked = (rolemenus || []).map(rolemenu => rolemenu.menuId)
                 } else {
-                    this.checkedKeys = []
+                    this.checkedKeys.checked = []
                 }
             },
 
@@ -121,7 +165,7 @@
                 if (value) {
                     this.refresh()
                 } else {
-                    this.checkedKeys = []
+                    this.checkedKeys.checked = []
                 }
             }
 
@@ -130,6 +174,6 @@
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
 </style>

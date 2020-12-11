@@ -10,7 +10,7 @@
                 </a-button>
             </template>
             <template slot="extra">
-                <span>选择用户：</span>
+                <span class="user-refer-required">选择用户</span>
                 <user-refer v-model="userId" class="user-refer"/>
                 <a-radio-group
                         default-value="role"
@@ -42,7 +42,7 @@
 
         data() {
             return {
-                userId: '',
+                userId: undefined, // 设置为undefined,placeholder才会显示
                 tabList: [{key: 'role', tab: '角色'}, {key: 'org', tab: '组织'}],
                 activeKey: 'role',
                 saving: false,
@@ -76,6 +76,25 @@
         .user-refer {
             width: 256px;
             margin-right: 8px;
+        }
+
+        .user-refer-required {
+            &::before {
+                display: inline-block;
+                margin-right: 4px;
+                color: #f5222d;
+                font-size: 14px;
+                font-family: SimSun, sans-serif;
+                line-height: 1;
+                content: '*';
+            }
+
+            &::after {
+                content: ':';
+                position: relative;
+                top: -0.5px;
+                margin: 0 8px 0 2px;
+            }
         }
     }
 </style>

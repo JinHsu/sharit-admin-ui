@@ -52,9 +52,7 @@
 
         created() {
             this.fetchAll()
-        },
-
-        watch: {}
+        }
     }
 </script>
 

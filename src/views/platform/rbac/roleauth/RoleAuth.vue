@@ -10,7 +10,7 @@
                 </a-button>
             </template>
             <template slot="extra">
-                <span>选择角色：</span>
+                <span class="role-refer-required">选择角色</span>
                 <role-refer v-model="roleId" class="role-refer"/>
                 <a-radio-group
                         default-value="menu"
@@ -53,10 +53,6 @@
         },
 
         methods: {
-            onTabChange(activeKey) {
-                this.activeKey = activeKey
-            },
-
             onSave() {
                 this.saving = true
                 EventBus.$emit(SAVE, this.activeKey, () => this.saving = false)
@@ -82,6 +78,27 @@
         .role-refer {
             width: 256px;
             margin-right: 8px;
+
+
+        }
+
+        .role-refer-required {
+            &::before {
+                display: inline-block;
+                margin-right: 4px;
+                color: #f5222d;
+                font-size: 14px;
+                font-family: SimSun, sans-serif;
+                line-height: 1;
+                content: '*';
+            }
+
+            &::after {
+                content: ':';
+                position: relative;
+                top: -0.5px;
+                margin: 0 8px 0 2px;
+            }
         }
     }
 </style>
