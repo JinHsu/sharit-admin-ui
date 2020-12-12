@@ -176,13 +176,17 @@
                     border-radius: 4px;
                     z-index: 100;
 
-                    .ant-card {
-                        border-radius: 4px;
-                    }
                 }
             }
 
         }
 
+    }
+</style>
+
+<style lang="less">
+
+    .framework-right-content-page .ant-card {
+        border-radius: 4px;
     }
 </style>

@@ -22,7 +22,7 @@
                          :pagination="pagination"
                          :loading="isTableDataLoading" rowKey="id">
                     <template slot="usePerm" slot-scope="text, record">
-                        <a-checkbox :default-checked="record.usePerm" :disabled="true"/>
+                        <a-checkbox v-model="record.usePerm" :disabled="true"/>
                     </template>
                     <template slot="operation" slot-scope="text, record">
                         <a @click="onEdit(record)">修改</a>
@@ -104,11 +104,11 @@
             //
             async doSave(data, callback) {
                 if (data.id) { // 修改
-                    await service.create(data)
+                    await service.update(data)
                     await this.fetchPages()
                     this.$message.success({content: '修改成功！'})
                 } else { // 新增
-                    await service.update(data)
+                    await service.create(data)
                     await this.fetchPages()
                     this.$message.success({content: '新增成功！'})
                 }
