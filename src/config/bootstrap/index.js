@@ -1,4 +1,5 @@
 export default {
+    hostName: 'Ant Design Vue Pro',
     //
     collapsed: false, //
     // 默认主题色
