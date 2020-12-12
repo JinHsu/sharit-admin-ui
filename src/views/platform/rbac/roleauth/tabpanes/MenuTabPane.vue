@@ -20,7 +20,7 @@
             </template>
         </a-tree>
 
-        <a-descriptions title="菜单详情" size="middle" class="desc">
+        <a-descriptions title="菜单详情" size="middle" class="desc" v-if="selectedKeys.length > 0">
             <a-descriptions-item label="菜单编码">
                 {{this.selectedMenu.code}}
             </a-descriptions-item>
@@ -43,6 +43,7 @@
                 {{this.selectedMenu.remark}}
             </a-descriptions-item>
         </a-descriptions>
+        <a-empty v-else description="请选择菜单" class="empty"/>
     </div>
 </template>
 
@@ -51,7 +52,7 @@
     import array2Tree from "@/utils/data/array2Tree"
     import {EventBus, REFRESH, SAVE} from '../eventbus'
     import service from "../service"
-    import {array2Map} from "@/utils/data";
+    import {array2Map} from "@/utils/data"
 
     export default {
         name: "MenuTabPane",
@@ -237,6 +238,10 @@
             border: 1px solid #d9d9d9;
             border-radius: 4px;
             padding: 10px;
+        }
+
+        .empty {
+            margin: auto;
         }
 
     }

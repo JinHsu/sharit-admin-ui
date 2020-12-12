@@ -16,6 +16,11 @@ export default {
         params: params
     }),
 
+    fetchOne: (pageId) => axios({
+        url: `/rbac/page/${pageId}`,
+        method: 'GET',
+    }),
+
     create: (data) => axios({
         url: `${baseUrl}`,
         method: 'POST',
