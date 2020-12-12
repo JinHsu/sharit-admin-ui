@@ -20,7 +20,7 @@
                     <a-button icon="reload" :loading="isLoading" @click="doRefresh">刷新</a-button>
                 </template>
 
-                <div v-if="pageId" style="width: 100%;">
+                <div v-if="pageId">
                     <a-descriptions title="关联页面" size="middle" class="desc">
                         <a-descriptions-item label="页面编码">
                             {{this.selectedPage.code}}
@@ -85,7 +85,6 @@
 
                 //
                 checkedList: [],
-                checkAll: false
             }
         },
 
@@ -106,7 +105,11 @@
             },
 
             indeterminate() {
-                return !!this.checkedList.length && this.checkedList.length < this.options.length;
+                return !!this.checkedList.length && this.checkedList.length < this.options.length
+            },
+
+            checkAll() {
+                return this.checkedList.length === this.options.length
             }
 
         },
@@ -115,12 +118,7 @@
             onCheckAllChange(e) {
                 Object.assign(this, {
                     checkedList: e.target.checked ? this.optionList : [],
-                    checkAll: e.target.checked,
-                });
-            },
-
-            onChange(checkedList) {
-                this.checkAll = checkedList.length === this.options.length;
+                })
             },
 
             onSelect(selectedKeys) {
