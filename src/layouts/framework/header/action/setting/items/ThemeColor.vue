@@ -1,11 +1,10 @@
 <template>
-    <div class="setting-action-drawer-index">
-        <div class="setting-action-drawer-index-title">主题颜色</div>
-        <div class="setting-action-drawer-index-theme-color">
+    <div class="setting-index">
+        <div class="setting-index-title">主题颜色</div>
+        <div class="setting-index-theme-color">
             <template v-for="(item, index) in colorList">
-                <a-tooltip :title="item.title" class="setting-action-drawer-index-theme-color-block" :key="index">
+                <a-tooltip :title="item.title" class="setting-index-theme-color-block" :key="index">
                     <a-tag :color="item.value" @click="changeThemeColor(item.value)">
-                        <!-- colorTheme: computed property of mixin -->
                         <a-icon type="check" v-if="themeColor === item.value"/>
                     </a-tag>
                 </a-tooltip>

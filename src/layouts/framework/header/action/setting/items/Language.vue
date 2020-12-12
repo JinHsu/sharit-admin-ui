@@ -1,9 +1,9 @@
 <template>
-    <div class="setting-action-drawer-index">
-        <div class="setting-action-drawer-index-title">系统语言</div>
-        <div class="setting-action-drawer-index-blockChecbox">
+    <div class="setting-index">
+        <div class="setting-index-title">系统语言</div>
+        <div class="setting-index-block-checbox">
             <a-tooltip placement="top" :open-delay="200" title="简体中文">
-                <div class="setting-action-drawer-index-item" @click="setLocale('zh_CN')">
+                <div class="setting-index-item" @click="setLocale('zh_CN')">
                     <a-badge :offset="[-24, 40]"
                              :number-style="{backgroundColor: '#52C41A'}"
                              :dot="(locale || '') === 'zh_CN'">
@@ -12,7 +12,7 @@
                 </div>
             </a-tooltip>
             <a-tooltip placement="top" :open-delay="200" title="English">
-                <div class="setting-action-drawer-index-item" @click="setLocale('en_US')">
+                <div class="setting-index-item" @click="setLocale('en_US')">
                     <a-badge :offset="[-24, 40]"
                              :number-style="{backgroundColor: '#52C41A'}"
                              :dot="(locale || '') === 'en_US'">

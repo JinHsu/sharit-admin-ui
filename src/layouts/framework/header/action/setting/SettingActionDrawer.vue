@@ -6,7 +6,7 @@
             @close="onClose"
             :width="300"
             :bodyStyle="{padding: 0}">
-        <div class="setting-action-drawer">
+        <div class="setting">
             <!--主题颜色设置-->
             <ThemeColor/>
             <a-divider/>
@@ -41,25 +41,37 @@
 </script>
 
 <style lang="less">
-    .setting-action-drawer {
+    .setting {
         padding: 20px;
 
         &-index {
             margin-bottom: 24px;
 
             &-theme-color {
-                height: 20px;
+                height: 24px;
+
+                .ant-tag {
+                    height: 24px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    padding: 2px 0 0;
+                }
 
                 &-block {
-                    width: 20px;
-                    height: 20px;
-                    border-radius: 2px;
+                    width: 24px;
+                    height: 24px;
                     float: left;
                     cursor: pointer;
                     margin-right: 8px;
-                    padding: 0;
+                    padding-left: 0;
+                    padding-right: 0;
                     text-align: center;
+                    color: #fff;
                     font-weight: 700;
+
+                    i {
+                        font-size: 14px;
+                    }
                 }
             }
 
@@ -70,8 +82,12 @@
                 font-weight: 700;
             }
 
-            &-blockChecbox {
+            &-block-checbox {
                 display: flex;
+
+                img {
+                    border-radius: 4px;
+                }
             }
 
             &-item {

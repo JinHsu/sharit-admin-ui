@@ -1,9 +1,9 @@
 <template>
-    <div class="setting-action-drawer-index">
-        <div class="setting-action-drawer-index-title">侧边栏外观</div>
-        <div class="setting-action-drawer-index-blockChecbox">
+    <div class="setting-index">
+        <div class="setting-index-title">侧边栏外观</div>
+        <div class="setting-index-block-checbox">
             <a-tooltip placement="top" :open-delay="200" title="深色">
-                <div class="setting-action-drawer-index-item" @click="changeThemeSider('dark')">
+                <div class="setting-index-item" @click="changeThemeSider('dark')">
                     <a-badge :offset="[-24, 50]"
                              :number-style="{backgroundColor: '#52C41A'}"
                              :dot="(themeSider || '') === 'dark'">
@@ -12,7 +12,7 @@
                 </div>
             </a-tooltip>
             <a-tooltip placement="top" :open-delay="200" title="浅色">
-                <div class="setting-action-drawer-index-item" @click="changeThemeSider('light')">
+                <div class="setting-index-item" @click="changeThemeSider('light')">
                     <a-badge :offset="[-24, 50]"
                              :number-style="{backgroundColor: '#52C41A'}"
                              :dot="(themeSider || '') === 'light'">
