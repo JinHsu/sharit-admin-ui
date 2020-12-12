@@ -45,9 +45,7 @@
                                     :disabled="disabled"
                                     @change="onCheckAllChange">全选
                         </a-checkbox>
-                        <a-checkbox-group :disabled="disabled" v-model="checkedList"
-                                          :options="options"
-                                          @change="onChange"
+                        <a-checkbox-group :disabled="disabled" v-model="checkedList" :options="options"
                         />
                     </div>
                     <a-empty v-else/>

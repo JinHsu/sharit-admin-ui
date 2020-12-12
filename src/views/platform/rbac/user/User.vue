@@ -2,8 +2,10 @@
     <div class="rbac-user">
         <a-card :bordered="false" size="small">
             <template slot="title">
-                <a-button type="primary" icon="plus" @click="onAdd" class="left-button">新增</a-button>
-                <a-button icon="reload" :loading="isLoading" @click="doRefresh" class="left-button">刷新</a-button>
+                <a-button v-action:add type="primary" icon="plus" @click="onAdd" class="left-button">新增</a-button>
+                <a-button v-action:refresh icon="reload" :loading="isLoading" @click="doRefresh" class="left-button">
+                    刷新
+                </a-button>
             </template>
             <template slot="extra">
                 <a-input-search placeholder="搜索"/>

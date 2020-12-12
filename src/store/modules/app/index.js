@@ -10,6 +10,7 @@ export default {
         // userId: '', cropper: '', nickname: '', birthday: '', sex: 'sex', area: '', lang: '', timeZone: '' }
         routes: [], // 动态路由表
         menus: [], // 动态菜单
+        buttons: null, // 菜单按钮
         userInfo: null, // 用户信息,默认为null不要修改为{}
     },
 
@@ -26,6 +27,9 @@ export default {
         setMenus: (state, menus) => {
             state.menus = menus
         },
+        setButtons: (state, buttons) => {
+            state.buttons = buttons
+        },
         setUserInfo: (state, userInfo) => {
             state.userInfo = userInfo
         },
@@ -40,6 +44,7 @@ export default {
         setAccessToken: ({commit}, accessToken) => commit('setAccessToken', accessToken),
         setRoutes: ({commit}, routes) => commit('setRoutes', routes),
         setMenus: ({commit}, menus) => commit('setMenus', menus),
+        setButtons: ({commit}, buttons) => commit('setButtons', buttons),
         setUserInfo: ({commit}, userInfo) => commit('setUserInfo', userInfo),
         setLogout: ({commit}) => commit('setLogout')
     }

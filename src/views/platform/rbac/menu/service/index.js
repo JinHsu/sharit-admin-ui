@@ -16,11 +16,6 @@ export default {
         params: params
     }),
 
-    fetchMenuPage: () => axios({
-        url: '/rbac/auth/menu/page',
-        method: 'GET'
-    }),
-
     create: (data) => axios({
         url: baseUrl,
         method: 'POST',

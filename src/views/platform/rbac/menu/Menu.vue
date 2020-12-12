@@ -5,7 +5,7 @@
                 <a-button type="primary" icon="plus" @click="onAdd" class="left-button">新增</a-button>
                 <a-button icon="reload" :loading="isLoading" @click="doRefresh" class="left-button">刷新</a-button>
             </template>
-            <a-table :columns="columns" :data-source="data"
+            <a-table :columns="columns" :data-source="treeData"
                      :pagination="false"
                      :loading="isTableDataLoading" rowKey="id"
             >
@@ -17,11 +17,6 @@
 
                 <span slot="fake" slot-scope="text, record">
                 <a-checkbox :default-checked="record.fake" :disabled="true"/>
-            </span>
-
-                <span slot="page" slot-scope="text, record">
-                <a-icon type="link" v-if="record.pageId"/>
-                {{ record.pageId | pageFilter(pageMap) }}
             </span>
 
                 <span slot="operation" slot-scope="text, record">
@@ -48,7 +43,7 @@
     import MenuModal from './modal'
     import columns from "./columns"
     import service from './service'
-    import {array2Map, array2Tree} from "@/utils/data"
+    import {array2Tree} from "@/utils/data"
 
     export default {
         name: "Menu",
@@ -58,20 +53,13 @@
         data() {
             return {
                 columns: columns,
-                data: [],
                 isLoading: false,
                 isTableDataLoading: false,
-                pageMap: null,
-
-                //
-                schemeId: '87145126-e28d-4697-bbe2-489e793ad474',
-
                 //
                 treeData: null, // 树渲染数据
                 menu: null, // 选中的数据
                 modalVisible: false, // 模态框状态
                 modalType: null, // 模块框标题
-                searchLoading: false
             }
         },
 
@@ -89,16 +77,9 @@
             },
 
             onDelete(data) {
-                const {children} = data
-                if (children && children.length > 0) {
-                    this.$message.error({content: '存在下级，不能删除！'})
-                    return
-                }
-
-                let {doDelete} = this
                 this.$confirm({
                     title: '提示', content: '确定要删除吗？', okType: 'danger',
-                    onOk: () => doDelete(data)
+                    onOk: () => this.doDelete(data)
                 })
             },
 
@@ -124,7 +105,6 @@
             //
             async doRefresh() {
                 this.isLoading = true
-                await this.fetchAssociatedPage()
                 await this.fetchAll()
                 this.$message.success('刷新成功！')
                 this.isLoading = false
@@ -134,36 +114,17 @@
 
             },
 
-            async fetchMenu() {
-
-            },
-
             async fetchAll() {
+                this.isTableDataLoading = true
                 const menus = await service.fetchAll()
-                this.data = array2Tree(menus, {})
-            },
-
-            async fetchAssociatedPage() {
-                const pages = await service.fetchMenuPage()
-                this.pageMap = array2Map(pages, 'id')
+                this.treeData = array2Tree(menus, {})
+                this.isTableDataLoading = false
             }
 
-        },
-
-        filters: {
-            // 关联页面过滤器
-            pageFilter(value, pageMap) {
-                return pageMap.has(value) ? pageMap.get(value).title : ''
-            }
         },
 
         created() {
-            this.isTableDataLoading = true
-            this.fetchAssociatedPage().then(() => {
-                this.fetchAll().then(() => {
-                    this.isTableDataLoading = false
-                })
-            })
+            this.fetchAll()
         }
 
     }

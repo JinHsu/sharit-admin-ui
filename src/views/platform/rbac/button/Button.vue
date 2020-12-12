@@ -154,11 +154,11 @@
             //
             async doSave(data, callback) {
                 if (data.id) { // 修改
-                    await service.create(data)
+                    await service.update(data)
                     await this.fetchButtons()
                     this.$message.success({content: '修改成功！'})
                 } else { // 新增
-                    await service.update(data)
+                    await service.create(data)
                     await this.fetchButtons()
                     this.$message.success({content: '新增成功！'})
                 }

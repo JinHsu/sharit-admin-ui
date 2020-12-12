@@ -24,6 +24,9 @@ async function buildMenuAuth() {
     router.addRoutes(routes ? [routes] : [])
     await store.dispatch('app/setMenus', menus)
 
+    //
+    const buttonsMap = buildButtons(userMenus)
+    await store.dispatch('app/setButtons', buttonsMap)
 }
 
 /**
@@ -34,9 +37,9 @@ function buildRoutes(treeMenus, parent) {
         parent = {path: '/', name: 'root', component: FrameLayout, children: []} // 根路由
     }
     treeMenus.forEach(treeMenu => {
-        const {title, icon, path, name, component, redirect = '', children} = treeMenu
+        const {id, title, icon, path, name, component, usePerm, pageId, redirect = '', children} = treeMenu
         const current = {
-            path, name, redirect, meta: {icon, title},
+            path, name, redirect, meta: {icon, title, menuId: id, usePerm, pageId,},
             component: component ? () => import(`@/${component}`) : EmptyLayout
         }
         parent.children.push(current)
@@ -55,15 +58,27 @@ function buildRoutes(treeMenus, parent) {
 function buildNavMenus(treeMenus = [], nextPath = "") {
     let navMenus = []
     treeMenus.forEach(treeMenu => {
-        const {title, icon, path, children} = treeMenu
+        const {title, icon, path, children, id, pageId} = treeMenu
         const newPath = nextPath + "/" + path
-        let navMenu = {title, icon, path: newPath}
+        let navMenu = {title, icon, path: newPath, id, pageId}
         if (children) {
             navMenu.children = buildNavMenus(children, newPath)
         }
         navMenus.push(navMenu)
     })
     return navMenus
+}
+
+/**
+ * 构建按钮数据
+ */
+function buildButtons(userMenus) {
+    const buttonsMap = new Map()
+    userMenus.forEach(userMenu => {
+        const {id, buttons} = userMenu
+        buttonsMap.set(id, buttons)
+    })
+    return buttonsMap
 }
 
 export {
