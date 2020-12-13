@@ -58,10 +58,7 @@
             async doLogout() {
                 await postLogout()
                 // 1.跳转到登录页面
-                await this.$router.push({
-                    path: LOGIN_URL,
-                    query: {redirect: this.$route.path}
-                })
+                await this.$router.push({path: LOGIN_URL})
                 // 2.刷新路由
                 resetRouter()
                 // window.location.reload()

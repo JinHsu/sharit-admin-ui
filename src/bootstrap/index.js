@@ -26,4 +26,7 @@ export default async function bootstrap() {
     let locale = Vue.ls.get('locale', config.locale)
     await store.dispatch('framework/setLocale', locale)
 
+    //
+    let multiTab = Vue.ls.get('multiTab', config.multiTab)
+    await store.dispatch('framework/setMultiTab', JSON.parse(multiTab))
 }

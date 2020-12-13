@@ -12,6 +12,8 @@ export default {
             themeSider: state => state.framework.themeSider,
             //
             drawerOpened: state => state.framework.drawerOpened,
+            //
+            multiTab: state => state.framework.multiTab,
         })
     },
 
@@ -21,7 +23,8 @@ export default {
             setLocale: `framework/setLocale`,
             setThemeColor: `framework/setThemeColor`,
             setThemeSider: `framework/setThemeSider`,
-            setDrawerOpened: `framework/setDrawerOpened`
+            setDrawerOpened: `framework/setDrawerOpened`,
+            setMultiTab: `framework/setMultiTab`,
         })
     }
 

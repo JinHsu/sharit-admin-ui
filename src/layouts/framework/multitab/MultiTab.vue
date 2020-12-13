@@ -40,6 +40,8 @@
 </template>
 
 <script>
+    import {framework} from '@/mixins'
+
     export default {
         name: "MultiTab",
 
@@ -53,9 +55,12 @@
             }
         },
 
+        mixins: [framework],
+
         methods: {
             onEdit(targetKey) {
                 this.remove(targetKey)
+                this.saveMultiTab()
             },
 
             remove(targetKey) {
@@ -72,6 +77,7 @@
 
             onContextClick(key, fullPath) {
                 this[key](fullPath)
+                this.saveMultiTab()
             },
 
             //
@@ -110,40 +116,51 @@
                 this.fullPathList.forEach((item) => {
                     this.remove(item)
                 })
+            },
+
+            saveMultiTab() {
+                const {activeKey, fullPathList, pages} = this
+                this.setMultiTab({activeKey, fullPathList, pages})
             }
 
         },
 
-        /* eslint-disable */
-        /**
-         * this.$route:
-         * {
-         *  fullPath: "/home/settings",
-         *  hash: "" ,
-         *  meta: {icon: '' , title: ''} ,
-         *  name: "settings" ,
-         *  params: {} ,
-         *  path: "/home/settings" ,
-         *  query: {}
-         * }
-         */
         created() {
-            this.pages.push(this.$route)
-            this.fullPathList.push(this.$route.fullPath)
-            this.selectedLastPath()
+            const {fullPathList, pages, activeKey} = this.multiTab
+            this.fullPathList = fullPathList
+            this.pages = pages
+            if (activeKey) {
+                this.activeKey = activeKey
+            } else {
+                const {fullPath, meta} = this.$route
+                this.activeKey = fullPath
+                if (this.fullPathList.indexOf(fullPath) < 0) {
+                    this.fullPathList.push(fullPath)
+                    this.pages.push({fullPath, meta})
+                }
+            }
         },
 
         watch: {
             '$route'(newVal) {
-                this.activeKey = newVal.fullPath
-                if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
-                    this.fullPathList.push(newVal.fullPath)
-                    this.pages.push(newVal)
+                const {fullPath, meta} = newVal
+                if (this.fullPathList.indexOf(fullPath) < 0) {
+                    this.activeKey = fullPath
+                    this.fullPathList.push(fullPath)
+                    this.pages.push({fullPath, meta})
+                    this.saveMultiTab()
                 }
             },
 
             activeKey(newPathKey) {
                 this.$router.push({path: newPathKey})
+            },
+
+            multiTab(newVal) {
+                const {fullPathList, pages, activeKey} = newVal
+                this.fullPathList = fullPathList
+                this.pages = pages
+                this.activeKey = activeKey
             }
         }
 

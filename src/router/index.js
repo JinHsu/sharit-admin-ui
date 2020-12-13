@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import NProgress from "@/components/nprogress"
-import {ANON_URL, HOME_UTL, LOGIN_URL} from "@/config/auth"
+import {ANON_URL, HOME_UTL, LOGIN_URL, ROOT_URL} from "@/config/auth"
 import store from "@/store"
 import {buildMenuAuth} from "@/auth/authz"
 import staticRoutes from '@/config/routes'
@@ -40,10 +40,17 @@ router.beforeEach((to, from, next) => {
 })
 
 async function routerIntercepter(to, from, next) {
+    if (to.path === ROOT_URL) {
+        next({path: LOGIN_URL})
+        return
+    }
+
     let accessToken = Vue.ls.get("accessToken")
     if (accessToken) {
-        if (LOGIN_URL === to.path) { // 已登录，自动跳转到默认页
-            next({path: HOME_UTL})
+        if (ANON_URL.includes(to.path)) { // 已登录
+            const activeKey = store.state.framework.multiTab.activeKey
+            const location = {path: activeKey ? activeKey : HOME_UTL} // 有登录历史则进入历史记录的页面，否则进入默认页面
+            next(location)
         } else {
             let token = store.state.app.accessToken
             if (token) {
@@ -54,7 +61,6 @@ async function routerIntercepter(to, from, next) {
                 // 1.登录后页面刷新，重新请求权限并生成动态路由表
                 await buildMenuAuth()
 
-                // router.push({path: to.path})
                 next({path: to.path})
             }
         }

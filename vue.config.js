@@ -89,7 +89,7 @@ module.exports = {
     // 有些值像 publicPath 和 historyApiFallback 不应该被修改，因为它们需要和开发服务器的 publicPath 同步以保障正常的工作。
     devServer: {
         // host
-        host: 'localhost',
+        host: '192.168.1.106',
 
         // port
         port: 8088,
@@ -102,6 +102,8 @@ module.exports = {
 
         // open
         open: false,
+
+        disableHostCheck: true, // 内网穿透
 
         // 如果你的前端应用和后端 API 服务器没有运行在同一个主机上，你需要在开发环境下将 API 请求代理到 API 服务器。
         proxy: {

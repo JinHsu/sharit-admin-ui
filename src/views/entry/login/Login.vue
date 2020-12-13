@@ -139,7 +139,7 @@
                 this.isLogin = false
                 this.isLoginFailed = false
                 //
-                let redirect = this.$route.query.redirect || HOME_UTL
+                let redirect = this.$store.state.framework.multiTab.activeKey || HOME_UTL
                 await this.$router.push({path: redirect})
 
                 const {nickname} = this.userInfo || {}

@@ -12,8 +12,15 @@ export default {
         //
         themeColor: '#1890FF', // 主题颜色
         themeSider: 'dark', // 侧边栏外观
-        // ...
+        // 打开的页面
+        multiTab: {
+            fullPathList: [],
+            pages: [],
+            activeKey: null
+        },
+        //
         drawerOpened: false, // 系统设置是否打开
+
     },
 
     mutations: {
@@ -41,6 +48,11 @@ export default {
             Vue.ls.set('themeSider', theme)
         },
 
+        setMultiTab: (state, multiTab) => {
+            state.multiTab = multiTab
+            Vue.ls.set('multiTab', JSON.stringify(multiTab))
+        },
+
         setDrawerOpened: (state, drawerOpened) => {
             state.drawerOpened = drawerOpened
         }
@@ -52,6 +64,7 @@ export default {
         setCollapsed: ({commit}, collapsed) => commit('setCollapsed', collapsed),
         setThemeColor: ({commit}, color) => commit('setThemeColor', color),
         setThemeSider: ({commit}, theme) => commit('setThemeSider', theme),
+        setMultiTab: ({commit}, multiTab) => commit('setMultiTab', multiTab),
         setDrawerOpened: ({commit}, drawerOpened) => commit('setDrawerOpened', drawerOpened),
     }
 }
