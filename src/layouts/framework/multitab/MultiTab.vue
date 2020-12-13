@@ -144,12 +144,12 @@
         watch: {
             '$route'(newVal) {
                 const {fullPath, meta} = newVal
+                this.activeKey = fullPath
                 if (this.fullPathList.indexOf(fullPath) < 0) {
-                    this.activeKey = fullPath
                     this.fullPathList.push(fullPath)
                     this.pages.push({fullPath, meta})
-                    this.saveMultiTab()
                 }
+                this.saveMultiTab()
             },
 
             activeKey(newPathKey) {
