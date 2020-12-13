@@ -127,8 +127,8 @@
 
         created() {
             const {fullPathList, pages, activeKey} = this.multiTab
-            this.fullPathList = fullPathList
-            this.pages = pages
+            this.fullPathList = fullPathList || []
+            this.pages = pages || []
             if (activeKey) {
                 this.activeKey = activeKey
             } else {
@@ -158,8 +158,8 @@
 
             multiTab(newVal) {
                 const {fullPathList, pages, activeKey} = newVal
-                this.fullPathList = fullPathList
-                this.pages = pages
+                this.fullPathList = fullPathList || []
+                this.pages = pages || []
                 this.activeKey = activeKey
             }
         }

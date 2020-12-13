@@ -32,8 +32,7 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use((response) => {
     const accessToken = response.headers['x-auth-token']
     if (accessToken) { // 重新登录
-        Vue.ls.set('accessToken', accessToken)
-        store.dispatch('app/setAccessToken', accessToken)
+        store.dispatch('app/setAccessToken', accessToken).then()
     }
     return response.data
 }, errorHandler)

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueStorage from 'vue-ls'
-import config from "@/config/ls";
+import lsConfig from "@/config/ls"
 
-Vue.use(VueStorage, config)
+Vue.use(VueStorage, lsConfig)
+

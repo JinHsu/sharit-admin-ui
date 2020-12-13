@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import localStorage from '@/use/local-storage/lsWrapper'
 
 export default {
     namespaced: true,
@@ -30,27 +30,27 @@ export default {
 
         setLocale: (state, locale) => {
             state.locale = locale
-            Vue.ls.set('locale', locale)
+            localStorage.set('locale', locale)
         },
 
         setCollapsed: (state, collapsed) => {
             state.collapsed = collapsed
-            Vue.ls.set('collapsed', collapsed)
+            localStorage.set('collapsed', collapsed)
         },
 
         setThemeColor: (state, color) => {
             state.themeColor = color
-            Vue.ls.set('themeColor', color)
+            localStorage.set('themeColor', color)
         },
 
         setThemeSider: (state, theme) => {
             state.themeSider = theme
-            Vue.ls.set('themeSider', theme)
+            localStorage.set('themeSider', theme)
         },
 
         setMultiTab: (state, multiTab) => {
             state.multiTab = multiTab
-            Vue.ls.set('multiTab', JSON.stringify(multiTab))
+            localStorage.set('multiTab', multiTab)
         },
 
         setDrawerOpened: (state, drawerOpened) => {

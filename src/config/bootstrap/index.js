@@ -9,7 +9,7 @@ export default {
     //
     locale: 'zh_CN',
     //
-    multiTab: JSON.stringify({fullPathList: [], pages: [], activeKey: null}),
+    multiTab: {fullPathList: [], pages: [], activeKey: null},
     //
     colorList: [
         {title: '薄暮', value: '#F5222D'},

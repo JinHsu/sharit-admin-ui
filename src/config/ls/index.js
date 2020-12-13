@@ -4,6 +4,6 @@ export default {
 
     name: 'ls', // name variable Vue.[ls] or this.[$ls],
 
-    storage: 'local' // localstorage name session, local, memory
+    storage: 'local' // localstorage name session, lsWrapper, memory
 
 }
