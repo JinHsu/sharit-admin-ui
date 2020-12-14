@@ -19,7 +19,7 @@
                 <template slot="extra">
                     <a-input-search placeholder="搜索"/>
                 </template>
-                <a-table :columns="columns" :data-source="buttons"
+                <a-table :columns="columns" :data-source="buttons" size="middle"
                          :pagination="pagination"
                          :loading="isTableDataLoading" rowKey="id">
                     <template slot="method" slot-scope="text">

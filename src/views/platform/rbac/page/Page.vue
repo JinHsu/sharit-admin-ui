@@ -18,7 +18,7 @@
                 <template slot="extra">
                     <a-input-search placeholder="搜索"/>
                 </template>
-                <a-table :columns="columns" :data-source="pages"
+                <a-table :columns="columns" :data-source="pages" size="middle"
                          :pagination="pagination"
                          :loading="isTableDataLoading" rowKey="id">
                     <template slot="usePerm" slot-scope="text, record">

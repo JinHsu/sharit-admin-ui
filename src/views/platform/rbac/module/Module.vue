@@ -8,7 +8,9 @@
             <template slot="extra">
                 <a-input-search placeholder="搜索"/>
             </template>
-            <a-table :columns="columns" :data-source="data" :loading="isTableDataLoading" :pagination="false"
+            <a-table :columns="columns" :data-source="data" size="middle"
+                     :loading="isTableDataLoading"
+                     :pagination="false"
                      rowKey="id">
                 <template slot="operation" slot-scope="text, record">
                     <a @click="onEdit(record)">修改</a>

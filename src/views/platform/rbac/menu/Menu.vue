@@ -5,7 +5,7 @@
                 <a-button type="primary" icon="plus" @click="onAdd" class="left-button">新增</a-button>
                 <a-button icon="reload" :loading="isLoading" @click="doRefresh" class="left-button">刷新</a-button>
             </template>
-            <a-table :columns="columns" :data-source="treeData"
+            <a-table :columns="columns" :data-source="treeData" size="middle"
                      :pagination="false"
                      :loading="isTableDataLoading" rowKey="id"
             >
