@@ -10,9 +10,8 @@
                      :loading="isTableDataLoading" rowKey="id"
             >
 
-            <span slot="name" slot-scope="text, record">
+            <span slot="icon" slot-scope="text, record">
                 <a-icon :type="record.icon" v-if="record.icon"/>
-                {{ record.title }}
             </span>
 
                 <span slot="fake" slot-scope="text, record">
