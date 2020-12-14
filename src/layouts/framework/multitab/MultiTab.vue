@@ -12,7 +12,7 @@
                 <a-tab-pane :key="page.fullPath">
                     <template slot="tab">
                         <a-dropdown :trigger="['contextmenu']">
-                            <span>{{page.meta.title}}</span>
+                            <span>{{page.title}}</span>
                             <a-menu slot="overlay" @click="({key}) => onContextClick(key, page.fullPath)">
                                 <a-menu-item key="closeLeft">
                                     <a-icon type="arrow-left"/>
@@ -49,9 +49,14 @@
 
         data() {
             return {
-                fullPathList: [],
                 pages: [],
                 activeKey: 0
+            }
+        },
+
+        computed: {
+            fullPathList() {
+                return (this.pages || []).map(page => page.fullPath)
             }
         },
 
@@ -65,7 +70,6 @@
 
             remove(targetKey) {
                 this.pages = this.pages.filter(page => page.fullPath !== targetKey)
-                this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
                 if (!this.fullPathList.includes(this.activeKey)) {
                     this.selectedLastPath()
                 }
@@ -119,15 +123,14 @@
             },
 
             saveMultiTab() {
-                const {activeKey, fullPathList, pages} = this
-                this.setMultiTab({activeKey, fullPathList, pages})
+                const {activeKey, pages} = this
+                this.setMultiTab({activeKey, pages})
             }
 
         },
 
         created() {
-            const {fullPathList, pages, activeKey} = this.multiTab
-            this.fullPathList = fullPathList || []
+            const {pages, activeKey} = this.multiTab
             this.pages = pages || []
             if (activeKey) {
                 this.activeKey = activeKey
@@ -136,7 +139,7 @@
                 this.activeKey = fullPath
                 if (this.fullPathList.indexOf(fullPath) < 0) {
                     this.fullPathList.push(fullPath)
-                    this.pages.push({fullPath, meta})
+                    this.pages.push({fullPath, title: meta.title, icon: meta.icon})
                 }
             }
         },
@@ -147,7 +150,7 @@
                 this.activeKey = fullPath
                 if (this.fullPathList.indexOf(fullPath) < 0) {
                     this.fullPathList.push(fullPath)
-                    this.pages.push({fullPath, meta})
+                    this.pages.push({fullPath, title: meta.title, icon: meta.icon})
                 }
                 this.saveMultiTab()
             },
@@ -157,8 +160,7 @@
             },
 
             multiTab(newVal) {
-                const {fullPathList, pages, activeKey} = newVal
-                this.fullPathList = fullPathList || []
+                const {pages, activeKey} = newVal
                 this.pages = pages || []
                 this.activeKey = activeKey
             }

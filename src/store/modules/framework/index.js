@@ -14,7 +14,6 @@ export default {
         themeSider: 'dark', // 侧边栏外观
         // 打开的页面
         multiTab: {
-            fullPathList: [],
             pages: [],
             activeKey: null
         },
