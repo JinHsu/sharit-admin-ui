@@ -29,7 +29,7 @@
                             {{this.selectedPage.title}}
                         </a-descriptions-item>
                         <a-descriptions-item label="组件路径">
-                            {{this.selectedPage.path}}
+                            {{this.selectedPage.component}}
                         </a-descriptions-item>
                         <a-descriptions-item label="是否启用按钮权限">
                             {{this.selectedPage.usePerm ? '是' : '否'}}
