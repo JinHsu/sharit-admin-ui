@@ -89,7 +89,7 @@ module.exports = {
     // 有些值像 publicPath 和 historyApiFallback 不应该被修改，因为它们需要和开发服务器的 publicPath 同步以保障正常的工作。
     devServer: {
         // host
-        host: '192.168.1.106',
+        host: 'localhost',
 
         // port
         port: 8088,

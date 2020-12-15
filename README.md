@@ -1,4 +1,4 @@
-# sharit-web-ui
+# sharit-admin-ui
 
 ## Project setup
 ```
