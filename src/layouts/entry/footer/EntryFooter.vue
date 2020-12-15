@@ -1,12 +1,23 @@
 <template>
     <div class="entry-footer">
         <div class="links">
-            <a href="#">帮助</a>
-            <a href="#">隐私</a>
-            <a href="#">条款</a>
+            <a href="https://www.antdv.com/docs/vue/introduce-cn/" target="_blank">
+                <a-icon type="ant-design"/>
+                Antdv
+            </a>
+            <a href="https://spring.io/projects/spring-boot" target="_blank">
+                <icon-font type="icon-spring"/>
+                SpringBoot
+            </a>
+            <a href="https://github.com/JinHsu/sharit-admin" target="_blank">
+                <a-icon type="github"/>
+                SharitAdmin
+            </a>
         </div>
         <div class="copyright">
             Copyright &copy; 2020 北京分享网络科技
+            <a-divider type="vertical"/>
+            京ICP备19020199号-1
         </div>
     </div>
 </template>

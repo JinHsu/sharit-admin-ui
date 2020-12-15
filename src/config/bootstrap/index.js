@@ -1,5 +1,6 @@
 export default {
-    hostName: 'Ant Design Vue Pro',
+    name: 'Sharit Admin',
+    desc: 'Sharit Admin 是一个开源精美简实用的后台管理系统',
     //
     collapsed: false, //
     // 默认主题色

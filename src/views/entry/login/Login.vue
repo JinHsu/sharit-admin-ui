@@ -63,13 +63,10 @@
             <div class="form-other-login">
                 <span>其他登录方式</span>
                 <a>
-                    <a-icon class="item-icon" type="alipay-circle"/>
+                    <a-icon class="item-icon" type="weibo"/>
                 </a>
                 <a>
-                    <a-icon class="item-icon" type="taobao-circle"/>
-                </a>
-                <a>
-                    <a-icon class="item-icon" type="weibo-circle"/>
+                    <a-icon class="item-icon" type="qq"/>
                 </a>
             </div>
 

@@ -3,18 +3,26 @@
         <div class="top">
             <a href="#">
                 <img class="logo" src="../../../assets/logo.svg" alt="Ant Design">
-                <span class="title">Ant Design</span>
+                <span class="title">{{title}}</span>
             </a>
         </div>
         <div class="desc">
-            Ant Design 是西湖区最具影响力的 Web 设计规范
+            {{desc}}
         </div>
     </div>
 </template>
 
 <script>
+    import bootstrap from '@/config/bootstrap'
+
     export default {
-        name: "EntryHeader"
+        name: "EntryHeader",
+        data() {
+            return {
+                title: bootstrap.name,
+                desc: bootstrap.desc
+            }
+        }
     }
 </script>
 
@@ -27,7 +35,8 @@
             line-height: 50px;
 
             .logo {
-                height: 50px;
+                height: 44px;
+                line-height: 44px;
                 vertical-align: top;
                 margin-right: 16px;
             }
@@ -35,8 +44,8 @@
             .title {
                 font-size: 36px;
                 color: rgba(0, 0, 0, .85);
+                font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
                 font-weight: 600;
-                position: relative;
             }
         }
 

@@ -34,7 +34,7 @@ router.afterEach(() => {
 router.beforeEach((to, from, next) => {
     NProgress.start() // start progress bar
     // 设置页面标题
-    window.document.title = to.meta.title === undefined ? config.hostName : to.meta.title
+    window.document.title = to.meta.title === undefined ? config.name : config.name + " - " + to.meta.title
     // 获取权限
     routerIntercepter(to, from, next).then(resolve => resolve)
 })

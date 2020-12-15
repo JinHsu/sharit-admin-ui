@@ -9,13 +9,14 @@
 
 <script>
     import {framework} from '@/mixins'
+    import bootstrap from '@/config/bootstrap'
 
     export default {
         name: "LogoHeader",
 
         data() {
             return {
-                title: 'Ant Design Pro'
+                title: bootstrap.name
             }
         },
 
@@ -36,20 +37,21 @@
         transition: all 0.2s;
 
         img {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: inline-block;
-            vertical-align: middle;
+            margin-top: 12px;
+            vertical-align: top;
         }
 
         h1 {
             color: #fff;
-            font-size: 20px;
+            font-size: 24px;
             margin: 0 0 0 12px;
             font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
             font-weight: 600;
             display: inline-block;
-            vertical-align: middle;
+            vertical-align: top;
         }
     }
 
