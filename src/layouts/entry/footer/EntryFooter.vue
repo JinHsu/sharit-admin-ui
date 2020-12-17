@@ -17,6 +17,7 @@
         <div class="copyright">
             Copyright &copy; 2020 北京分享网络科技
             <a-divider type="vertical"/>
+            <icon-font type="icon-beian"/>
             京ICP备19020199号-1
         </div>
     </div>

@@ -3,11 +3,12 @@ import axios from "@/axios";
 export default {
 
     /**
-     * 登录
+     * 获取短信验证码
      */
-    login: (params) => axios({
-        url: '/login', method: "POST", params: params,
-        headers: {"Content-Type": "application/x-www-form-urlencoded"}
+    fetchSmsCode: (params) => axios({
+        url: '/sms/code',
+        method: "GET",
+        params: params
     })
 
 }
