@@ -155,7 +155,7 @@
                                 Object.assign(params, {mobile, captcha})
                             }
 
-                            Object.assign(params, {vaptcha: this.token})
+                            Object.assign(params, {vaptcha: this.token, type: this.activeTabKey})
 
                             //
                             postLogin(params).then(() => this.onLoginSuccess()).finally(() => this.isLogin = false)

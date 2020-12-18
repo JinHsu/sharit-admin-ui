@@ -8,7 +8,7 @@ export default {
      * 登录
      */
     login: (params) => axios({
-        url: '/login',
+        url: params.type === 'username' ? '/login' : '/login/mobile',
         method: "POST",
         params: params,
         headers: {"Content-Type": "application/x-www-form-urlencoded"}
