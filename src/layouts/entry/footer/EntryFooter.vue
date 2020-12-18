@@ -36,6 +36,7 @@
         bottom: 0;
         padding: 24px;
         text-align: center;
+        margin-top: 24px;
 
         .links {
             margin-bottom: 8px;
