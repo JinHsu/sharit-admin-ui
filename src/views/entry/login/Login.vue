@@ -16,10 +16,10 @@
                 </a-input>
             </a-form-item>
             <a-form-item v-show="activeTabKey === 'username'">
-                <a-input size="large" type="password" placeholder="密码"
-                         v-decorator="['password', rules.password]">
+                <a-input-password size="large" placeholder="密码"
+                                  v-decorator="['password', rules.password]">
                     <a-icon slot="prefix" type="lock" class="icon-prefix"/>
-                </a-input>
+                </a-input-password>
             </a-form-item>
 
             <a-form-item v-show="activeTabKey === 'mobile'">
@@ -87,7 +87,6 @@
     import {postLogin} from '@/auth/authc'
     import {HOME_UTL} from "@/config/auth"
     import Vaptcha from "@/components/vaptcha"
-    import {app} from '@/mixins'
     import rules from './rules'
     import service from './service'
 
@@ -115,8 +114,6 @@
                 return !this.isGetCaptcha && '获取验证码' || (this.captchaCycleTime + '秒')
             }
         },
-
-        mixins: [app],
 
         methods: {
             onTabClick(key) {
@@ -181,7 +178,6 @@
             // 获取短信验证码
             onSmsCode(e) {
                 e.preventDefault()
-
 
                 this.isGetCaptcha = true
 
