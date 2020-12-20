@@ -177,11 +177,11 @@
             },
             onVaptchaSuccess(token) {
                 this.token = token
+                this.onMailCode()
             },
-            // 获取邮箱验证码
-            onMailCode(e) {
-                e.preventDefault()
 
+            // 获取邮箱验证码
+            onMailCode() {
                 this.isGetCaptcha = true
 
                 let validateFieldsKey = ['email']
@@ -190,7 +190,9 @@
                     (err, values) => {
                         if (!err) {
                             if (!this.token && this.current === 0) {
-                                this.$message.info("请进行人机验证！")
+                                if (!this.token && this.current === 0) {
+                                    this.$refs.vaptcha.validate()
+                                }
                                 this.isGetCaptcha = false
                                 return
                             }

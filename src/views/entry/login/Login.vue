@@ -1,7 +1,6 @@
 <template>
     <div class="entry-main">
-        <a-form class="form" :form="form"
-                @submit="onLogin">
+        <a-form class="form" :form="form">
             <a-tabs
                     :tab-bar-style="{textAlign: 'center', borderBottom: 'unset'}"
                     :active-key="activeTabKey" @change="onTabClick">
@@ -10,13 +9,13 @@
             </a-tabs>
 
             <a-form-item v-show="activeTabKey === 'username'">
-                <a-input size="large" type="text" placeholder="用户名"
+                <a-input size="large" type="text" placeholder="用户名" autocomplete="new-password"
                          v-decorator="['username', rules.username]">
                     <a-icon slot="prefix" type="user" class="icon-prefix"/>
                 </a-input>
             </a-form-item>
             <a-form-item v-show="activeTabKey === 'username'">
-                <a-input-password size="large" placeholder="密码"
+                <a-input-password size="large" placeholder="密码" autocomplete="new-password"
                                   v-decorator="['password', rules.password]">
                     <a-icon slot="prefix" type="lock" class="icon-prefix"/>
                 </a-input-password>
@@ -29,9 +28,7 @@
                 </a-input>
             </a-form-item>
 
-            <a-form-item>
-                <Vaptcha ref="vaptcha" @vaptchaSuccess="onVaptchaSuccess"/>
-            </a-form-item>
+            <Vaptcha ref="vaptcha" @vaptchaSuccess="onVaptchaSuccess"/>
 
             <a-row :gutter="16" v-show="activeTabKey === 'mobile'">
                 <a-col :span="16">
@@ -62,8 +59,8 @@
             </a-form-item>
 
             <a-form-item>
-                <a-button block size="large" type="primary" htmlType="submit"
-                          :loading="isLogin" :disabled="isLogin">
+                <a-button block size="large" type="primary"
+                          :loading="isLogin" @click="doLogin">
                     登录
                 </a-button>
             </a-form-item>
@@ -84,6 +81,7 @@
 </template>
 
 <script>
+    import {app} from '@/mixins'
     import {postLogin} from '@/auth/authc'
     import {HOME_UTL} from "@/config/auth"
     import Vaptcha from "@/components/vaptcha"
@@ -115,6 +113,8 @@
             }
         },
 
+        mixins: [app],
+
         methods: {
             onTabClick(key) {
                 this.activeTabKey = key
@@ -125,16 +125,12 @@
 
             onVaptchaSuccess(token) {
                 this.token = token
+                this.activeTabKey === 'username' && this.doLogin()
+                this.activeTabKey === 'mobile' && this.onSmsCode()
             },
 
             // 登录
-            onLogin(e) {
-                e.preventDefault()
-
-                if (!this.token && this.activeTabKey === 'username') {
-                    this.$message.info("请先进行人机验证！")
-                    return
-                }
+            doLogin() {
 
                 this.isLogin = true
 
@@ -143,6 +139,11 @@
                 this.form.validateFields(validateFieldsKey, {force: true},
                     (err, values) => {
                         if (!err) {
+                            if (!this.token && this.activeTabKey === 'username') {
+                                this.$refs.vaptcha.validate()
+                                return
+                            }
+
                             let params = {}
                             if (this.activeTabKey === 'username') {
                                 const {username, password} = values
@@ -176,8 +177,7 @@
             },
 
             // 获取短信验证码
-            onSmsCode(e) {
-                e.preventDefault()
+            onSmsCode() {
 
                 this.isGetCaptcha = true
 
@@ -191,7 +191,7 @@
                             //
 
                             if (!this.token && this.activeTabKey === 'mobile') {
-                                this.$message.info("请进行人机验证！")
+                                this.$refs.vaptcha.validate()
                                 this.isGetCaptcha = false
                                 return
                             }
