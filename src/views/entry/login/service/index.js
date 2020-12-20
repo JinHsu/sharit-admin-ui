@@ -5,7 +5,7 @@ export default {
     /**
      * 获取短信验证码
      */
-    fetchSmsCode: (params) => axios({
+    fetchCaptcha: (params) => axios({
         url: '/sms/code',
         method: "GET",
         params: params

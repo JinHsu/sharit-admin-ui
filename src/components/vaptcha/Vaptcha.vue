@@ -40,38 +40,41 @@
                 if (this.mode === 'invisible') {
                     _vaptchaObj.validate()
                 }
+            },
+            init() {
+                const script = document.createElement('script')
+                script.type = 'text/javascript'
+                script.src = this.script
+                document.body.appendChild(script)
+                const _this = this
+                script.onload = () => {
+                    vaptcha({
+                        //配置参数
+                        vid: this.vid, // 验证单元id
+                        type: this.mode, // 展现类型 点击式
+                        container: '#vaptchaContainer', // 按钮容器，可为Element 或者 selector
+                        scene: 1, // 场景值 默认0
+                        offline_server: "", //离线模式服务端地址，若尚未配置离线模式，请填写任意地址即可。
+                        //可选参数
+                        lang: 'zh-CN', // 语言 默认auto,可选值auto,zh-CN,en,zh-TW,jp
+                        https: true, // 使用https 默认 true
+                        style: 'dark' //按钮样式 默认dark，可选值 dark,light
+                    }).then(function (vaptchaObj) {
+                        _vaptchaObj = vaptchaObj
+                        if (_this.mode === 'click') {
+                            vaptchaObj.render() // 调用验证实例 vpObj 的 render 方法加载验证按钮(click方式调用)
+                        }
+                        //获取token
+                        _vaptchaObj.listen("pass", () => _this.$emit('vaptchaSuccess', vaptchaObj.getToken()))
+                        //关闭验证弹窗时触发
+                        _vaptchaObj.listen("close", () => _this.$emit('vaptchaClose'))
+                    })
+                }
             }
         },
 
         mounted() {
-            const script = document.createElement('script')
-            script.type = 'text/javascript'
-            script.src = this.script
-            document.body.appendChild(script)
-            const _this = this
-            script.onload = () => {
-                vaptcha({
-                    //配置参数
-                    vid: this.vid, // 验证单元id
-                    type: this.mode, // 展现类型 点击式
-                    container: '#vaptchaContainer', // 按钮容器，可为Element 或者 selector
-                    scene: 1, // 场景值 默认0
-                    offline_server: "", //离线模式服务端地址，若尚未配置离线模式，请填写任意地址即可。
-                    //可选参数
-                    lang: 'zh-CN', // 语言 默认auto,可选值auto,zh-CN,en,zh-TW,jp
-                    https: true, // 使用https 默认 true
-                    style: 'dark' //按钮样式 默认dark，可选值 dark,light
-                }).then(function (vaptchaObj) {
-                    _vaptchaObj = vaptchaObj
-                    if (_this.mode === 'click') {
-                        vaptchaObj.render() // 调用验证实例 vpObj 的 render 方法加载验证按钮(click方式调用)
-                    }
-                    //获取token
-                    _vaptchaObj.listen("pass", () => _this.$emit('vaptchaSuccess', vaptchaObj.getToken()))
-                    //关闭验证弹窗时触发
-                    _vaptchaObj.listen("close", () => _this.$emit('vaptchaClose'))
-                })
-            }
+            this.init()
         },
 
     }
