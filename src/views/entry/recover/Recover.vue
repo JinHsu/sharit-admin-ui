@@ -19,7 +19,7 @@
                         </a-input>
                     </a-form-item>
                     <a-form-item>
-                        <Vaptcha ref="vaptcha" @vaptchaSuccess="onVaptchaSuccess"/>
+                        <Vaptcha ref="vaptcha" @vaptchaSuccess="onVaptchaSuccess" @vaptchaClose="onVaptchaClose"/>
                     </a-form-item>
 
                     <a-form-item>
@@ -178,6 +178,11 @@
             onVaptchaSuccess(token) {
                 this.token = token
                 this.onMailCode()
+            },
+
+            onVaptchaClose() {
+                this.$refs.vaptcha.reset()
+                this.isGetCaptcha = false
             },
 
             // 获取邮箱验证码

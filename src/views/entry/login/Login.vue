@@ -28,7 +28,7 @@
                 </a-input>
             </a-form-item>
 
-            <Vaptcha ref="vaptcha" @vaptchaSuccess="onVaptchaSuccess"/>
+            <Vaptcha ref="vaptcha" @vaptchaSuccess="onVaptchaSuccess" @vaptchaClose="onVaptchaClose"/>
 
             <a-row :gutter="16" v-show="activeTabKey === 'mobile'">
                 <a-col :span="16">
@@ -127,6 +127,15 @@
                 this.token = token
                 this.activeTabKey === 'username' && this.doLogin()
                 this.activeTabKey === 'mobile' && this.onSmsCode()
+            },
+
+            onVaptchaClose() {
+                this.$refs.vaptcha.reset()
+                if (this.activeTabKey === 'username') {
+                    this.isLogin = false
+                } else if (this.activeTabKey === 'mobile') {
+                    this.isGetCaptcha = false
+                }
             },
 
             // 登录

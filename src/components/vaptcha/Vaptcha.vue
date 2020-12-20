@@ -69,7 +69,7 @@
                     //获取token
                     _vaptchaObj.listen("pass", () => _this.$emit('vaptchaSuccess', vaptchaObj.getToken()))
                     //关闭验证弹窗时触发
-                    _vaptchaObj.listen("close", () => vaptchaObj.reset())
+                    _vaptchaObj.listen("close", () => _this.$emit('vaptchaClose'))
                 })
             }
         },
