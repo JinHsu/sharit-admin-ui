@@ -48,7 +48,7 @@
                     </a-form-item>
                     <a-row :gutter="8">
                         <a-col :span="8">
-                            <a-button size="large" block @click="current--">上一步</a-button>
+                            <a-button size="large" block @click="onBack">重新开始</a-button>
                         </a-col>
                         <a-col :span="16">
                             <a-button size="large" type="primary" block
@@ -76,7 +76,7 @@
                     <div class="bottom">
                         <a-row :gutter="8">
                             <a-col :span="8">
-                                <a-button size="large" block @click="current--">上一步</a-button>
+                                <a-button size="large" block @click="onBack">再试一次</a-button>
                             </a-col>
                             <a-col :span="16">
                                 <a-button type="primary" size="large" block @click="toLogin">重新登录</a-button>
@@ -143,6 +143,15 @@
                         window.clearInterval(interval)
                     }
                 }, 1000)
+            },
+
+            onBack() {
+                if (this.current === 1) {
+                    this.$refs.vaptcha.reset()
+                    this.isGetCaptcha = false
+                }
+                this.form.resetFields()
+                this.current = 0;
             },
 
             // 获取邮箱验证码
