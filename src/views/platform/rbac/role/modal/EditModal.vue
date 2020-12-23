@@ -70,9 +70,9 @@
                             }
                             Object.assign(saveData, this.formData)
 
-                            const callback = () => {
+                            const callback = (show = false) => {
                                 this.loading = false
-                                this.$emit('input', false)
+                                this.$emit('input', show)
                             }
 
                             this.$emit('doSave', saveData, callback)
