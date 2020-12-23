@@ -13,7 +13,8 @@ export default {
 
     methods: {
         ...mapActions({
-            setUserInfo: 'app/setUserInfo'
+            setUserInfo: 'app/setUserInfo',
+            setAccessToken: 'app/setAccessToken'
         })
     }
 

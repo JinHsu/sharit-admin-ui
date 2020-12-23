@@ -50,10 +50,10 @@
 
             <a-form-item class="form-other-login">
                 <span>其他登录方式</span>
-                <a>
+                <a @click="onOtherLogin('weibo')">
                     <a-icon class="item-icon" type="weibo"/>
                 </a>
-                <a>
+                <a @click="onOtherLogin('qq')">
                     <a-icon class="item-icon" type="qq"/>
                 </a>
                 <router-link :to="{ name: 'recover'}" class="forge-password">
@@ -226,8 +226,21 @@
                         }
                     }
                 )
+            },
+
+            // 其他登录
+            onOtherLogin(registrationId) {
+                window.location.href = `http://localhost/oauth2/authorization/${registrationId}`
             }
         },
+
+        mounted() {
+            const {query: {token}} = this.$route
+            if (token) {
+                this.setAccessToken(token)
+                window.location.reload()
+            }
+        }
 
     }
 </script>
