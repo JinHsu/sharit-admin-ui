@@ -13,18 +13,18 @@
                      :pagination="pagination"
                      :loading="isTableDataLoading" rowKey="id">
 
-                <span slot="code" slot-scope="text, record">
+                <template slot="code" slot-scope="text, record">
                     {{text}}
                     <a-tag v-if="record.preset" color="#f5222d">
                         预置
                     </a-tag>
-                </span>
+                </template>
 
-                <span slot="operation" slot-scope="text, record">
+                <template slot="operation" slot-scope="text, record">
                     <a @click="onEdit(record)">修改</a>
                     <a-divider type="vertical"/>
                     <a @click="onDelete(record)">删除</a>
-                </span>
+                </template>
             </a-table>
         </a-card>
 
@@ -119,7 +119,7 @@
 
             doSave(data, callback) {
                 if (data.id) { // 修改
-                    service.update(data).then((newData) => {
+                    service.update(data).then(() => {
                         this.$message.success({content: '修改成功！'})
                         callback && callback()
                         this.fetchAll()

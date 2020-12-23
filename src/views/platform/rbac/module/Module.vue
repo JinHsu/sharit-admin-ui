@@ -3,7 +3,7 @@
         <a-card :bordered="false" size="small">
             <template slot="title">
                 <a-button type="primary" icon="plus" @click="onAdd" class="left-button">新增</a-button>
-                <a-button icon="reload" @click="doRefresh" class="left-button">刷新</a-button>
+                <a-button icon="reload" @click="doRefresh" :loading="isLoading" class="left-button">刷新</a-button>
             </template>
             <template slot="extra">
                 <a-input-search placeholder="搜索"/>
@@ -12,6 +12,13 @@
                      :loading="isTableDataLoading"
                      :pagination="false"
                      rowKey="id">
+                <template slot="code" slot-scope="text, record">
+                    {{text}}
+                    <a-tag v-if="record.preset" color="#f5222d">
+                        预置
+                    </a-tag>
+                </template>
+
                 <template slot="operation" slot-scope="text, record">
                     <a @click="onEdit(record)">修改</a>
                     <template v-if="!record.children || record.children.length === 0">
@@ -47,6 +54,8 @@
                 data: [],
                 isTableDataLoading: false,
 
+                isLoading: false,
+
                 // 模态框
                 module: null,
                 modalVisible: false,
@@ -66,39 +75,54 @@
             },
             //
             onDelete(data) {
+                if (data.preset) {
+                    this.$notification.error({message: '错误', description: "预置数据不能删除！"})
+                    return
+                }
                 this.$confirm({
                     title: '提示', content: '确定要删除吗？', okType: 'danger',
                     onOk: () => this.doDelete(data)
                 })
             },
 
-            async doDelete(data) {
-                await service.delete(data)
-                await this.fetchAll()
-                this.$message.success({content: '删除成功！'})
+            doDelete(data) {
+                service.delete(data).then(() => {
+                    this.$message.success({content: '删除成功！'})
+                    this.fetchAll()
+                })
             },
             //
             async doSave(data, callback) {
                 if (data.id) { // 修改
-                    await service.update(data)
-                    await this.fetchAll()
-                    this.$message.success({content: '修改成功！'})
+                    service.update(data).then(() => {
+                        this.$message.success({content: '修改成功！'})
+                        callback && callback()
+                        this.fetchAll()
+                    }).catch(() => callback && callback(true))
                 } else { // 新增
-                    await service.create(data)
-                    await this.fetchAll()
-                    this.$message.success({content: '新增成功！'})
+                    service.create(data).then(() => {
+                        this.$message.success({content: '新增成功！'})
+                        callback && callback()
+                        this.fetchAll()
+                    }).catch(() => callback && callback(true))
                 }
-                callback && callback()
             },
 
-            async doRefresh() {
-                await this.fetchAll()
-                this.$message.success('刷新成功！')
+            doRefresh() {
+                this.isLoading = true
+                this.fetchAll().then(() => {
+                    this.$message.success('刷新成功！')
+                }).finally(() => this.isLoading = false)
             },
 
-            async fetchAll() {
-                const modules = await service.fetchAll()
-                this.data = array2Tree(modules, {})// 转换为树形结构数据
+            fetchAll() {
+                return new Promise((resolve, reject) => {
+                    service.fetchAll().then((modules) => {
+                        this.data = array2Tree(modules, {})// 转换为树形结构数据
+                        resolve()
+                    }).catch(e => reject(e))
+                })
+
             }
         },
         computed: {},

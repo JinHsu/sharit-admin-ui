@@ -16,24 +16,24 @@
                      :pagination="pagination"
                      :loading="isTableDataLoading" rowKey="id">
 
-                <span slot="username" slot-scope="text, record">
+                <template slot="username" slot-scope="text, record">
                     {{text}}
                     <a-tag v-if="record.preset" color="#f5222d">
                         预置
                     </a-tag>
-                </span>
+                </template>
 
-                <span slot="enabled" slot-scope="text, record">
+                <template slot="enabled" slot-scope="text, record">
                     <a-tag :color="record.enabled ? 'green' : 'red'">
                         {{record.enabled ? '已启用' : '未启用'}}
                     </a-tag>
-                </span>
-                <span slot="locked" slot-scope="text, record">
+                </template>
+                <template slot="locked" slot-scope="text, record">
                     <a-tag :color="record.locked ? 'red' : 'green'">
                         {{record.locked ? '已锁定' : '未锁定'}}
                     </a-tag>
-                </span>
-                <span slot="operation" slot-scope="text, record">
+                </template>
+                <template slot="operation" slot-scope="text, record">
                     <a @click="onEdit(record)">修改</a>
                     <a-divider type="vertical"/>
 
@@ -60,7 +60,7 @@
                             </a-menu-item>
                         </a-menu>
                     </a-dropdown>
-                </span>
+                </template>
             </a-table>
         </a-card>
 

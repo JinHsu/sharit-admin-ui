@@ -2,7 +2,8 @@ export default [
     {
         dataIndex: 'code',
         title: '模块编码',
-        ellipsis: true
+        ellipsis: true,
+        scopedSlots: {customRender: 'code'},
     },
     {
         dataIndex: 'title',
