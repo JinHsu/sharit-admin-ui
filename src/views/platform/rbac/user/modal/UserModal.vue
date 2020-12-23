@@ -24,24 +24,6 @@
 
             <a-row :gutter="8">
                 <a-col :span="12">
-                    <a-form-item label="启用状态">
-                        <a-radio-group v-decorator="['enabled', rules.enabled]">
-                            <a-radio :value="true">已启用</a-radio>
-                            <a-radio :value="false">已停用</a-radio>
-                        </a-radio-group>
-                    </a-form-item>
-                </a-col>
-                <a-col :span="12">
-                    <a-form-item label="锁定状态">
-                        <a-radio-group v-decorator="['locked', rules.locked]">
-                            <a-radio :value="true">已锁定</a-radio>
-                            <a-radio :value="false">已解锁</a-radio>
-                        </a-radio-group>
-                    </a-form-item>
-                </a-col>
-            </a-row>
-            <a-row :gutter="8">
-                <a-col :span="12">
                     <a-form-item label="电子邮箱">
                         <a-input v-decorator="['email', rules.email]" autoComplete="off"/>
                     </a-form-item>
@@ -111,9 +93,9 @@
                                 }
                             })
 
-                            const callback = () => {
+                            const callback = (show = false) => {
                                 this.loading = false
-                                this.$emit('input', false)
+                                this.$emit('input', show)
                             }
 
                             this.$emit('doSave', saveData, callback)
@@ -142,15 +124,15 @@
                     this.form.resetFields()
                     this.loading = false
                 } else if (this.modalType === 'edit') {
-                    let {username, expiryDate, enabled, locked, email, mobile, remark} = this.modalData || {}
+                    let {username, expiryDate, email, mobile, remark} = this.modalData || {}
                     expiryDate = momentDate(expiryDate)
-                    const values = {username, expiryDate, enabled, locked, email, mobile, remark}
+                    const values = {username, expiryDate, email, mobile, remark}
                     this.$nextTick(() => {
                         this.form.setFieldsValue(values)
                     })
                 } else if (this.modalType === 'add') {
-                    const values = {enabled: false, locked: false}
-                    this.$nextTick(() => this.form.setFieldsValue(values))
+                    // const values = {enabled: false, locked: false}
+                    // this.$nextTick(() => this.form.setFieldsValue(values))
                 }
             }
         }

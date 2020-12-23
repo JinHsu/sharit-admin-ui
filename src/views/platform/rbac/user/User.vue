@@ -12,46 +12,55 @@
             </template>
 
             <a-table :columns="columns" :data-source="data" size="middle"
+                     :rowSelection="rowSelection"
                      :pagination="pagination"
                      :loading="isTableDataLoading" rowKey="id">
-            <span slot="enabled" slot-scope="text, record">
-                <a-tag :color="record.enabled ? 'green' : 'red'">
-                    {{record.enabled ? '已启用' : '已停用'}}
-                </a-tag>
-            </span>
+
+                <span slot="username" slot-scope="text, record">
+                    {{text}}
+                    <a-tag v-if="record.preset" color="red">
+                        预置
+                    </a-tag>
+                </span>
+
+                <span slot="enabled" slot-scope="text, record">
+                    <a-tag :color="record.enabled ? 'green' : 'red'">
+                        {{record.enabled ? '已启用' : '未启用'}}
+                    </a-tag>
+                </span>
                 <span slot="locked" slot-scope="text, record">
-                <a-tag :color="record.locked ? 'red' : 'green'">
-                    {{record.locked ? '已锁定' : '未锁定'}}
-                </a-tag>
-            </span>
+                    <a-tag :color="record.locked ? 'red' : 'green'">
+                        {{record.locked ? '已锁定' : '未锁定'}}
+                    </a-tag>
+                </span>
                 <span slot="operation" slot-scope="text, record">
-                <a @click="onEdit(record)">修改</a>
-                <a-divider type="vertical"/>
+                    <a @click="onEdit(record)">修改</a>
+                    <a-divider type="vertical"/>
 
-                <a @click="onDelete(record)">删除</a>
-                <a-divider type="vertical"/>
+                    <a @click="onDelete(record)">删除</a>
+                    <a-divider type="vertical"/>
 
-                <a-dropdown :trigger="['click']">
-                    <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-                        更多
-                        <a-icon type="down"/>
-                    </a>
-                    <a-menu slot="overlay">
-                        <a-menu-item>
-                            <a v-if="record.enabled" @click="onDisable(record)">停用</a>
-                            <a v-else @click="onEnable(record)">启用</a>
-                        </a-menu-item>
-                        <a-menu-item>
-                            <a v-if="record.locked" @click="onUnLock(record)">解锁</a>
-                            <a v-else @click="onLock(record)">锁定</a>
-                        </a-menu-item>
-                        <a-menu-divider/>
-                        <a-menu-item>
-                            <a @click="onModifyPwd(record)">修改密码</a>
-                        </a-menu-item>
-                    </a-menu>
-                </a-dropdown>
-            </span>
+                    <a-dropdown :trigger="['click']">
+                        <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+                            更多
+                            <a-icon type="down"/>
+                        </a>
+                        <a-menu slot="overlay">
+                            <a-menu-item>
+                                <a v-if="record.enabled" @click="onDisable(record)">停用</a>
+                                <a v-else @click="onEnable(record)">启用</a>
+                            </a-menu-item>
+                            <a-menu-item>
+                                <a v-if="record.locked" @click="onUnLock(record)">解锁</a>
+                                <a v-else @click="onLock(record)">锁定</a>
+                            </a-menu-item>
+                            <a-menu-divider/>
+                            <a-menu-item>
+                                <a @click="onModifyPwd(record)">修改密码</a>
+                            </a-menu-item>
+                        </a-menu>
+                    </a-dropdown>
+                </span>
             </a-table>
         </a-card>
 
@@ -77,7 +86,9 @@
             return {
                 columns: columns,
                 data: [],
+                rowSelection: {},
                 pagination: {
+                    size: 'default',
                     current: 1, // 当前页码
                     pageSize: 10, //
                     showSizeChanger: true,
@@ -121,29 +132,37 @@
             },
             //
             onDelete(data) {
+                if (data.preset) {
+                    this.$notification.error({message: '错误', description: "预置数据不能删除！"})
+                    return
+                }
                 this.$confirm({
-                    title: '提示', content: '确定要删除吗？', okType: 'danger',
+                    title: '警告', content: '确定要删除吗？', okType: 'danger',
                     onOk: () => this.doDelete(data)
                 });
             },
 
-            async doDelete(data) {
-                await service.delete(data)
-                await this.fetchAll()
-                this.$message.success({content: '删除成功！'})
+            doDelete(data) {
+                service.delete(data).then(() => {
+                    this.$message.success({content: '删除成功！'})
+                    this.fetchAll()
+                })
             },
 
-            async doSave(data, callback) {
+            doSave(data, callback) {
                 if (data.id) { // 修改
-                    await service.update(data)
-                    await this.fetchAll()
-                    this.$message.success({content: '修改成功！'})
+                    service.update(data).then(() => {
+                        this.$message.success({content: '修改成功！'})
+                        callback && callback()
+                        this.fetchAll()
+                    }).catch(() => callback && callback(true))
                 } else { // 新增
-                    await service.create(data)
-                    await this.fetchAll()
-                    this.$message.success({content: '新增成功！'})
+                    service.create(data).then(() => {
+                        this.$message.success({content: '新增成功！'})
+                        callback && callback()
+                        this.fetchAll()
+                    }).catch(() => callback && callback(true))
                 }
-                callback && callback()
             },
             //
             onModifyPwd() {
@@ -156,10 +175,9 @@
                 })
             },
 
-            async doDisable(data) {
+            doDisable(data) {
                 data.enabled = false
-                const user = await service.update(data)
-                Object.assign(data, user)
+                service.update(data).then(newData => Object.assign(data, newData))
             },
 
             onEnable(data) {
@@ -169,10 +187,9 @@
                 })
             },
 
-            async doEnable(data) {
+            doEnable(data) {
                 data.enabled = true
-                const user = await service.update(data)
-                Object.assign(data, user)
+                service.update(data).then(newData => Object.assign(data, newData))
             },
 
             onUnLock(data) {
@@ -182,10 +199,9 @@
                 })
             },
 
-            async doUnLock(data) {
+            doUnLock(data) {
                 data.locked = false
-                const user = await service.update(data)
-                Object.assign(data, user)
+                service.update(data).then(newData => Object.assign(data, newData))
             },
 
             onLock(data) {
@@ -195,37 +211,38 @@
                 })
             },
 
-            async doLock(data) {
+            doLock(data) {
                 data.locked = true
-                const user = await service.update(data)
-                Object.assign(data, user)
+                service.update(data).then(newData => Object.assign(data, newData))
             },
 
-            async doRefresh() {
+            doRefresh() {
                 this.isLoading = true
-                await this.fetchAll()
-                this.$message.success('刷新成功！')
-                this.isLoading = false
+                this.fetchAll().then(() => {
+                    this.$message.success('刷新成功！')
+                }).finally(() => this.isLoading = false)
             },
 
-            async fetchAll() {
+            fetchAll() {
                 const params = {
                     page: this.pagination.current - 1, // 当前页码
                     size: this.pagination.pageSize, // 每页条数
                     sort: ['username,asc']
                 }
-                const {content, total} = await service.fetchAllByPage(params)
-                this.data = content
-                this.pagination.total = total
+                return new Promise((resolve, reject) => {
+                    service.fetchAllByPage(params).then(({content, total}) => {
+                        this.data = content
+                        this.pagination.total = total
+                        resolve()
+                    }).catch(e => reject(e))
+                })
             }
 
         },
 
         created() {
             this.isTableDataLoading = true
-            this.fetchAll().then(() => {
-                this.isTableDataLoading = false
-            })
+            this.fetchAll().then(() => this.isTableDataLoading = false)
         },
 
     }
