@@ -21,6 +21,12 @@
                 <a-table :columns="columns" :data-source="pages" size="middle"
                          :pagination="pagination"
                          :loading="isTableDataLoading" rowKey="id">
+                    <template slot="code" slot-scope="text, record">
+                        {{text}}
+                        <a-tag v-if="record.preset" color="#f5222d">
+                            预置
+                        </a-tag>
+                    </template>
                     <template slot="usePerm" slot-scope="text, record">
                         <a-checkbox v-model="record.usePerm" :disabled="true"/>
                     </template>
@@ -61,6 +67,7 @@
                 pages: [],
 
                 pagination: {
+                    size: 'default',
                     current: 1, // 当前页码
                     pageSize: 10, //
                     showSizeChanger: true,
@@ -102,68 +109,87 @@
             },
 
             //
-            async doSave(data, callback) {
-                if (data.id) { // 修改
-                    await service.update(data)
-                    await this.fetchPages()
-                    this.$message.success({content: '修改成功！'})
-                } else { // 新增
-                    await service.create(data)
-                    await this.fetchPages()
-                    this.$message.success({content: '新增成功！'})
-                }
-                callback && callback()
-            },
-            //
             onDelete(data) {
+                if (data.preset) {
+                    this.$notification.error({message: '错误', description: "预置数据不能删除！"})
+                    return
+                }
                 this.$confirm({
                     title: '提示', content: '确定要删除吗？', okType: 'danger',
                     onOk: () => this.doDelete(data)
                 })
             },
             //
-            async doDelete(data) {
-                await service.delete(data)
-                await this.fetchPages()
-                this.$message.success({content: '删除成功！'})
+            doDelete(data) {
+                service.delete(data).then(() => {
+                    this.$message.success({content: '删除成功！'})
+                    this.fetchPages()
+                })
             },
+
             //
-            async doRefresh() {
+            doSave(data, callback) {
+                if (data.id) { // 修改
+                    service.update(data).then(() => {
+                        this.$message.success({content: '修改成功！'})
+                        callback && callback()
+                        this.fetchPages()
+                    }).catch(() => callback && callback(true))
+                } else { // 新增
+                    service.create(data).then(() => {
+                        this.$message.success({content: '新增成功！'})
+                        callback && callback()
+                        this.fetchPages()
+                    }).catch(() => callback && callback(true))
+                }
+            },
+
+            //
+            doRefresh() {
                 if (this.moduleId) {
                     this.isLoading = true
-                    await this.fetchPages()
-                    this.$message.success('刷新成功！')
-                    this.isLoading = false
+                    this.fetchPages().then(() => {
+                        this.$message.success('刷新成功！')
+                    }).finally(() => this.isLoading = false)
                 } else {
                     this.$message.error('请选择模块！')
                 }
-
             },
 
             onTreeSelect(selectedKeys) {
                 if (this.moduleId !== selectedKeys[0]) {
                     this.moduleId = selectedKeys[0]
-                    this.fetchPages()
+                    this.isTableDataLoading = true
+                    this.fetchPages().then(() => this.isTableDataLoading = false)
                 }
             },
 
             //
-            async fetchModules() {
-                let modules = await moduleService.fetchAll()
-
-                this.modules = array2Tree(modules, {})
+            fetchModules() {
+                return new Promise((resolve, reject) => {
+                    moduleService.fetchAll().then((modules) => {
+                        this.modules = array2Tree(modules, {})
+                        resolve()
+                    }).catch(e => reject(e))
+                })
             },
 
-            async fetchPages() {
+            fetchPages() {
                 const params = {
                     page: this.pagination.current - 1, // 当前页码
                     size: this.pagination.pageSize, // 每页条数
                     sort: ['code,asc']
                 }
-                const {content, total} = await service.fetchAllByPage(
-                    {...params, moduleId: this.moduleId})
-                this.pages = content
-                this.pagination.total = total
+
+                return new Promise((resolve, reject) => {
+                    service.fetchAllByPage({...params, moduleId: this.moduleId})
+                        .then(({content, total}) => {
+                            this.pages = content
+                            this.pagination.total = total
+                            resolve()
+                        })
+                        .catch(e => reject(e))
+                })
             }
 
         },

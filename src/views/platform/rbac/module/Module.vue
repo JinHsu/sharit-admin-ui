@@ -92,7 +92,7 @@
                 })
             },
             //
-            async doSave(data, callback) {
+            doSave(data, callback) {
                 if (data.id) { // 修改
                     service.update(data).then(() => {
                         this.$message.success({content: '修改成功！'})
@@ -122,7 +122,6 @@
                         resolve()
                     }).catch(e => reject(e))
                 })
-
             }
         },
         computed: {},

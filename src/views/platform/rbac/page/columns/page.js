@@ -1,5 +1,8 @@
 export default [
-    {dataIndex: 'code', title: '页面编码', width: 180, ellipsis: true},
+    {
+        dataIndex: 'code', title: '页面编码', width: 180, ellipsis: true,
+        scopedSlots: {customRender: 'code'},
+    },
     {dataIndex: 'title', title: '页面名称', width: 180, ellipsis: true},
     {
         dataIndex: 'usePerm', title: '按钮权限', width: 100, ellipsis: true,
