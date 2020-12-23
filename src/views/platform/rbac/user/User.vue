@@ -18,7 +18,7 @@
 
                 <span slot="username" slot-scope="text, record">
                     {{text}}
-                    <a-tag v-if="record.preset" color="red">
+                    <a-tag v-if="record.preset" color="#f5222d">
                         预置
                     </a-tag>
                 </span>
@@ -137,7 +137,7 @@
                     return
                 }
                 this.$confirm({
-                    title: '警告', content: '确定要删除吗？', okType: 'danger',
+                    title: '提示', content: '确定要删除吗？', okType: 'danger',
                     onOk: () => this.doDelete(data)
                 });
             },
