@@ -141,24 +141,16 @@
             },
 
             async onSave() {
-                if (this.roleId) {
-                    const data = (this.checkedKeys.checked || []).map(menuId => {
-                        return {roleId: this.roleId, menuId}
-                    })
-                    await service.saveRoleMenu(this.roleId, data)
-                    this.$message.success({content: '保存成功！'})
-                } else {
-                    this.$message.error({content: '请选择角色！'})
-                }
+                const data = (this.checkedKeys.checked || []).map(menuId => {
+                    return {roleId: this.roleId, menuId}
+                })
+                await service.saveRoleMenu(this.roleId, data)
+                this.$message.success({content: '保存成功！'})
             },
 
             async onRefresh() {
-                if (this.roleId) {
-                    await this.refresh()
-                    this.$message.success({content: '刷新成功！'})
-                } else {
-                    this.$message.error({content: '请选择角色！'})
-                }
+                await this.refresh()
+                this.$message.success({content: '刷新成功！'})
             },
 
             async fetchAllMenus() {
@@ -183,8 +175,7 @@
             },
 
             async refresh() {
-                await this.fetchAllMenus()
-                await this.fetchRoleMenu()
+                await Promise.all([this.fetchAllMenus(), this.fetchRoleMenu()])
             }
         },
 

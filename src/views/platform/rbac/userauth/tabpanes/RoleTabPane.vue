@@ -77,30 +77,22 @@
                 }
             },
 
-            async onSave() {
-                if (this.userId) {
-                    const data = (this.targetKeys || []).map(roleId => {
-                        return {userId: this.userId, roleId}
-                    })
-                    await service.saveUserRole(this.userId, data)
-                    this.$message.success({content: '保存成功！'})
-                } else {
-                    this.$message.error({content: '请选择用户！'})
-                }
-            },
-
             filterOption(inputValue, item) {
                 // 按角色编码或名称过滤
                 return (item['title'] || '').indexOf(inputValue) > -1 || (item['code'] || '').indexOf(inputValue) > -1
             },
 
+            async onSave() {
+                const data = (this.targetKeys || []).map(roleId => {
+                    return {userId: this.userId, roleId}
+                })
+                await service.saveUserRole(this.userId, data)
+                this.$message.success({content: '保存成功！'})
+            },
+
             async onRefresh() {
-                if (this.userId) {
-                    await this.refresh()
-                    this.$message.success({content: '刷新成功！'})
-                } else {
-                    this.$message.error({content: '请选择用户！'})
-                }
+                await this.refresh()
+                this.$message.success({content: '刷新成功！'})
             },
 
             async fetchAllRole() {
@@ -125,8 +117,7 @@
             },
 
             async refresh() {
-                await this.fetchAllRole()
-                await this.fetchUserRole()
+                await Promise.all([this.fetchAllRole(), this.fetchUserRole()])
             }
         },
 

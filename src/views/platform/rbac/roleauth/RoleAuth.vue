@@ -54,12 +54,20 @@
 
         methods: {
             onSave() {
+                if (!this.roleId) {
+                    this.$notification.error({message: '错误', description: "请选择角色！"})
+                    return
+                }
                 this.saving = true
                 EventBus.$emit(SAVE, this.activeKey, () => this.saving = false)
                 this.saving = false
             },
 
             onRefresh() {
+                if (!this.roleId) {
+                    this.$notification.error({message: '错误', description: "请选择角色！"})
+                    return
+                }
                 this.refreshing = true
                 EventBus.$emit(REFRESH, this.activeKey, () => this.refreshing = false)
             }

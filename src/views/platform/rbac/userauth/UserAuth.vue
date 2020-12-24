@@ -53,12 +53,20 @@
 
         methods: {
             onSave() {
+                if (!this.userId) {
+                    this.$notification.error({message: '错误', description: "请选择用户！"})
+                    return
+                }
                 this.saving = true
                 EventBus.$emit(SAVE, this.activeKey, () => this.saving = false)
                 this.saving = false
             },
 
             onRefresh() {
+                if (!this.userId) {
+                    this.$notification.error({message: '错误', description: "请选择用户！"})
+                    return
+                }
                 this.refreshing = true
                 EventBus.$emit(REFRESH, this.activeKey, () => this.refreshing = false)
             }

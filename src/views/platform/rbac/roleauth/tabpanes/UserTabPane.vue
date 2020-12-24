@@ -89,24 +89,16 @@
                 return (item['username'] || '').indexOf(inputValue) > -1 || (item['nickname'] || '').indexOf(inputValue) > -1
             },
             async onSave() {
-                if (this.roleId) {
-                    const data = (this.targetKeys || []).map(userId => {
-                        return {roleId: this.roleId, userId}
-                    })
-                    await service.saveRoleUser(this.roleId, data)
-                    this.$message.success({content: '保存成功！'})
-                } else {
-                    this.$message.error({content: '请选择角色！'})
-                }
+                const data = (this.targetKeys || []).map(userId => {
+                    return {roleId: this.roleId, userId}
+                })
+                await service.saveRoleUser(this.roleId, data)
+                this.$message.success({content: '保存成功！'})
             },
 
             async onRefresh() {
-                if (this.roleId) {
-                    await this.refresh()
-                    this.$message.success({content: '刷新成功！'})
-                } else {
-                    this.$message.error({content: '请选择角色！'})
-                }
+                await this.refresh()
+                this.$message.success({content: '刷新成功！'})
             },
 
             async fetchAllUser() {
@@ -132,8 +124,7 @@
             },
 
             async refresh() {
-                await this.fetchAllUser()
-                await this.fetchRoleUser()
+                await Promise.all([this.fetchAllUser(), this.fetchRoleUser()])
             }
 
         },

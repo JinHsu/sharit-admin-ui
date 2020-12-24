@@ -55,6 +55,15 @@ function error403() {
 }
 
 function error500(data) {
+    if (typeof data === 'string') {
+        notification.error({
+            message: '错误',
+            description: '服务器拒绝连接，请检查服务是否正常！',
+            duration: 3
+        })
+        return
+    }
+
     notification.error({
         message: '错误',
         description: (h) => {
