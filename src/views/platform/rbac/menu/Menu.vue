@@ -92,48 +92,40 @@
                 })
             },
 
-            doDelete(data) {
-                service.delete(data).then(() => {
-                    this.$message.success({content: '删除成功！'})
-                    this.fetchAll()
-                })
+            async doDelete(data) {
+                await service.delete(data)
+                this.$message.success({content: '删除成功！'})
+                await this.fetchAll()
             },
 
-            doSave(data, callback) {
-                if (data.id) { // 修改
-                    service.update(data).then(() => {
+            async doSave(data, callback) {
+                try {
+                    if (data.id) { // 修改
+                        await service.update(data)
                         this.$message.success({content: '修改成功！'})
-                        callback && callback()
-                        this.fetchAll()
-                    }).catch(() => callback && callback(true))
-                } else { // 新增
-                    service.create(data).then(() => {
+                    } else { // 新增
+                        await service.create(data)
                         this.$message.success({content: '新增成功！'})
-                        callback && callback()
-                        this.fetchAll()
-                    }).catch(() => callback && callback(true))
+                    }
+                    await this.fetchAll()
+                } catch (e) {
+                    callback && callback(true)
                 }
             },
 
             //
-            doRefresh() {
+            async doRefresh() {
                 this.isLoading = true
-                this.fetchAll().then(() => {
-                    this.$message.success('刷新成功！')
-                }).finally(() => this.isLoading = false)
+                await this.fetchAll()
+                this.isLoading = false
+                this.$message.success('刷新成功！')
             },
 
-            fetchAll() {
+            async fetchAll() {
                 this.isTableDataLoading = true
-                return new Promise((resolve, reject) => {
-                    service.fetchAll()
-                        .then((menus) => {
-                            this.treeData = array2Tree(menus, {})// 转换为树形结构数据
-                            resolve()
-                        })
-                        .catch(e => reject(e))
-                        .finally(() => this.isTableDataLoading = false)
-                })
+                const menus = await service.fetchAll()
+                this.treeData = array2Tree(menus, {})// 转换为树形结构数据
+                this.isTableDataLoading = false
             }
 
         },

@@ -128,7 +128,7 @@
 
             async onSave() {
                 if (!this.pageId) {
-                    this.$message.error('请选择菜单！')
+                    this.$notification.error({message: '错误', description: "请选择菜单！"})
                     return
                 }
                 const menuId = this.selectedKeys[0]
@@ -143,13 +143,11 @@
             async doRefresh() {
                 this.loading = true
                 if (!this.pageId) {
-                    this.$message.error('请选择菜单！')
+                    this.$notification.error({message: '错误', description: "请选择菜单！"})
                     return
                 }
                 try {
-                    await this.fetchPage()
-                    await this.fetchButtons()
-                    await this.fetchMenuButtons()
+                    await Promise.all([this.fetchPage(), this.fetchButtons(), this.fetchMenuButtons()])
                     this.$message.success('刷新成功！')
                 } finally {
                     this.loading = false

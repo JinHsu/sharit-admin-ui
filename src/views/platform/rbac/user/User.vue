@@ -142,26 +142,25 @@
                 });
             },
 
-            doDelete(data) {
-                service.delete(data).then(() => {
-                    this.$message.success({content: '删除成功！'})
-                    this.fetchAll()
-                })
+            async doDelete(data) {
+                await service.delete(data)
+                this.$message.success({content: '删除成功！'})
+                await this.fetchAll()
             },
 
-            doSave(data, callback) {
-                if (data.id) { // 修改
-                    service.update(data).then(() => {
+            async doSave(data, callback) {
+                try {
+                    if (data.id) { // 修改
+                        await service.update(data)
                         this.$message.success({content: '修改成功！'})
-                        callback && callback()
-                        this.fetchAll()
-                    }).catch(() => callback && callback(true))
-                } else { // 新增
-                    service.create(data).then(() => {
+                    } else { // 新增
+                        await service.create(data)
                         this.$message.success({content: '新增成功！'})
-                        callback && callback()
-                        this.fetchAll()
-                    }).catch(() => callback && callback(true))
+                    }
+                    callback && callback()
+                    await this.fetchAll()
+                } catch (e) {
+                    callback && callback(true)
                 }
             },
             //
@@ -175,9 +174,10 @@
                 })
             },
 
-            doDisable(data) {
+            async doDisable(data) {
                 data.enabled = false
-                service.update(data).then(newData => Object.assign(data, newData))
+                const newData = await service.update(data)
+                Object.assign(data, newData)
             },
 
             onEnable(data) {
@@ -187,9 +187,10 @@
                 })
             },
 
-            doEnable(data) {
+            async doEnable(data) {
                 data.enabled = true
-                service.update(data).then(newData => Object.assign(data, newData))
+                const newData = await service.update(data)
+                Object.assign(data, newData)
             },
 
             onUnLock(data) {
@@ -199,9 +200,10 @@
                 })
             },
 
-            doUnLock(data) {
+            async doUnLock(data) {
                 data.locked = false
-                service.update(data).then(newData => Object.assign(data, newData))
+                const newData = await service.update(data)
+                Object.assign(data, newData)
             },
 
             onLock(data) {
@@ -211,31 +213,28 @@
                 })
             },
 
-            doLock(data) {
+            async doLock(data) {
                 data.locked = true
-                service.update(data).then(newData => Object.assign(data, newData))
+                const newData = await service.update(data)
+                Object.assign(data, newData)
             },
 
-            doRefresh() {
+            async doRefresh() {
                 this.isLoading = true
-                this.fetchAll().then(() => {
-                    this.$message.success('刷新成功！')
-                }).finally(() => this.isLoading = false)
+                await this.fetchAll()
+                this.isLoading = false
+                this.$message.success('刷新成功！')
             },
 
-            fetchAll() {
+            async fetchAll() {
                 const params = {
                     page: this.pagination.current - 1, // 当前页码
                     size: this.pagination.pageSize, // 每页条数
                     sort: ['username,asc']
                 }
-                return new Promise((resolve, reject) => {
-                    service.fetchAllByPage(params).then(({content, total}) => {
-                        this.data = content
-                        this.pagination.total = total
-                        resolve()
-                    }).catch(e => reject(e))
-                })
+                const {content, total} = await service.fetchAllByPage(params)
+                this.data = content
+                this.pagination.total = total
             }
 
         },

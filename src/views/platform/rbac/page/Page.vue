@@ -120,76 +120,67 @@
                 })
             },
             //
-            doDelete(data) {
-                service.delete(data).then(() => {
-                    this.$message.success({content: '删除成功！'})
-                    this.fetchPages()
-                })
+            async doDelete(data) {
+                await service.delete(data)
+                this.$message.success({content: '删除成功！'})
+                await this.fetchPages()
             },
 
             //
-            doSave(data, callback) {
-                if (data.id) { // 修改
-                    service.update(data).then(() => {
+            async doSave(data, callback) {
+                try {
+                    if (data.id) { // 修改
+                        await service.update(data)
                         this.$message.success({content: '修改成功！'})
-                        callback && callback()
-                        this.fetchPages()
-                    }).catch(() => callback && callback(true))
-                } else { // 新增
-                    service.create(data).then(() => {
+                    } else { // 新增
+                        await service.create(data)
                         this.$message.success({content: '新增成功！'})
-                        callback && callback()
-                        this.fetchPages()
-                    }).catch(() => callback && callback(true))
+                    }
+                    callback && callback()
+                    await this.fetchPages()
+                } catch (e) {
+                    callback && callback(true)
                 }
             },
 
             //
-            doRefresh() {
+            async doRefresh() {
                 if (this.moduleId) {
                     this.isLoading = true
-                    this.fetchPages().then(() => {
-                        this.$message.success('刷新成功！')
-                    }).finally(() => this.isLoading = false)
+                    await this.fetchPages()
+                    this.isLoading = false
+                    this.$message.success('刷新成功！')
                 } else {
-                    this.$message.error('请选择模块！')
+                    this.$notification.error({message: '错误', description: "请选择模块！"})
                 }
             },
 
-            onTreeSelect(selectedKeys) {
+            async onTreeSelect(selectedKeys) {
                 if (this.moduleId !== selectedKeys[0]) {
                     this.moduleId = selectedKeys[0]
                     this.isTableDataLoading = true
-                    this.fetchPages().then(() => this.isTableDataLoading = false)
+                    await this.fetchPages()
+                    this.isTableDataLoading = false
                 }
             },
 
             //
-            fetchModules() {
-                return new Promise((resolve, reject) => {
-                    moduleService.fetchAll().then((modules) => {
-                        this.modules = array2Tree(modules, {})
-                        resolve()
-                    }).catch(e => reject(e))
-                })
+            async fetchModules() {
+                const modules = await moduleService.fetchAll()
+                this.modules = array2Tree(modules, {})
             },
 
-            fetchPages() {
+            async fetchPages() {
                 const params = {
                     page: this.pagination.current - 1, // 当前页码
                     size: this.pagination.pageSize, // 每页条数
-                    sort: ['code,asc']
+                    sort: ['code,asc'],
+                    moduleId: this.moduleId
                 }
 
-                return new Promise((resolve, reject) => {
-                    service.fetchAllByPage({...params, moduleId: this.moduleId})
-                        .then(({content, total}) => {
-                            this.pages = content
-                            this.pagination.total = total
-                            resolve()
-                        })
-                        .catch(e => reject(e))
-                })
+                const {content, total} = await service.fetchAllByPage(params)
+                this.pages = content
+                this.pagination.total = total
             }
 
         },
