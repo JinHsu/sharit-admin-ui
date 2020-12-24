@@ -1,5 +1,8 @@
 export default [
-    {dataIndex: 'code', title: '菜单编码', width: 200, ellipsis: true},
+    {
+        dataIndex: 'code', title: '菜单编码', width: 200, ellipsis: true,
+        scopedSlots: {customRender: 'code'},
+    },
     {
         dataIndex: 'title', title: '菜单名称', ellipsis: true,
     },

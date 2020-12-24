@@ -9,22 +9,28 @@
                      :pagination="false"
                      :loading="isTableDataLoading" rowKey="id"
             >
-
-            <span slot="icon" slot-scope="text, record">
-                <a-icon :type="record.icon" v-if="record.icon"/>
-            </span>
-
-                <span slot="fake" slot-scope="text, record">
-                <a-checkbox :default-checked="record.fake" :disabled="true"/>
-            </span>
-
-                <span slot="operation" slot-scope="text, record">
-                <a @click="onEdit(record)">修改</a>
-                <template v-if="!record.children || record.children.length === 0">
-                    <a-divider type="vertical"/>
-                    <a @click="onDelete(record)">删除</a>
+                <template slot="code" slot-scope="text, record">
+                    {{text}}
+                    <a-tag v-if="record.preset" color="#f5222d">
+                        预置
+                    </a-tag>
                 </template>
-            </span>
+
+                <template slot="icon" slot-scope="text, record">
+                    <a-icon :type="record.icon" v-if="record.icon"/>
+                </template>
+
+                <template slot="fake" slot-scope="text, record">
+                    <a-checkbox :default-checked="record.fake" :disabled="true"/>
+                </template>
+
+                <template slot="operation" slot-scope="text, record">
+                    <a @click="onEdit(record)">修改</a>
+                    <template v-if="!record.children || record.children.length === 0">
+                        <a-divider type="vertical"/>
+                        <a @click="onDelete(record)">删除</a>
+                    </template>
+                </template>
             </a-table>
         </a-card>
 
@@ -76,48 +82,58 @@
             },
 
             onDelete(data) {
+                if (data.preset) {
+                    this.$notification.error({message: '错误', description: "预置数据不能删除！"})
+                    return
+                }
                 this.$confirm({
                     title: '提示', content: '确定要删除吗？', okType: 'danger',
                     onOk: () => this.doDelete(data)
                 })
             },
 
-            async doDelete(data) {
-                await service.delete(data)
-                await this.fetchAll()
-                this.$message.success({content: '删除成功！'})
+            doDelete(data) {
+                service.delete(data).then(() => {
+                    this.$message.success({content: '删除成功！'})
+                    this.fetchAll()
+                })
             },
 
-            async doSave(data, callback) {
+            doSave(data, callback) {
                 if (data.id) { // 修改
-                    await service.update(data)
-                    await this.fetchAll()
-                    this.$message.success({content: '修改成功！'})
+                    service.update(data).then(() => {
+                        this.$message.success({content: '修改成功！'})
+                        callback && callback()
+                        this.fetchAll()
+                    }).catch(() => callback && callback(true))
                 } else { // 新增
-                    await service.create(data)
-                    await this.fetchAll()
-                    this.$message.success({content: '新增成功！'})
+                    service.create(data).then(() => {
+                        this.$message.success({content: '新增成功！'})
+                        callback && callback()
+                        this.fetchAll()
+                    }).catch(() => callback && callback(true))
                 }
-                callback && callback()
             },
 
             //
-            async doRefresh() {
+            doRefresh() {
                 this.isLoading = true
-                await this.fetchAll()
-                this.$message.success('刷新成功！')
-                this.isLoading = false
+                this.fetchAll().then(() => {
+                    this.$message.success('刷新成功！')
+                }).finally(() => this.isLoading = false)
             },
 
-            async fetchPage() {
-
-            },
-
-            async fetchAll() {
+            fetchAll() {
                 this.isTableDataLoading = true
-                const menus = await service.fetchAll()
-                this.treeData = array2Tree(menus, {})
-                this.isTableDataLoading = false
+                return new Promise((resolve, reject) => {
+                    service.fetchAll()
+                        .then((menus) => {
+                            this.treeData = array2Tree(menus, {})// 转换为树形结构数据
+                            resolve()
+                        })
+                        .catch(e => reject(e))
+                        .finally(() => this.isTableDataLoading = false)
+                })
             }
 
         },

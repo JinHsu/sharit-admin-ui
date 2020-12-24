@@ -23,8 +23,8 @@
                             </a-form-item>
                         </a-col>
                     </a-row>
-                    <a-row>
-                        <a-col>
+                    <a-row :gutter="8">
+                        <a-col :span="12">
                             <a-form-item label="是否虚菜单">
                                 <a-radio-group v-decorator="['fake', rules.fake]">
                                     <a-radio :value="true">是</a-radio>
@@ -32,9 +32,7 @@
                                 </a-radio-group>
                             </a-form-item>
                         </a-col>
-                    </a-row>
-                    <a-row>
-                        <a-col>
+                        <a-col :span="12">
                             <a-form-item label="关联页面">
                                 <page-refer :sync="value" :disabled="formData.fake"
                                             v-decorator="['pageId', rules.pageId]"/>
@@ -46,6 +44,13 @@
                             <a-form-item label="上级菜单">
                                 <menu-refer :sync="value"
                                             v-decorator="['parentId', rules.parentId]"/>
+                            </a-form-item>
+                        </a-col>
+                    </a-row>
+                    <a-row>
+                        <a-col>
+                            <a-form-item label="备注">
+                                <a-textarea v-decorator="['remark', rules.remark]" autoComplete="off"/>
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -68,13 +73,6 @@
                         <a-col>
                             <a-form-item label="重定向路径">
                                 <a-input v-decorator="['redirect']" autoComplete="off"/>
-                            </a-form-item>
-                        </a-col>
-                    </a-row>
-                    <a-row>
-                        <a-col>
-                            <a-form-item label="备注">
-                                <a-textarea v-decorator="['remark', rules.remark]" autoComplete="off"/>
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -190,9 +188,9 @@
                                 Object.assign(saveData, this.modalData)
                             }
                             Object.assign(saveData, this.formData)
-                            const callback = () => {
+                            const callback = (show = false) => {
                                 this.loading = false
-                                this.$emit('input', false)
+                                this.$emit('input', show)
                             }
                             this.$emit('doSave', saveData, callback)
                         } else {
@@ -236,7 +234,5 @@
 </script>
 
 <style lang="less" scoped>
-    /deep/ .ant-modal-body {
-        padding: 0 12px !important;
-    }
+
 </style>
