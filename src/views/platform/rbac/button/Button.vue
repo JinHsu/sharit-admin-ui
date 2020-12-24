@@ -50,6 +50,9 @@
     import service from "./service"
     import ButtonModal from './modal'
 
+    const methods = ['NULL', 'GET', 'POST', 'PUT', 'DELETE']
+    const colors = ['#f50', '#108ee9', '#2db7f5', '#87d068', '#f50']
+
     export default {
         name: "Button",
 
@@ -97,48 +100,13 @@
 
         filters: {
             getText(value) {
-                let text
-                switch (value) {
-                    case 1:
-                        text = 'GET'
-                        break
-                    case 2:
-                        text = 'POST'
-                        break
-                    case 3:
-                        text = 'PUT'
-                        break
-                    case 4:
-                        text = 'DELETE'
-                        break
-
-                    default:
-                        text = 'NULL'
-                        break
-                }
-                return text
+                return methods[value]
             },
         },
 
         methods: {
             getColor(value) {
-                let color
-                switch (value) {
-                    case 1:
-                        color = '#108ee9'
-                        break
-                    case 2:
-                        color = '#2db7f5'
-                        break
-                    case 3:
-                        color = '#87d068'
-                        break
-                    case 4:
-                    default:
-                        color = '#f50'
-                        break
-                }
-                return color
+                return colors[value]
             },
 
             onAdd() {
@@ -153,19 +121,26 @@
             },
             //
             async doSave(data, callback) {
-                if (data.id) { // 修改
-                    await service.update(data)
+                try {
+                    if (data.id) { // 修改
+                        await service.update(data)
+                        this.$message.success({content: '修改成功！'})
+                    } else { // 新增
+                        await service.create(data)
+                        this.$message.success({content: '新增成功！'})
+                    }
                     await this.fetchButtons()
-                    this.$message.success({content: '修改成功！'})
-                } else { // 新增
-                    await service.create(data)
-                    await this.fetchButtons()
-                    this.$message.success({content: '新增成功！'})
+                    callback && callback()
+                } catch (e) {
+                    callback && callback(true)
                 }
-                callback && callback()
             },
 
             onDelete(data) {
+                if (data.preset) {
+                    this.$notification.error({message: '错误', description: "预置数据不能删除！"})
+                    return
+                }
                 this.$confirm({
                     title: '提示', content: '确定要删除吗？', okType: 'danger',
                     onOk: () => this.doDelete(data)
@@ -186,7 +161,7 @@
                     this.$message.success('刷新成功！')
                     this.isLoading = false
                 } else {
-                    this.$message.error('请选择页面！')
+                    this.$notification.error({message: '错误', description: "请选择页面！"})
                 }
             },
 
@@ -202,18 +177,17 @@
                 const params = {
                     page: this.pagination.current - 1, // 当前页码
                     size: this.pagination.pageSize, // 每页条数
-                    sort: ['code,asc']
+                    sort: ['code,asc'],
+                    pageId: this.pageId
                 }
-                const {content, total} = await service.fetchAllByPage(
-                    {...params, pageId: this.pageId})
+                const {content, total} = await service.fetchAllByPage(params)
                 this.buttons = content
                 this.pagination.total = total
             },
 
             //
             async fetchTreeData() {
-                let modules = await moduleService.fetchAll()
-                let pages = await pageService.fetchAll()
+                const [modules, pages] = await Promise.all([moduleService.fetchAll(), pageService.fetchAll()])
 
                 pages.forEach(page => {
                     page.parentId = page.moduleId
