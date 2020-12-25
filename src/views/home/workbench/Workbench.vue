@@ -1,15 +1,66 @@
 <template>
-    <div>
-        工作台
-        <a-divider/>
-        <a-tree
-                :checkable="true" :blockNode="true" checkStrictly defaultExpandAll
-                :checkedKeys="checkedKeys"
-                :treeData="treeData"
-                @check="onCheck"
-        >
+    <div class="workbench">
+        <div class="content">
+            <a-card :bordered="false" :bodyStyle="{width: '360px'}" style="margin-right: 16px;">
+                <template slot="title">
+                    快速导航
+                </template>
+                <div>
+                    <a-row :gutter="[16, 16]">
+                        <a-col :span="12">
+                            <router-link :to="{path: '/platform/rbac/userrole'}">
+                                <a-icon type="link"/>
+                                用户权限
+                            </router-link>
+                        </a-col>
+                        <a-col :span="12">
+                            <router-link :to="{path: '/platform/rbac/rolemenu'}">
+                                <a-icon type="link"/>
+                                角色权限
+                            </router-link>
+                        </a-col>
+                        <a-col :span="12">
+                            <router-link :to="{path: '/platform/rbac/buttonauth'}">
+                                <a-icon type="link"/>
+                                按钮权限
+                            </router-link>
+                        </a-col>
+                    </a-row>
+                </div>
+            </a-card>
 
-        </a-tree>
+            <a-card :bordered="false" :bodyStyle="{minWidth: '400px'}" style="margin-right: 16px;">
+                <template slot="title">
+                    个人动态
+                </template>
+                <a-list item-layout="horizontal" :data-source="list">
+                    <a-list-item slot="renderItem" slot-scope="item, index">
+                        <a-list-item-meta
+                                description="Ant Design, a design language for background applications, is refined by Ant UED Team, Ant Design, a design language for background applications, is refined by Ant UED Team"
+                        >
+                            <a slot="title" href="https://www.antdv.com/">{{ item.title }}</a>
+                            <a-avatar
+                                    slot="avatar"
+                                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                            />
+                        </a-list-item-meta>
+                    </a-list-item>
+                </a-list>
+            </a-card>
+
+            <a-card :bordered="false" :bodyStyle="{width: '360px'}">
+                <template slot="title">
+                    日历
+                </template>
+                <a-calendar :fullscreen="false" @panelChange="onPanelChange"/>
+            </a-card>
+        </div>
+
+        <div class="activity">
+
+        </div>
+
+
     </div>
 </template>
 
@@ -19,79 +70,38 @@
 
         data() {
             return {
-                checkedKeys: [],
-                treeData: [
+                list: [
                     {
-                        key: '1', value: '1', title: 'Node-1', /*checkable: false,*/
-                        children: [
-                            {key: '1-1', value: '1-1', title: 'Node-1-1'},
-                            {key: '1-2', value: '1-2', title: 'Node-1-2'},
-                            {key: '1-3', value: '1-3', title: 'Node-1-3'}
-                        ]
+                        title: 'Ant Design Title 1',
                     },
                     {
-                        key: '2', value: '2', title: 'Node-2', /*checkable: false,*/
-                        children: [
-                            {key: '2-1', value: '2-1', title: 'Node-2-1'},
-                            {
-                                key: '2-2', value: '2-2', title: 'Node-2-2',
-                                children: [
-                                    {key: '2-2-1', value: '2-2-1', title: 'Node-2-2-1'},
-                                    {key: '2-2-2', value: '2-2-2', title: 'Node-2-2-2'},
-                                    {key: '2-2-3', value: '2-2-3', title: 'Node-2-2-3'}
-                                ]
-                            }
-
-                        ]
-                    }
+                        title: 'Ant Design Title 2',
+                    },
+                    {
+                        title: 'Ant Design Title 3',
+                    },
+                    {
+                        title: 'Ant Design Title 4',
+                    },
                 ]
             }
         },
 
         methods: {
-            onCheck(_, e) {
-                if (e.checked) {
-                    this.checkParent(e.node, _)
-                } else {
-                    this.uncheckParent(e.node, _)
-                }
-                this.checkedKeys = _
-            },
-
-            checkParent(node, _) {
-                const parent = node.$parent
-                if (parent['checked'] === false) {
-                    const parentKey = parent['eventKey']
-                    if (_.checked.indexOf(parentKey) === -1) {
-                        _.checked.unshift(parentKey)
-                    }
-                    this.checkParent(parent, _)
-                }
-            },
-
-            uncheckParent(node, _) {
-                const parent = node.$parent
-                const children = parent.$children
-                let count = 0
-
-                children.forEach(node => {
-                    if (node.checked) {
-                        count++
-                    }
-                })
-
-                if (count === 1) { // 有且仅有1个
-                    const parentKey = parent['eventKey']
-                    const index = _.checked.indexOf(parentKey)
-                    _.checked.splice(index, 1)
-                    this.uncheckParent(parent, _)
-                }
+            onPanelChange() {
             }
-
         }
     }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+    .workbench {
+
+        .content {
+            display: flex;
+            align-items: stretch;
+            margin-bottom: 16px;
+        }
+    }
 
 </style>
