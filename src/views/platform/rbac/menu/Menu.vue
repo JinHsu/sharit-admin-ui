@@ -107,6 +107,7 @@
                         await service.create(data)
                         this.$message.success({content: '新增成功！'})
                     }
+                    callback && callback()
                     await this.fetchAll()
                 } catch (e) {
                     callback && callback(true)
