@@ -1,11 +1,11 @@
 import axios from '@/axios'
 
-const baseUrl = '/bd/addr/nation'
+const baseUrl = '/bd/addr/country'
 
 export default {
 
     fetchAllByPage: (params) => axios({
-        url: '/bd/addr/nations',
+        url: '/bd/addr/countries',
         method: 'GET',
         params: params
     }),

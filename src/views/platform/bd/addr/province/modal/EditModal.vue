@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import NationRefer from "@/views/platform/bd/addr/nation/refer/NationRefer"
+    import NationRefer from "@/views/platform/bd/addr/country/refer/CountryRefer"
     import rules from '../rules'
 
     export default {
