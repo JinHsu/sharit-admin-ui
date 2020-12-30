@@ -2,7 +2,7 @@ const createThemeColorReplacerPlugin = require('./config/plugins/color-replacer'
 
 module.exports = {
     // 部署应用包时的基本URL
-    // process.env.NODE_ENV === 'production' ? '/production-sub-path/' : '/'
+    // process-panel.env.NODE_ENV === 'production' ? '/production-sub-path/' : '/'
     publicPath: '/',
 
     // 当运行 vue-cli-service build 时生成的生产环境构建文件的目录。
@@ -25,7 +25,7 @@ module.exports = {
 
     // Type: boolean | 'warning' | 'default' | 'error'
     // 是否在开发环境下通过 eslint-loader 在每次保存时 lint 代码。这个值会在 @vue/cli-plugin-eslint 被安装之后生效。
-    // process.env.NODE_ENV !== 'production'
+    // process-panel.env.NODE_ENV !== 'production'
     lintOnSave: 'warning',
 
     // 是否使用包含运行时编译器的 Vue 构建版本。设置为 true 后你就可以在 Vue 组件中使用 template 选项了，但是这会让你的应用额外增加 10kb 左右。

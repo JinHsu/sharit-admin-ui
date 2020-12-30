@@ -5,15 +5,15 @@
         <collapsiable-sider v-if="!isMobile()"/>
 
         <!--右侧-->
-        <a-layout class="framework-right" :style="{paddingLeft: paddingLeft}">
+        <a-layout class="framework-right" :style="{paddingLeft: siderWidth}">
             <!--头部-->
-            <a-layout-header class="framework-right-header" :style="{paddingLeft: paddingLeft}">
+            <a-layout-header class="framework-right-header" :style="{paddingLeft: siderWidth}">
                 <header-control/>
                 <header-action/><!--头部右侧action-->
             </a-layout-header>
 
             <!--多页签栏-->
-            <div class="framework-right-multi-tab" :style="{paddingLeft: paddingLeft}">
+            <div class="framework-right-multi-tab" :style="{paddingLeft: siderWidth}">
                 <multi-tab/>
             </div>
 
@@ -54,82 +54,17 @@
 
         mixins: [device, framework],
 
-        computed: {
-            paddingLeft() {
-                return this.siderWidth
-            }
-        },
-
-        methods: {
-            resize() {
-                const event = document.createEvent('HTMLEvents')
-                event.initEvent('resize', true, true)
-                event.eventType = 'message'
-                window.dispatchEvent(event)
-            },
-
-            // 根据设备自适应（侧边栏自动折叠与展开）
-            adapt(n, o) {
-                // console.info(o, '变', n)
-                let _siderWidth
-                // <<<<<<<<<<<<<<<<<<<<<<
-                if (o === 'desktop' && (n === 'tablet' || n === 'mobile')) {
-                    // 响应式：强制折叠
-                    this.setCollapsed(true)
-                    _siderWidth = n === 'tablet' ? '80px' : '0px'
-                }
-                if (o === 'tablet' && n === 'mobile') {
-                    _siderWidth = '0px'
-                }
-
-                // >>>>>>>>>>>>>>>>>>>>>>
-                if (o === 'mobile' && n === 'tablet') {
-                    _siderWidth = this.collapsed ? '80px' : '256px'
-                }
-                if ((o === 'tablet' || o === 'mobile') && n === 'desktop') {
-                    // 响应式：强制展开
-                    this.setCollapsed(false)
-                    _siderWidth = '256px'
-                }
-
-                // ~~~~~~~~~~~~~~~~~~~~~~
-                if (o === undefined) {
-                    if (n === 'mobile') {
-                        _siderWidth = '0px'
-                    } else {
-                        _siderWidth = this.collapsed ? '80px' : '256px'
-                    }
-                }
-
-                this.siderWidth = _siderWidth
-                this.resize()
-            },
-
-            onCollapse() {
-                let _siderWidth
-                if (this.isMobile()) {
-                    _siderWidth = '0px'
-                } else if (this.isTablet()) {
-                    _siderWidth = this.collapsed ? '80px' : '256px'
-                } else if (this.isDesktop()) {
-                    _siderWidth = this.collapsed ? '80px' : '256px'
-                }
-
-                this.siderWidth = _siderWidth
-            }
-        },
-
         created() {
-            this.adapt(this.device)
+            this.siderWidth = this.adapt(this.device)
         },
 
         watch: {
             device(n, o) {
-                this.adapt(n, o)
+                this.siderWidth = this.adapt(n, o)
             },
 
             collapsed() {
-                this.onCollapse()
+                this.siderWidth = this.onCollapse(this.device)
             }
         }
     }
@@ -174,7 +109,7 @@
                 &-page {
                     margin: 0 24px 24px 24px;
                     border-radius: 4px;
-                    z-index: 100;
+                    /*z-index: 100;*/
 
                 }
             }
