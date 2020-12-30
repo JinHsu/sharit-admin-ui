@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import {EventPanel, GatewayPanel, ProcessPanel, SequenceFlowPanel, TaskPanel} from './node-panel'
+    import {BasePanel, EventPanel, GatewayPanel, ProcessPanel, SequenceFlowPanel, TaskPanel} from './node-panel'
     import {NodeName} from '../i18n/lang/zh_CN'
     import registerModule from './store'
 
@@ -32,7 +32,7 @@
         },
 
         components: {
-            ProcessPanel, TaskPanel, EventPanel, SequenceFlowPanel, GatewayPanel
+            BasePanel, ProcessPanel, TaskPanel, EventPanel, SequenceFlowPanel, GatewayPanel
         },
 
         data() {
@@ -62,6 +62,7 @@
                     case 'bpmn:ScriptTask':
                     case 'bpmn:CallActivity':
                     case 'bpmn:SubProcess':
+                    case 'bpmn:Transaction':
                         panel = 'TaskPanel'
                         break
 
@@ -73,12 +74,19 @@
                     case 'bpmn:ExclusiveGateway':
                     case 'bpmn:ParallelGateway':
                     case 'bpmn:EventBasedGateway':
+                    case 'bpmn:ComplexGateway':
                         panel = 'GatewayPanel'
                         break
 
                     case 'bpmn:Process':
                         panel = 'ProcessPanel'
                         break
+
+                    case 'bpmn:DataStoreReference':
+                    case 'bpmn:DataObjectReference':
+                    case 'bpmn:Participant':
+                    case 'bpmn:Group':
+                        panel = 'BasePanel'
                 }
 
                 return panel
@@ -130,6 +138,7 @@
 
 <style lang="less" scoped>
     .properties-panel {
+
         padding: 10px;
 
         .panel-name {

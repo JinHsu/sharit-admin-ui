@@ -3,7 +3,8 @@ import GatewayPanel from './gateway-panel'
 import ProcessPanel from './process-panel'
 import TaskPanel from './task-panel'
 import SequenceFlowPanel from "./sequenceflow-panel"
+import BasePanel from './base-panel'
 
 export {
-    EventPanel, GatewayPanel, ProcessPanel, TaskPanel, SequenceFlowPanel
+    BasePanel, EventPanel, GatewayPanel, ProcessPanel, TaskPanel, SequenceFlowPanel
 }

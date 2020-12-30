@@ -49,13 +49,14 @@
 </template>
 
 <script>
-    import initBpmnXml from "../initBpmnXml"
+    import initBpmnXml from "./initBpmnXml"
 
     export default {
         name: "ActionPanel",
 
         props: {
-            modeler: {type: Object, required: true}
+            modeler: {type: Object, required: true},
+            xml: {type: String, default: ''},
         },
 
         data() {
@@ -77,10 +78,10 @@
             // 让图能自适应屏幕
             fitViewport() {
                 this.zoom = this.modeler.get('canvas').zoom('fit-viewport')
-                const bbox = document.querySelector('.containers .viewport').getBBox()
+                const bbox = document.querySelector('.canvas .viewport').getBBox()
                 const currentViewbox = this.modeler.get('canvas').viewbox()
                 const elementMid = {
-                    x: bbox.x + bbox.width / 2 - 65,
+                    x: bbox.x + bbox.width / 2 - 30,
                     y: bbox.y + bbox.height / 2
                 }
                 this.modeler.get('canvas').viewbox({
@@ -199,7 +200,25 @@
                     if (rootElements[i].$type === 'bpmn:Process') return rootElements[i]
                 }
             },
-        }
+        },
+
+        mounted() {
+            if (this.modeler) {
+                if (this.xml) {
+                    this.createNewDiagram(this.xml)
+                } else {
+                    this.createNewDiagram(initBpmnXml())
+                }
+            }
+        },
+
+        watch: {
+            xml: function (val) {
+                if (val) {
+                    this.createNewDiagram(val)
+                }
+            }
+        },
     }
 </script>
 
