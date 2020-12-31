@@ -10,6 +10,9 @@
             <a-form-item label="描述">
                 <a-textarea v-decorator="['documentation']"/>
             </a-form-item>
+            <a-form-item label="颜色">
+                <a-color-picker v-decorator="['color', rules.color]"/>
+            </a-form-item>
             <a-form-item label="执行监听器">
                 <a-badge :count="executionListenerSize">
                     <a-button @click="setExecutionListenerEditorVisible(true)">编辑</a-button>
@@ -187,13 +190,13 @@
             const element = this.parseElement()
 
             const {
-                id, name, documentation, executionListener, taskListener, userType, assignee, candidateUsers, //
+                id, name, documentation, color, executionListener, taskListener, userType, assignee, candidateUsers, //
                 candidateGroups, multiInstance, async, priority, formKey, skipExpression, isForCompensation, triggerable,//
                 autoStoreVariables, ruleVariablesInput, rules, resultVariable, exclude, dueDate//
             } = element
 
             this.$nextTick(() => this.form.setFieldsValue({
-                id, name, documentation, executionListener, taskListener, userType, assignee, candidateUsers,
+                id, name, documentation, color, executionListener, taskListener, userType, assignee, candidateUsers,
                 //
                 candidateGroups, multiInstance, async, priority, formKey, skipExpression, isForCompensation,
                 //

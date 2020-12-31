@@ -10,6 +10,9 @@
             <a-form-item label="描述">
                 <a-textarea v-decorator="['documentation']"/>
             </a-form-item>
+            <a-form-item label="颜色">
+                <a-color-picker v-decorator="['color', rules.color]"/>
+            </a-form-item>
             <a-form-item label="执行监听器">
                 <a-badge :count="executionListenerSize">
                     <a-button @click="setExecutionListenerEditorVisible(true)">编辑</a-button>
@@ -39,7 +42,7 @@
         name: 'Process',
 
         components: {
-            ExecutionListenerEditor, SignalEditor
+            ExecutionListenerEditor, SignalEditor,
         },
 
         data() {
@@ -48,7 +51,7 @@
                     onFieldsChange: this.onFieldsChange
                 }),
                 formData: {},
-                rules: rules
+                rules: rules,
             }
         },
 
@@ -62,10 +65,10 @@
         },
 
         created() {
-            const {id, name, documentation, executionListener, signal}
+            const {id, name, documentation, color, executionListener, signal}
                 = this.parseElement()
             this.$nextTick(() => this.form.setFieldsValue({
-                id, name, documentation, executionListener, signal
+                id, name, documentation, color, executionListener, signal
             }))
         }
 

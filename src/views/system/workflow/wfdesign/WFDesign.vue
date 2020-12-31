@@ -1,6 +1,6 @@
 <template>
     <div class="wf-design">
-        <bpmn-designer/>
+        <bpmn-designer :is-view="false"/>
     </div>
 </template>
 

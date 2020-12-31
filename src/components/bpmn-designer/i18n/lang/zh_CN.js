@@ -63,6 +63,7 @@ export default {
     'Sequential Multi Instance': '时序多重事件',
     'Loop': '循环',
     'Ad-hoc': '即席',
+    'Task': '任务',
     'Send Task': '发送任务',
     'Receive Task': '接收任务',
     'User Task': '用户任务',

@@ -75,7 +75,7 @@
                 return {
                     container: this.$refs.canvas,
                     keyboard: {
-                        bindTo: window // 快捷键
+                        // bindTo: window // 快捷键
                     },
                     additionalModules: [additionalModules],
                     moddleExtensions: {flowable: flowableModule}

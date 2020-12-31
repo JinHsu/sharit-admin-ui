@@ -5,4 +5,8 @@ export default {
         ],
         validateTrigger: ['change', 'blur']
     },
+
+    color: {
+        initialValue: ''
+    }
 }

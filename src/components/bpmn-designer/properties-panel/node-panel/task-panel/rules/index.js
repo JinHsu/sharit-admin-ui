@@ -25,4 +25,8 @@ export default {
     exclude: {
         valuePropName: 'checked'
     },
+
+    color: {
+        initialValue: ''
+    }
 }

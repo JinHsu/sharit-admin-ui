@@ -49,7 +49,11 @@ export default {
 
         onFieldValueChange({name, value}) {
             if (name === 'color') {
-                this.setColor({fill: value, stroke: value})
+                if ('bpmn:SequenceFlow' === this.elementType) {
+                    this.setColor({/*fill: value,*/ stroke: value})
+                } else {
+                    this.setColor({fill: value, /*stroke: value*/})
+                }
                 this.updateProperties({color: value})
             } else if (name === 'documentation') {
                 if (!value) {

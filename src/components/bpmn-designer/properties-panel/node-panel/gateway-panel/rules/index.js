@@ -8,5 +8,9 @@ export default {
 
     async: {
         valuePropName: 'checked'
+    },
+
+    color: {
+        initialValue: ''
     }
 }

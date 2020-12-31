@@ -15,7 +15,7 @@ export default function () {
     return '<?xml version="1.0" encoding="UTF-8"?>\n' +
         '<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:flowable="http://flowable.org/bpmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.flowable.org/processdef">\n' +
         '  <process id="LeaveApplication" name="请假申请" flowable:processCategory="oa">\n' +
-        '    <startEvent id="startNode1" name="开始">\n' +
+        '    <startEvent id="startNode1" name="开始" color="#F5A623">\n' +
         '      <extensionElements>\n' +
         '        <flowable:executionListener expression="555" event="start" />\n' +
         '      </extensionElements>\n' +
@@ -65,13 +65,13 @@ export default function () {
         '      <outgoing>Flow_0ubisbp</outgoing>\n' +
         '    </exclusiveGateway>\n' +
         '    <sequenceFlow id="Flow_0oidzit" sourceRef="Activity_0pbabwd" targetRef="Gateway_01lgsw5" />\n' +
-        '    <endEvent id="Event_1mqklz0" name="结束">\n' +
+        '    <endEvent id="Event_1mqklz0" name="结束" color="#F8E71C">\n' +
         '      <incoming>Flow_1mqv4d2</incoming>\n' +
         '    </endEvent>\n' +
         '    <sequenceFlow id="Flow_1mqv4d2" sourceRef="Gateway_01lgsw5" targetRef="Event_1mqklz0">\n' +
         '      <conditionExpression xsi:type="tFormalExpression">${status == \'approve\'}</conditionExpression>\n' +
         '    </sequenceFlow>\n' +
-        '    <userTask id="Activity_15gykiz" name="修改填报">\n' +
+        '    <userTask id="Activity_15gykiz" name="修改填报" color="#7ED321">\n' +
         '      <extensionElements>\n' +
         '        <flowable:executionListener class="67675" event="start" />\n' +
         '      </extensionElements>\n' +
@@ -82,10 +82,15 @@ export default function () {
         '    <sequenceFlow id="Flow_0ms36c0" sourceRef="Gateway_1mdfbn1" targetRef="Activity_15gykiz">\n' +
         '      <conditionExpression xsi:type="tFormalExpression">${status == \'reject\'}</conditionExpression>\n' +
         '    </sequenceFlow>\n' +
-        '    <sequenceFlow id="Flow_0ubisbp" sourceRef="Gateway_01lgsw5" targetRef="Activity_15gykiz">\n' +
+        '    <sequenceFlow id="Flow_0ubisbp" sourceRef="Gateway_01lgsw5" targetRef="Activity_15gykiz" color="#BD10E0">\n' +
         '      <conditionExpression xsi:type="tFormalExpression">${status == \'reject\'}</conditionExpression>\n' +
         '    </sequenceFlow>\n' +
         '    <sequenceFlow id="Flow_1n4cqa6" sourceRef="Activity_15gykiz" targetRef="Activity_02v0kq2" />\n' +
+        '    <dataObjectReference id="DataObjectReference_0tmbw6e" dataObjectRef="DataObject_0i8m44h" />\n' +
+        '    <dataObject id="DataObject_0i8m44h" />\n' +
+        '    <endEvent id="Event_0qi24k9" />\n' +
+        '    <exclusiveGateway id="Gateway_0585fxu" />\n' +
+        '    <scriptTask id="Activity_0o7dt7g" color="#50E3C2" />\n' +
         '  </process>\n' +
         '  <bpmndi:BPMNDiagram id="BPMNDiagram_flow">\n' +
         '    <bpmndi:BPMNPlane id="BPMNPlane_flow" bpmnElement="LeaveApplication">\n' +
@@ -94,7 +99,7 @@ export default function () {
         '        <di:waypoint x="370" y="440" />\n' +
         '        <di:waypoint x="370" y="255" />\n' +
         '      </bpmndi:BPMNEdge>\n' +
-        '      <bpmndi:BPMNEdge id="Flow_0ubisbp_di" bpmnElement="Flow_0ubisbp">\n' +
+        '      <bpmndi:BPMNEdge id="Flow_0ubisbp_di" bpmnElement="Flow_0ubisbp" bioc:stroke="#BD10E0">\n' +
         '        <di:waypoint x="880" y="240" />\n' +
         '        <di:waypoint x="880" y="440" />\n' +
         '        <di:waypoint x="590" y="440" />\n' +
@@ -123,7 +128,7 @@ export default function () {
         '        <di:waypoint x="225" y="215" />\n' +
         '        <di:waypoint x="320" y="215" />\n' +
         '      </bpmndi:BPMNEdge>\n' +
-        '      <bpmndi:BPMNShape id="BPMNShape_startNode1" bpmnElement="startNode1" bioc:stroke="">\n' +
+        '      <bpmndi:BPMNShape id="BPMNShape_startNode1" bpmnElement="startNode1" bioc:stroke="" bioc:fill="#F5A623">\n' +
         '        <omgdc:Bounds x="195" y="200" width="30" height="30" />\n' +
         '        <bpmndi:BPMNLabel>\n' +
         '          <omgdc:Bounds x="198" y="237" width="22" height="14" />\n' +
@@ -141,16 +146,28 @@ export default function () {
         '      <bpmndi:BPMNShape id="Gateway_01lgsw5_di" bpmnElement="Gateway_01lgsw5" isMarkerVisible="true">\n' +
         '        <omgdc:Bounds x="855" y="190" width="50" height="50" />\n' +
         '      </bpmndi:BPMNShape>\n' +
-        '      <bpmndi:BPMNShape id="Event_1mqklz0_di" bpmnElement="Event_1mqklz0">\n' +
+        '      <bpmndi:BPMNShape id="Event_1mqklz0_di" bpmnElement="Event_1mqklz0" bioc:fill="#F8E71C">\n' +
         '        <omgdc:Bounds x="1002" y="197" width="36" height="36" />\n' +
         '        <bpmndi:BPMNLabel>\n' +
-        '          <omgdc:Bounds x="1009" y="240" width="23" height="14" />\n' +
+        '          <omgdc:Bounds x="1010" y="240" width="22" height="14" />\n' +
         '        </bpmndi:BPMNLabel>\n' +
         '      </bpmndi:BPMNShape>\n' +
-        '      <bpmndi:BPMNShape id="Activity_183ksl7_di" bpmnElement="Activity_15gykiz">\n' +
+        '      <bpmndi:BPMNShape id="Activity_183ksl7_di" bpmnElement="Activity_15gykiz" bioc:fill="#7ED321">\n' +
         '        <omgdc:Bounds x="490" y="400" width="100" height="80" />\n' +
+        '      </bpmndi:BPMNShape>\n' +
+        '      <bpmndi:BPMNShape id="DataObjectReference_0tmbw6e_di" bpmnElement="DataObjectReference_0tmbw6e">\n' +
+        '        <omgdc:Bounds x="462" y="55" width="36" height="50" />\n' +
+        '      </bpmndi:BPMNShape>\n' +
+        '      <bpmndi:BPMNShape id="Event_0qi24k9_di" bpmnElement="Event_0qi24k9">\n' +
+        '        <omgdc:Bounds x="742" y="92" width="36" height="36" />\n' +
+        '      </bpmndi:BPMNShape>\n' +
+        '      <bpmndi:BPMNShape id="Gateway_0585fxu_di" bpmnElement="Gateway_0585fxu" isMarkerVisible="true">\n' +
+        '        <omgdc:Bounds x="605" y="75" width="50" height="50" />\n' +
+        '      </bpmndi:BPMNShape>\n' +
+        '      <bpmndi:BPMNShape id="Activity_1uoyyra_di" bpmnElement="Activity_0o7dt7g" bioc:fill="#50E3C2">\n' +
+        '        <omgdc:Bounds x="600" y="290" width="100" height="80" />\n' +
         '      </bpmndi:BPMNShape>\n' +
         '    </bpmndi:BPMNPlane>\n' +
         '  </bpmndi:BPMNDiagram>\n' +
-        '</definitions>'
+        '</definitions>\n'
 }
