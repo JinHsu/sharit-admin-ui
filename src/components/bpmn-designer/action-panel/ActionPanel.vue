@@ -36,6 +36,19 @@
                 </a-tooltip>
             </a-button-group>
 
+            <a-radio-group default-value="table" @change="onShowGrid">
+                <a-tooltip title="显示网格" placement="top">
+                    <a-radio-button value="table">
+                        <a-icon type="table"/>
+                    </a-radio-button>
+                </a-tooltip>
+                <a-tooltip title="隐藏网格" placement="top">
+                    <a-radio-button value="border">
+                        <a-icon type="border"/>
+                    </a-radio-button>
+                </a-tooltip>
+            </a-radio-group>
+
             <a-button-group v-if="!isView">
                 <a-tooltip title="导出xml" placement="top">
                     <a-button icon="export" @click="saveXML(true)">xml</a-button>
@@ -64,6 +77,7 @@
             return {
                 //
                 zoom: 1,
+                isFullScreen: false
             }
         },
 
@@ -99,6 +113,14 @@
                 this.zoom = this.modeler.get('canvas').zoom()
                 this.zoom += (zoomIn ? 0.1 : -0.1)
                 this.modeler.get('canvas').zoom(this.zoom)
+            },
+
+            onShowGrid(e) {
+                if (e.target.value === 'table') {
+                    this.$emit('showGrid', true)
+                } else if (e.target.value === 'border') {
+                    this.$emit('showGrid', false)
+                }
             },
 
             openBpmn(file) {
@@ -201,6 +223,7 @@
                     if (rootElements[i].$type === 'bpmn:Process') return rootElements[i]
                 }
             },
+
         },
 
         mounted() {

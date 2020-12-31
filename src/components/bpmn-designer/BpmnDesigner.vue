@@ -3,10 +3,11 @@
         <!--顶部按钮栏-->
         <div class="action-wrapper">
             <action-panel v-if="modeler" :modeler="modeler"
-                          :xml="xml" :is-view="isView"/>
+                          :xml="xml" :is-view="isView"
+                          @showGrid="onShowGrid"/>
         </div>
 
-        <div class="content">
+        <div class="content" :class="showGrid ? 'grid' : null">
             <div class="canvas-wrapper">
                 <!--左侧画布-->
                 <div class="canvas" ref="canvas"/>
@@ -48,6 +49,7 @@
         data() {
             return {
                 modeler: null,
+                showGrid: true
             }
         },
 
@@ -78,6 +80,12 @@
             }
         },
 
+        methods: {
+            onShowGrid(show) {
+                this.showGrid = show
+            }
+        },
+
         mounted() {
             this.modeler = new Modeler(this.options)
         },
@@ -93,6 +101,14 @@
 
     .bjs-container a {
         display: none;
+    }
+
+    .grid {
+        overflow: auto;
+        background-image: linear-gradient(90deg, rgba(220, 220, 220, 0.5) 6%, transparent 0),
+        linear-gradient(rgba(192, 192, 192, 0.5) 6%, transparent 0);
+        background-size: 12px 12px;
+
     }
 
     .bpmn-designer {
@@ -117,6 +133,7 @@
             .canvas-wrapper {
                 flex: 1 1 auto;
                 position: relative;
+
 
                 .canvas {
                     position: absolute;
