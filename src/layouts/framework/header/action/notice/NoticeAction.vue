@@ -42,7 +42,7 @@
                 </a-tabs>
             </a-spin>
         </template>
-        <span class="header-action-notice" ref="noticeRef" @click="fetchNotice">
+        <span class="action" ref="noticeRef" @click="fetchNotice">
             <a-badge count="12" :offset="['-5', '5']" dot="">
                 <a-icon type="bell"/>
             </a-badge>
@@ -75,9 +75,9 @@
 </script>
 
 <style lang="less" scoped>
-    .header-action-notice {
+    .action {
         display: inline-block;
-        padding: 0 12px;
+        padding: 0 8px;
         transition: all 0.3s;
         cursor: pointer;
 

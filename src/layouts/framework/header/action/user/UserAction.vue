@@ -2,13 +2,13 @@
     <a-dropdown :trigger="['click']"
                 placement="bottomRight"
                 :getPopupContainer="()=>$refs.dropdownRef.parentElement">
-        <span class="header-action-user" ref="dropdownRef">
+        <span class="action" ref="dropdownRef">
             <a-tooltip :title="nickname">
                 <a-avatar class="avatar" size="small" icon="user"
                           :src="avatar"/>
             </a-tooltip>
         </span>
-        <a-menu slot="overlay" class="header-action-user-wrapper">
+        <a-menu slot="overlay" class="action-wrapper">
             <a-menu-item key="0">
                 <router-link :to="{ path: 'center' }">
                     <a-icon type="user"/>
@@ -79,7 +79,7 @@
 </script>
 
 <style lang="less">
-    .header-action-user {
+    .action {
         cursor: pointer;
         padding: 0 12px;
         display: inline-block;
@@ -96,7 +96,7 @@
         vertical-align: initial;
     }
 
-    .header-action-user-wrapper.ant-dropdown-menu {
+    .action-wrapper.ant-dropdown-menu {
         padding: 4px 0;
 
         .ant-dropdown-menu-item {
