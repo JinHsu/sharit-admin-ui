@@ -87,7 +87,7 @@
 </template>
 
 <script>
-    import itemMixin from "../../mixins/itemMixin"
+    import itemMixin from "../../../mixins/itemMixin"
     import TypeTooltip from './TypeTooltip'
     import {executionListenerColumns, listenerParamColumns} from './columns'
     import {ExecutionListenerModal, ListenerParamModal} from './modal'

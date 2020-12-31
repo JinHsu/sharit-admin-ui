@@ -1,28 +1,24 @@
 <template>
     <div class="bpmn-designer">
         <!--顶部按钮栏-->
-        <div class="header">
-            <action-panel
-                    ref="action"
-                    v-if="modeler"
-                    :modeler="modeler"
-                    :xml="xml"/>
+        <div class="action-wrapper">
+            <action-panel v-if="modeler" :modeler="modeler"
+                          :xml="xml" :is-view="isView"/>
         </div>
 
         <div class="content">
-            <!--左侧画布-->
-            <div class="canvas" ref="canvas"/>
-            <!--右侧属性面板-->
-            <div class="sider">
+            <div class="canvas-wrapper">
+                <!--左侧画布-->
+                <div class="canvas" ref="canvas"/>
+            </div>
+            <div class="properties-wrapper" v-if="!isView">
+                <!--右侧属性面板-->
                 <properties-panel
-                        v-if="modeler"
-                        :modeler="modeler"
-                        :users="users"
-                        :groups="groups"
-                        :categorys="categorys"
-                        :roles="roles"/>
+                        v-if="modeler" :modeler="modeler"
+                        :users="users" :groups="groups" :categorys="categorys" :roles="roles"/>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -42,7 +38,7 @@
             groups: {type: Array, default: () => []},
             roles: {type: Array, default: () => []},
             categorys: {type: Array, default: () => []},
-            isView: {type: Boolean, default: false}
+            isView: {type: Boolean, default: true}
         },
 
         components: {
@@ -55,18 +51,35 @@
             }
         },
 
-        mounted() {
-            this.modeler = new Modeler({
-                container: this.$refs.canvas,
-                additionalModules: [
-                    {
-                        translate: ['value', customTranslate]// 国际化
-                    }
-                ],
-                moddleExtensions: {
-                    flowable: flowableModule
+        computed: {
+            options() {
+                const additionalModules = {
+                    translate: ['value', customTranslate], // 国际化
                 }
-            })
+
+                if (this.isView) {
+                    Object.assign(additionalModules, {
+                        zoomScroll: ["value", ""], // 禁用滚轮滚动
+                        // bendpoints: ["value", ""],// 禁止拖动线
+                        paletteProvider: ["value", ""],// 禁用左侧面板
+                        contextPadProvider: ["value", ""],// 禁止点击节点出现contextPad
+                        labelEditingProvider: ["value", ""], // 禁止双击节点出现label编辑框
+                    })
+                }
+
+                return {
+                    container: this.$refs.canvas,
+                    keyboard: {
+                        bindTo: window // 快捷键
+                    },
+                    additionalModules: [additionalModules],
+                    moddleExtensions: {flowable: flowableModule}
+                }
+            }
+        },
+
+        mounted() {
+            this.modeler = new Modeler(this.options)
         },
 
     }
@@ -91,29 +104,34 @@
         display: flex;
         flex-direction: column;
 
-        .header {
+        .action-wrapper {
             padding: 8px;
         }
 
         .content {
-            position: relative;
             height: 100%;
             width: 100%;
+            display: flex;
+            flex-flow: row wrap;
 
-            .canvas {
-                position: absolute;
-                top: 0;
-                right: 400px;
-                bottom: 0;
-                left: 0;
+            .canvas-wrapper {
+                flex: 1 1 auto;
+                position: relative;
+
+                .canvas {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    left: 0;
+                }
             }
 
-            .sider {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                bottom: 20px;
-                width: 380px;
+            .properties-wrapper {
+                flex: 0 0 360px;
+                position: relative;
+                margin: 20px 20px 20px 0;
+
                 border: 1px solid #ccc;
                 border-radius: 2px;
                 background: #fafafa;

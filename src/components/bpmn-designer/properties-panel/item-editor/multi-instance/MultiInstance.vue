@@ -47,7 +47,7 @@
 </template>
 
 <script>
-    import {itemMixin, panelMixin} from '../../mixins'
+    import {itemMixin, panelMixin} from '../../../mixins'
     import TopAlert from './alert'
     import {CollectionTooltip, CompletionConditionTooltip, ElementVariableTooltip} from './tooltips'
 

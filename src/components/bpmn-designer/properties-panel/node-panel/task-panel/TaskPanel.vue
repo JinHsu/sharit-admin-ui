@@ -123,7 +123,7 @@
 </template>
 
 <script>
-    import {itemMixin, panelMixin} from '../../mixins'
+    import {itemMixin, panelMixin} from '../../../mixins'
     import {ExecutionListenerEditor, MultiInstanceEditor, TaskListenerEditor} from '../../item-editor'
     import rules from './rules'
 

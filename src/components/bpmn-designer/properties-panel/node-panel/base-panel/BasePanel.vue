@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import {itemMixin, panelMixin} from '../../mixins'
+    import {itemMixin, panelMixin} from '../../../mixins'
     import rules from './rules'
 
     export default {

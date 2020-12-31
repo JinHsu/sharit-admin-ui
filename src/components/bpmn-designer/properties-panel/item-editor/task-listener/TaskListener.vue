@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import itemMixin from "../../mixins/itemMixin"
+    import itemMixin from "../../../mixins/itemMixin"
     import EventTooltip from './EventTooltip'
     import columns from './columns'
     import TaskListenerModal from './modal'

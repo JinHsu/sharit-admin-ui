@@ -1,21 +1,21 @@
 <template>
     <div>
         <a-space>
-            <a-tooltip title="打开" placement="top">
+            <a-tooltip title="打开" placement="top" v-if="!isView">
                 <a-upload :beforeUpload="openBpmn" :showUploadList="false">
                     <a-button icon="folder-open"/>
                 </a-upload>
             </a-tooltip>
 
-            <a-tooltip title="新建" placement="top">
+            <a-tooltip title="新建" placement="top" v-if="!isView">
                 <a-button icon="file-add" @click="newDiagram"/><!---->
             </a-tooltip>
 
-            <a-tooltip title="保存" placement="top">
+            <a-tooltip title="保存" placement="top" v-if="!isView">
                 <a-button icon="save" @click="save"/>
             </a-tooltip>
 
-            <a-button-group>
+            <a-button-group v-if="!isView">
                 <a-tooltip title="撤销" placement="top">
                     <a-button icon="undo" @click="undo()"/><!---->
                 </a-tooltip>
@@ -36,7 +36,7 @@
                 </a-tooltip>
             </a-button-group>
 
-            <a-button-group>
+            <a-button-group v-if="!isView">
                 <a-tooltip title="导出xml" placement="top">
                     <a-button icon="export" @click="saveXML(true)">xml</a-button>
                 </a-tooltip>
@@ -57,6 +57,7 @@
         props: {
             modeler: {type: Object, required: true},
             xml: {type: String, default: ''},
+            isView: {type: Boolean, default: false}
         },
 
         data() {
@@ -203,22 +204,21 @@
         },
 
         mounted() {
-            if (this.modeler) {
-                if (this.xml) {
-                    this.createNewDiagram(this.xml)
-                } else {
-                    this.createNewDiagram(initBpmnXml())
-                }
+            if (this.xml) {
+                this.$nextTick(() => this.createNewDiagram(this.xml))
+            } else {
+                this.$nextTick(() => this.createNewDiagram(initBpmnXml()))
             }
         },
 
         watch: {
             xml: function (val) {
                 if (val) {
-                    this.createNewDiagram(val)
+                    this.$nextTick(() => this.$refs.actions.createNewDiagram(val))
                 }
             }
         },
+
     }
 </script>
 

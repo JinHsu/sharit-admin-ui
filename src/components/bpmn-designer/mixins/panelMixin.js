@@ -1,4 +1,4 @@
-import ItemVisibleConfig from '../item-visible-config'
+import ItemVisibleConfig from '../config'
 import {formatJsonKeyValue, parseElement} from "./parseElement"
 
 export default {

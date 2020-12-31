@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import itemMixin from "../../mixins/itemMixin"
+    import itemMixin from "../../../mixins/itemMixin"
     import columns from './columns'
     import SignalModal from './modal'
 
