@@ -16,8 +16,11 @@
                 </a-badge>
             </a-form-item>
             <a-form-item label="异步">
-                <a-switch checked-children="是" un-checked-children="否"
-                          v-decorator="['async', rules.async]"/>
+                <a-switch
+                        v-decorator="['async', rules.async]">
+                    <a-icon slot="checkedChildren" type="check"/>
+                    <a-icon slot="unCheckedChildren" type="close"/>
+                </a-switch>
             </a-form-item>
         </a-form>
 

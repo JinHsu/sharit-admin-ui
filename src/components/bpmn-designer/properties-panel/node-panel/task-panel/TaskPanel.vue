@@ -65,8 +65,10 @@
                 </a-badge>
             </a-form-item>
             <a-form-item label="异步" v-show="!!itemVisible.async">
-                <a-switch checked-children="是" un-checked-children="否"
-                          v-decorator="['async', rules.async]"/>
+                <a-switch v-decorator="['async', rules.async]">
+                    <a-icon slot="checkedChildren" type="check"/>
+                    <a-icon slot="unCheckedChildren" type="close"/>
+                </a-switch>
             </a-form-item>
             <a-form-item label="优先级" v-show="!!itemVisible.priority">
                 <a-input v-decorator="['priority']"/>
@@ -75,16 +77,22 @@
                 <a-input v-decorator="['skipExpression']"/>
             </a-form-item>
             <a-form-item label="是否为补偿" v-show="!!itemVisible.isForCompensation">
-                <a-switch checked-children="是" un-checked-children="否"
-                          v-decorator="['isForCompensation', rules.isForCompensation]"/>
+                <a-switch v-decorator="['isForCompensation', rules.isForCompensation]">
+                    <a-icon slot="checkedChildren" type="check"/>
+                    <a-icon slot="unCheckedChildren" type="close"/>
+                </a-switch>
             </a-form-item>
             <a-form-item label="服务任务可触发" v-show="!!itemVisible.triggerable">
-                <a-switch checked-children="是" un-checked-children="否"
-                          v-decorator="['triggerable', rules.triggerable]"/>
+                <a-switch v-decorator="['triggerable', rules.triggerable]">
+                    <a-icon slot="checkedChildren" type="check"/>
+                    <a-icon slot="unCheckedChildren" type="close"/>
+                </a-switch>
             </a-form-item>
             <a-form-item label="自动存储变量" v-show="!!itemVisible.autoStoreVariables">
-                <a-switch checked-children="是" un-checked-children="否"
-                          v-decorator="['autoStoreVariables', rules.autoStoreVariables]"/>
+                <a-switch v-decorator="['autoStoreVariables', rules.autoStoreVariables]">
+                    <a-icon slot="checkedChildren" type="check"/>
+                    <a-icon slot="unCheckedChildren" type="close"/>
+                </a-switch>
             </a-form-item>
             <a-form-item label="输入变量" v-show="!!itemVisible.ruleVariablesInput">
                 <a-input v-decorator="['ruleVariablesInput']"/>
@@ -96,8 +104,10 @@
                 <a-input v-decorator="['resultVariable']"/>
             </a-form-item>
             <a-form-item label="排除" v-show="!!itemVisible.exclude">
-                <a-switch checked-children="是" un-checked-children="否"
-                          v-decorator="['exclude', rules.exclude]"/>
+                <a-switch v-decorator="['exclude', rules.exclude]">
+                    <a-icon slot="checkedChildren" type="check"/>
+                    <a-icon slot="unCheckedChildren" type="close"/>
+                </a-switch>
             </a-form-item>
             <a-form-item label="类" v-show="!!itemVisible.class">
                 <a-input v-decorator="['class']"/>
