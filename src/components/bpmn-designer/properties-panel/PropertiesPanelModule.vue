@@ -18,7 +18,6 @@
 <script>
     import {BasePanel, EventPanel, GatewayPanel, ProcessPanel, SequenceFlowPanel, TaskPanel} from './node-panel'
     import {NodeName} from '../i18n/lang/zh_CN'
-    import registerModule from './store'
 
     export default {
         name: 'PropertiesPanelModule',
@@ -126,22 +125,16 @@
             }
         },
 
-        created() {
-            registerModule() // register module
-        },
-
         mounted() {
             this.handleModeler()
         },
+
     }
 </script>
 
 <style lang="less" scoped>
     .properties-panel {
         position: absolute;
-        /*top: 0;
-        left: 0;
-        bottom: 0;*/
         width: 100%;
         height: 100%;
 
@@ -155,8 +148,5 @@
             color: rgba(0, 0, 0, 0.85);
         }
 
-        .panel-form {
-
-        }
     }
 </style>

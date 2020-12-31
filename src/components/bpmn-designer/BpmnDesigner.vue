@@ -4,7 +4,8 @@
         <div class="action-wrapper">
             <action-panel v-if="modeler" :modeler="modeler"
                           :xml="xml" :is-view="isView"
-                          @showGrid="onShowGrid"/>
+                          @showGrid="onShowGrid"
+                          @showPropertiesPanel="onShowPropertiesPanel"/>
         </div>
 
         <div class="content" :class="showGrid ? 'grid' : null">
@@ -12,7 +13,7 @@
                 <!--左侧画布-->
                 <div class="canvas" ref="canvas"/>
             </div>
-            <div class="properties-wrapper" v-if="!isView">
+            <div class="properties-wrapper" v-if="!isView && showPropertiesPanel">
                 <!--右侧属性面板-->
                 <properties-panel
                         v-if="modeler" :modeler="modeler"
@@ -29,6 +30,7 @@
     import ActionPanel from './action-panel'
     import PropertiesPanel from './properties-panel'
     import flowableModule from './flowable/flowable.json'
+    import registerModule from "./store"
 
     export default {
         name: "BpmnDesigner",
@@ -49,12 +51,13 @@
         data() {
             return {
                 modeler: null,
-                showGrid: true
+                showGrid: true,
+                showPropertiesPanel: true
             }
         },
 
-        computed: {
-            options() {
+        methods: {
+            getOptions() {
                 const additionalModules = {
                     translate: ['value', customTranslate], // 国际化
                 }
@@ -78,16 +81,23 @@
                     moddleExtensions: {flowable: flowableModule}
                 }
             }
-        },
-
-        methods: {
+            ,
             onShowGrid(show) {
                 this.showGrid = show
-            }
+            },
+
+            onShowPropertiesPanel(show, callback) {
+                this.showPropertiesPanel = show
+                callback && callback()
+            },
+        },
+
+        beforeCreate() {
+            registerModule() // register module
         },
 
         mounted() {
-            this.modeler = new Modeler(this.options)
+            this.modeler = new Modeler(this.getOptions())
         },
 
     }

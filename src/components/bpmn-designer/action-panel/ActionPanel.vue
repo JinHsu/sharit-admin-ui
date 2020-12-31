@@ -36,18 +36,24 @@
                 </a-tooltip>
             </a-button-group>
 
-            <a-radio-group default-value="table" @change="onShowGrid">
+            <a-radio-group :default-value="true" @change="onShowGrid">
                 <a-tooltip title="显示网格" placement="top">
-                    <a-radio-button value="table">
+                    <a-radio-button :value="true">
                         <a-icon type="table"/>
                     </a-radio-button>
                 </a-tooltip>
                 <a-tooltip title="隐藏网格" placement="top">
-                    <a-radio-button value="border">
+                    <a-radio-button :value="false">
                         <a-icon type="border"/>
                     </a-radio-button>
                 </a-tooltip>
             </a-radio-group>
+
+            <a-tooltip :title="showPropertiesPanel ? '隐藏属性面板' : '显示属性面板'" placement="top" v-if="!isView">
+                <a-button @click="onShowPropertiesPanel">
+                    <a-icon type="select" :rotate="showPropertiesPanel ? 180 : 0"/>
+                </a-button>
+            </a-tooltip>
 
             <a-button-group v-if="!isView">
                 <a-tooltip title="导出xml" placement="top">
@@ -77,7 +83,7 @@
             return {
                 //
                 zoom: 1,
-                isFullScreen: false
+                showPropertiesPanel: true
             }
         },
 
@@ -116,11 +122,14 @@
             },
 
             onShowGrid(e) {
-                if (e.target.value === 'table') {
-                    this.$emit('showGrid', true)
-                } else if (e.target.value === 'border') {
-                    this.$emit('showGrid', false)
-                }
+                this.$emit('showGrid', e.target.value)
+            },
+
+            onShowPropertiesPanel() {
+                // const callback =
+                this.showPropertiesPanel = !this.showPropertiesPanel
+                this.$emit('showPropertiesPanel', this.showPropertiesPanel)
+                this.$nextTick(() => this.fitViewport())
             },
 
             openBpmn(file) {
