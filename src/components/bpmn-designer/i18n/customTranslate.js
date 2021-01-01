@@ -8,12 +8,9 @@ export default function customTranslate(template, replacements) {
 
     // Replace
     return template.replace(/{([^}]+)}/g, function (_, key) {
-        var str = replacements[key]
-        if (
-            translations[replacements[key]] !== null &&
-            translations[replacements[key]] !== 'undefined'
-        ) {
-            str = translations[replacements[key]]
+        let str = replacements[key];
+        if (translations[str]) {
+            str = translations[str]
         }
         return str || '{' + key + '}'
     })

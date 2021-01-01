@@ -26,7 +26,7 @@ export default {
     'Append Intermediate/Boundary Event': '追加中间/边界事件',
     'Change type': '设置类型',
     'Remove': '删除',
-    'Connect using Sequence/MessageFlow or Association': '使用顺序/消息流或者关联连接',
+    'Connect using Sequence/MessageFlow or Association': '使用顺序/消息流程线或者关联连接',
     'Add Lane above': '在上面添加道',
     'Divide into two Lanes': '分割成两个道',
     'Divide into three Lanes': '分割成三个道',
@@ -83,7 +83,10 @@ export default {
     'Connect using DataInputAssociation': '使用数据输入关联连接',
     'Participant Multiplicity': '参与者多样性',
     'Empty Pool': '空池',
+    'Empty Pool (removes content)': '空池(删除内容)',
     'Expanded Pool': '展开池',
+    "Default Flow": "默认流程线",
+    "Sequence Flow": "顺序流程线",
 
 }
 
@@ -123,4 +126,5 @@ export const NodeName = {
     'bpmn:DataObjectReference': '数据对象引用',
     'bpmn:Participant': '参与者',
     'bpmn:Group': '分组',
+    'bpmn:TextAnnotation': '文本注释'
 }

@@ -85,6 +85,7 @@
                     case 'bpmn:DataObjectReference':
                     case 'bpmn:Participant':
                     case 'bpmn:Group':
+                    case 'bpmn:TextAnnotation':
                         panel = 'BasePanel'
                 }
 

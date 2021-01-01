@@ -50,6 +50,9 @@ const module = {
 
 
 export default function registerModule() {
+    if (store.hasModule('bpmn')) {
+        store.unregisterModule('bpmn')
+    }
     store.registerModule('bpmn', module)
 }
 
