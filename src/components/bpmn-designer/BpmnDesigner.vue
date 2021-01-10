@@ -5,7 +5,8 @@
             <action-panel v-if="modeler" :modeler="modeler"
                           :xml="xml" :is-view="isView"
                           @showGrid="onShowGrid"
-                          @showPropertiesPanel="onShowPropertiesPanel"/>
+                          @showPropertiesPanel="onShowPropertiesPanel"
+                          @save="onSave"/>
         </div>
 
         <div class="content" :class="showGrid ? 'grid' : null">
@@ -16,7 +17,7 @@
             <div class="properties-wrapper" v-if="!isView && showPropertiesPanel">
                 <!--右侧属性面板-->
                 <properties-panel
-                        v-if="modeler" :modeler="modeler"
+                        v-if="modeler" :modeler="modeler" ref="actions"
                         :users="users" :groups="groups" :categorys="categorys" :roles="roles"/>
             </div>
         </div>
@@ -90,10 +91,14 @@
                 this.showPropertiesPanel = show
                 callback && callback()
             },
+
+            onSave(data) {
+                this.$emit('save', data)
+            }
         },
 
         beforeCreate() {
-            registerModule() // register module
+            registerModule() // register category
         },
 
         mounted() {

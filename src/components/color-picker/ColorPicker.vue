@@ -93,8 +93,8 @@
         }
 
         .chrome {
-            position: absolute;
-            z-index: 300;
+            position: fixed;
+            z-index: 999999999;
             transition: all .3s, height 1s;
         }
     }

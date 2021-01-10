@@ -1,6 +1,7 @@
 <template>
     <div>
         <a-space>
+            <!--
             <a-tooltip title="打开" placement="top" v-if="!isView">
                 <a-upload :beforeUpload="openBpmn" :showUploadList="false">
                     <a-button icon="folder-open"/>
@@ -8,8 +9,9 @@
             </a-tooltip>
 
             <a-tooltip title="新建" placement="top" v-if="!isView">
-                <a-button icon="file-add" @click="newDiagram"/><!---->
+                <a-button icon="file-add" @click="newDiagram"/>
             </a-tooltip>
+            -->
 
             <a-tooltip title="保存" placement="top" v-if="!isView">
                 <a-button icon="save" @click="save"/>
@@ -17,25 +19,26 @@
 
             <a-button-group v-if="!isView">
                 <a-tooltip title="撤销" placement="top">
-                    <a-button icon="undo" @click="undo()"/><!---->
+                    <a-button icon="undo" @click="undo()"/>
                 </a-tooltip>
                 <a-tooltip title="重做" placement="top">
-                    <a-button icon="redo" @click="redo()"/><!---->
+                    <a-button icon="redo" @click="redo()"/>
                 </a-tooltip>
             </a-button-group>
 
             <a-button-group>
                 <a-tooltip title="适应屏幕" placement="top">
-                    <a-button icon="drag" @click="fitViewport"/><!---->
+                    <a-button icon="drag" @click="fitViewport"/>
                 </a-tooltip>
                 <a-tooltip title="放大" placement="top">
-                    <a-button icon="zoom-in" @click="zoomViewport(true)"/> <!---->
+                    <a-button icon="zoom-in" @click="zoomViewport(true)"/>
                 </a-tooltip>
                 <a-tooltip title="缩小" placement="top">
-                    <a-button icon="zoom-out" @click="zoomViewport(false)"/><!---->
+                    <a-button icon="zoom-out" @click="zoomViewport(false)"/>
                 </a-tooltip>
             </a-button-group>
 
+            <!--
             <a-radio-group :default-value="true" @change="onShowGrid">
                 <a-tooltip title="显示网格" placement="top">
                     <a-radio-button :value="true">
@@ -48,6 +51,7 @@
                     </a-radio-button>
                 </a-tooltip>
             </a-radio-group>
+            -->
 
             <a-tooltip :title="showPropertiesPanel ? '隐藏属性面板' : '显示属性面板'" placement="top" v-if="!isView">
                 <a-button @click="onShowPropertiesPanel">
@@ -55,6 +59,7 @@
                 </a-button>
             </a-tooltip>
 
+            <!--
             <a-button-group v-if="!isView">
                 <a-tooltip title="导出xml" placement="top">
                     <a-button icon="export" @click="saveXML(true)">xml</a-button>
@@ -63,6 +68,7 @@
                     <a-button icon="export" @click="saveImg('svg', true)">svg</a-button>
                 </a-tooltip>
             </a-button-group>
+            -->
         </a-space>
     </div>
 </template>
@@ -162,9 +168,9 @@
                 const process = this.getProcess()
                 const xml = await this.saveXML()
                 const svg = await this.saveImg()
-                const result = {process, xml, svg}
+                const result = {...process, xml, svg}
                 this.$emit('save', result)
-                window.parent.postMessage(result, '*')
+                // window.parent.postMessage(result, '*') //在iframe父子页面数据传输
             },
 
             async saveXML(download = false) {
@@ -222,31 +228,37 @@
                 return {
                     id: element.id,
                     name: element.name,
-                    category: element.$attrs['flowable:processCategory']
+                    category: element.$attrs['flowable:processCategory'],
                 }
             },
 
             getProcessElement() {
                 const rootElements = this.modeler.getDefinitions().rootElements
                 for (let i = 0; i < rootElements.length; i++) {
-                    if (rootElements[i].$type === 'bpmn:Process') return rootElements[i]
+                    if (rootElements[i].$type === 'bpmn:Process') {
+                        return rootElements[i]
+                    }
                 }
             },
+
+            init() {
+                if (this.xml) {
+                    this.$nextTick(() => this.createNewDiagram(this.xml))
+                } else {
+                    this.$nextTick(() => this.createNewDiagram(initBpmnXml()))
+                }
+            }
 
         },
 
         mounted() {
-            if (this.xml) {
-                this.$nextTick(() => this.createNewDiagram(this.xml))
-            } else {
-                this.$nextTick(() => this.createNewDiagram(initBpmnXml()))
-            }
+            this.init()
         },
 
         watch: {
             xml: function (val) {
                 if (val) {
-                    this.$nextTick(() => this.$refs.actions.createNewDiagram(val))
+                    this.init()
                 }
             }
         },

@@ -1,11 +1,15 @@
 <template>
     <div class="wf-design">
-        <bpmn-designer :is-view="false"/>
+        <bpmn-designer
+                :is-view="false"
+                :users="users" :groups="groups" :categorys="categorys" :roles="roles"
+                @save="onSave"/>
     </div>
 </template>
 
 <script>
     import BpmnDesigner from '@/components/bpmn-designer'
+    import service from './service'
 
     export default {
         name: "WFDesign",
@@ -27,14 +31,24 @@
                     {name: 'python组', id: 'python'}
                 ],
                 categorys: [
-                    {name: 'OA', id: 'oa'},
-                    {name: '财务', id: 'finance'}
+                    {name: '审批流', id: 'apprv'},
+                    {name: '工作流', id: 'work'},
+                    {name: '业务流', id: 'busi'},
                 ],
                 roles: [
                     {value: 'manager', label: '经理'},
                     {value: 'personnel', label: '人事'},
                     {value: 'charge', label: '主管'}
                 ],
+            }
+        },
+
+        methods: {
+            onSave(data) {
+                console.log(data)
+                service.deploy(data).then((res) => {
+                    console.log(res)
+                })
             }
         }
     }

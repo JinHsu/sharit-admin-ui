@@ -3,8 +3,6 @@
  */
 import router from "@/router"
 import store from "@/store"
-import FrameLayout from '@/layouts/framework'
-import EmptyLayout from '@/layouts/empty'
 import array2Tree from "@/utils/data/array2Tree"
 import localStorage from "@/use/local-storage/lsWrapper"
 import config from "@/config/bootstrap"
@@ -51,13 +49,22 @@ async function fetchUser() {
  */
 function buildRoutes(treeMenus, parent) {
     if (!parent) {
-        parent = {path: '/', name: 'root', component: FrameLayout, children: []} // 根路由
+        parent = {
+            path: '/',
+            name: 'root',
+            component: () => import(/* webpackChunkName: "framework" */ '@/layouts/framework'),
+            children: []
+        } // 根路由
     }
     treeMenus.forEach(treeMenu => {
         const {id, title, icon, path, name, component, usePerm, pageId, redirect = '', children} = treeMenu
         const current = {
-            path, name, redirect, meta: {icon, title, menuId: id, usePerm, pageId,},
-            component: component ? () => import(`@/${component}`) : EmptyLayout
+            path, name, redirect, meta: {icon, title, menuId: id, usePerm, pageId},
+            // 懒加载
+            component: component ?
+                () => import(/* webpackChunkName: "[request]" */ `@/${component}`)
+                :
+                () => import(/* webpackChunkName: "framework" */ '@/layouts/empty')
         }
         parent.children.push(current)
 

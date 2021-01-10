@@ -6,6 +6,13 @@ export default {
         validateTrigger: ['change', 'blur']
     },
 
+    category: {
+        rules: [
+            {required: true, message: '请输入分类'}
+        ],
+        validateTrigger: ['change', 'blur']
+    },
+
     color: {
         initialValue: ''
     }

@@ -2,13 +2,22 @@
     <div style="padding: 10px 0;">
         <a-form :form="form" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
             <a-form-item label="ID">
-                <a-input v-decorator="['id', rules.id]"/>
+                <a-input v-decorator="['id', rules.id]" readOnly=""/>
             </a-form-item>
             <a-form-item label="名称">
                 <a-input v-decorator="['name']"/>
             </a-form-item>
             <a-form-item label="描述">
                 <a-textarea v-decorator="['documentation']"/>
+            </a-form-item>
+            <a-form-item label="分类">
+                <a-select v-decorator="['processCategory', rules.category]">
+                    <template v-for="category in categorys">
+                        <a-select-option :key="category.id" :value="category.id">
+                            {{category.name}}
+                        </a-select-option>
+                    </template>
+                </a-select>
             </a-form-item>
             <a-form-item label="颜色">
                 <a-color-picker v-decorator="['color', rules.color]"/>
@@ -39,7 +48,11 @@
     import rules from './rules'
 
     export default {
-        name: 'Process',
+        name: 'ProcessPanel',
+
+        props: {
+            categorys: {type: Array, required: true}
+        },
 
         components: {
             ExecutionListenerEditor, SignalEditor,
@@ -65,10 +78,10 @@
         },
 
         created() {
-            const {id, name, documentation, color, executionListener, signal}
+            const {id, name, documentation, processCategory, color, executionListener, signal}
                 = this.parseElement()
             this.$nextTick(() => this.form.setFieldsValue({
-                id, name, documentation, color, executionListener, signal
+                id, name, documentation, processCategory, color, executionListener, signal
             }))
         }
 

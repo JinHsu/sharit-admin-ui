@@ -21,10 +21,10 @@ export function formatJsonKeyValue(result) {
     return result
 }
 
-function documentationParse(obj) {
+export function documentationParse(obj) {
+    let str = ''
     if ('documentation' in obj) {
-        let str = ''
-        obj.documentation.forEach(item => {
+        (obj.documentation || []).forEach(item => {
             str += item.text
         })
         obj.documentation = str
@@ -32,14 +32,14 @@ function documentationParse(obj) {
     return obj
 }
 
-function conditionExpressionParse(obj) {
+export function conditionExpressionParse(obj) {
     if ('conditionExpression' in obj) {
         obj.conditionExpression = obj.conditionExpression.body
     }
     return obj
 }
 
-function userTaskParse(obj) {
+export function userTaskParse(obj) {
     for (const key in obj) {
         if (key === 'candidateUsers') {
             obj.userType = 'candidateUsers'

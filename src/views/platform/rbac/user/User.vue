@@ -11,7 +11,7 @@
                 <a-input-search placeholder="搜索"/>
             </template>
 
-            <a-table :columns="columns" :data-source="data" size="middle"
+            <a-table :columns="columns" :data-source="data" size="middle" :scroll="{ x: 1200 }"
                      :rowSelection="rowSelection"
                      :pagination="pagination"
                      :loading="isTableDataLoading" rowKey="id">
