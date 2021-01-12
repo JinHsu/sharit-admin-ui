@@ -123,5 +123,10 @@
 
     .framework-right-content-page .ant-card {
         border-radius: 4px;
+
+        .ant-card-actions {
+            background: none;
+        }
     }
+
 </style>
