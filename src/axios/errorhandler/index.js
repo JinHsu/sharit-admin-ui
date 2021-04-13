@@ -19,6 +19,10 @@ const errorHandler = (error) => {
             error500(data)
             break
 
+        case 503:
+            error503(data)
+            break
+
         default:
             break
     }
@@ -84,11 +88,8 @@ function error500(data) {
     })
 }
 
-function errorDesc(h, data) {
-    console.log(h)
-    return (
-        `<a-empty />`
-    )
+function error503() {
+
 }
 
 export default errorHandler
