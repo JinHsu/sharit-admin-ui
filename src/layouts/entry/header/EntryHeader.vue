@@ -2,12 +2,12 @@
     <div class="entry-header">
         <div class="top">
             <a href="#">
-                <img class="logo" src="../../../assets/logo.svg" alt="Ant Design">
+                <img class="logo" src="../../../assets/antd.svg" alt="Ant Design">
                 <span class="title">{{title}}</span>
             </a>
         </div>
         <div class="desc">
-            {{desc}}
+<!--            {{desc}}-->
         </div>
     </div>
 </template>

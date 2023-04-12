@@ -1,6 +1,6 @@
 export default {
-    name: 'Sharit Admin',
-    desc: 'Sharit Admin 是一个开源精美简单实用的后台管理系统',
+    name: '晓辰',
+    desc: '晓辰是一个开源精美简单实用的后台管理系统',
     //
     collapsed: false, //
     // 默认主题色
