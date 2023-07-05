@@ -62,7 +62,7 @@
             </a-form-item>
 
         </a-form>
-        <a-vaptcha ref="vaptcha" @vaptchaSuccess="onVaptchaSuccess" @vaptchaClose="onVaptchaClose"/>
+<!--        <a-vaptcha ref="vaptcha" @vaptchaSuccess="onVaptchaSuccess" @vaptchaClose="onVaptchaClose"/>-->
     </div>
 </template>
 
@@ -108,23 +108,23 @@
                 this.activeTabKey = key
                 this.form.resetFields()
                 this.token = null
-                this.$refs.vaptcha && this.$refs.vaptcha.reset()
+                // this.$refs.vaptcha && this.$refs.vaptcha.reset()
             },
 
-            onVaptchaSuccess(token) {
-                this.token = token
-                this.activeTabKey === 'username' && this.doLogin()
-                this.activeTabKey === 'mobile' && this.doGetCaptcha()
-            },
+            // onVaptchaSuccess(token) {
+            //     this.token = token
+            //     this.activeTabKey === 'username' && this.doLogin()
+            //     this.activeTabKey === 'mobile' && this.doGetCaptcha()
+            // },
 
-            onVaptchaClose() {
-                this.$refs.vaptcha && this.$refs.vaptcha.reset()
-                if (this.activeTabKey === 'username') {
-                    this.isLogin = false
-                } else if (this.activeTabKey === 'mobile') {
-                    this.isGetCaptcha = false
-                }
-            },
+            // onVaptchaClose() {
+            //     this.$refs.vaptcha && this.$refs.vaptcha.reset()
+            //     if (this.activeTabKey === 'username') {
+            //         this.isLogin = false
+            //     } else if (this.activeTabKey === 'mobile') {
+            //         this.isGetCaptcha = false
+            //     }
+            // },
 
             countDown() {
                 const interval = window.setInterval(() => {
@@ -155,7 +155,7 @@
                     (err, values) => {
                         if (!err) {
                             if (!this.token && this.activeTabKey === 'username') {
-                                this.$refs.vaptcha && this.$refs.vaptcha.validate()
+                                // this.$refs.vaptcha && this.$refs.vaptcha.validate()
                                 this.isLogin = false
                                 return
                             }
@@ -176,7 +176,7 @@
                                 .then(() => this.onLoginSuccess())
                                 .finally(() => {
                                     this.token = null
-                                    this.$refs.vaptcha && this.$refs.vaptcha.reset()
+                                    // this.$refs.vaptcha && this.$refs.vaptcha.reset()
                                     this.isLogin = false
                                 })
                         } else {
@@ -201,7 +201,7 @@
                         if (!err) {
                             //
                             if (!this.token && this.activeTabKey === 'mobile') {
-                                this.$refs.vaptcha && this.$refs.vaptcha.validate()
+                                // this.$refs.vaptcha && this.$refs.vaptcha.validate()
                                 this.isGetCaptcha = false
                                 return
                             }
@@ -218,7 +218,7 @@
                                 })
                                 .finally(() => {
                                     this.token = null
-                                    this.$refs.vaptcha && this.$refs.vaptcha.reset()
+                                    // this.$refs.vaptcha && this.$refs.vaptcha.reset()
                                 })
 
                         } else {

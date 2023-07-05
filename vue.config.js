@@ -26,7 +26,8 @@ module.exports = {
     // Type: boolean | 'warning' | 'default' | 'error'
     // 是否在开发环境下通过 eslint-loader 在每次保存时 lint 代码。这个值会在 @vue/cli-plugin-eslint 被安装之后生效。
     // process-panel.env.NODE_ENV !== 'production'
-    lintOnSave: 'warning',
+    // lintOnSave: 'warning',
+    lintOnSave: false,
 
     // 是否使用包含运行时编译器的 Vue 构建版本。设置为 true 后你就可以在 Vue 组件中使用 template 选项了，但是这会让你的应用额外增加 10kb 左右。
     runtimeCompiler: false,
@@ -89,7 +90,7 @@ module.exports = {
     // 有些值像 publicPath 和 historyApiFallback 不应该被修改，因为它们需要和开发服务器的 publicPath 同步以保障正常的工作。
     devServer: {
         // host
-        host: 'localhost',
+        host: '127.0.0.1',
 
         // port
         port: 8088,

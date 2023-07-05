@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        <a-vaptcha ref="vaptcha" @vaptchaSuccess="onVaptchaSuccess" @vaptchaClose="onVaptchaClose"/>
+<!--        <a-vaptcha ref="vaptcha" @vaptchaSuccess="onVaptchaSuccess" @vaptchaClose="onVaptchaClose"/>-->
     </div>
 </template>
 
@@ -125,15 +125,15 @@
         mixins: [device],
 
         methods: {
-            onVaptchaSuccess(token) {
-                this.token = token
-                this.onFetchCaptcha()
-            },
+            // onVaptchaSuccess(token) {
+            //     this.token = token
+            //     this.onFetchCaptcha()
+            // },
 
-            onVaptchaClose() {
-                this.$refs.vaptcha.reset()
-                this.isGetCaptcha = false
-            },
+            // onVaptchaClose() {
+            //     this.$refs.vaptcha.reset()
+            //     this.isGetCaptcha = false
+            // },
 
             countDown() {
                 const interval = window.setInterval(() => {
@@ -147,7 +147,7 @@
 
             onBack() {
                 if (this.current === 1) {
-                    this.$refs.vaptcha.reset()
+                    // this.$refs.vaptcha.reset()
                     this.isGetCaptcha = false
                 }
                 this.form.resetFields()
@@ -168,7 +168,7 @@
                     (err, values) => {
                         if (!err) {
                             if (!this.token && this.current === 0) {
-                                this.$refs.vaptcha && this.$refs.vaptcha.validate()
+                                // this.$refs.vaptcha && this.$refs.vaptcha.validate()
                                 this.isGetCaptcha = false
                                 return
                             }
@@ -186,7 +186,7 @@
                                 })
                                 .finally(() => {
                                     this.token = null
-                                    this.$refs.vaptcha.reset()
+                                    // this.$refs.vaptcha.reset()
                                 })
 
                         } else {
