@@ -1,9 +1,7 @@
 const ROOT_URL = '/'
 const LOGIN_URL = '/login'
 const HOME_UTL = '/home/workbench'
-const REGISTER_URL = '/register'
-const RECOVER_URL = '/recover'
-const ANON_URL = [LOGIN_URL, REGISTER_URL, RECOVER_URL]
+const ANON_URL = [LOGIN_URL]
 
 export {
     ROOT_URL,

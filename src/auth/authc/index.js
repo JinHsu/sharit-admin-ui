@@ -8,17 +8,17 @@ import {buildMenuAuth} from '../authz'
 /**
  * 登录
  */
-async function postLogin(params) {
+async function postLogin(data) {
     return new Promise((resolve, reject) => {
-        doLogin(params).then(() => resolve()).catch(error => reject(error))
+        doLogin(data).then(() => resolve()).catch(error => reject(error))
     })
 }
 
-async function doLogin(params) {
+async function doLogin(data) {
     // 1.向后台请求认证，
     // 认证成功，拿到http响应header(x-auth-token)中携带accesToken，并保存到vuex和localStorage(有效期)
     // 后续的请求的header(x-auth-token)上都会带上这个accessToken，并在响应完成后重新保存到vuex已续期(本地)
-    await service.login(params)
+    await service.login(data)
     // 2.构建权限信息
     // 2.1获取用户基本信息并保存到vuex
     // 2.2获取用户权限信息：已分配菜单及菜单拥有的按钮权限

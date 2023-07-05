@@ -7,11 +7,11 @@ export default {
     /**
      * 登录
      */
-    login: (params) => axios({
-        url: params.type === 'username' ? '/login' : '/login/mobile',
+    login: (data) => axios({
+        url: '/ps/authc/v1/auth',
         method: "POST",
-        params: params,
-        headers: {"Content-Type": "application/x-www-form-urlencoded"}
+        data: data,
+        headers: {"Content-Type": "application/json"}
     }),
 
     /**

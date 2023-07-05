@@ -12,7 +12,7 @@
             </a-form-item>
             <a-form-item>
                 <a-input size="large" type="password" placeholder="密码" autocomplete
-                         allowClear v-decorator="['password', rules.password]">
+                         allowClear v-decorator="['userPwd', rules.userPwd]">
                     <template #prefix>
                         <a-icon type="lock" class="icon-prefix"/>
                     </template>
@@ -56,8 +56,8 @@ export default {
             let redirect = this.$store.state.framework.multiTab.activeKey || HOME_UTL
             await this.$router.push({path: redirect})
 
-            const {nickname} = this.userInfo || {}
-            this.$notification.success({message: `您好，${nickname}`, description: `欢迎回来`})
+            const {nickName} = this.userInfo || {}
+            this.$notification.success({message: `您好，${nickName}`, description: `欢迎回来`})
         },
 
         // 登录
@@ -65,16 +65,16 @@ export default {
 
             this.isLogin = true
 
-            let validateFieldsKey = this.activeTabKey === 'username' ? ['username', 'password'] : ['mobile', 'captcha']
+            let validateFieldsKey = ['loginName', 'userPwd']
             // 字段校验
             this.form.validateFields(validateFieldsKey, {force: true},
                 (err, values) => {
                     if (!err) {
-                        let params = {}
-                        const {username, password} = values
-                        Object.assign(params, {username, password})
+                        let data = {}
+                        const {loginName, userPwd} = values
+                        Object.assign(data, {loginName, userPwd})
                         //
-                        postLogin(params)
+                        postLogin(data)
                             .then(() => this.onLoginSuccess())
                             .finally(() => {
                                 this.token = null

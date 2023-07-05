@@ -5,7 +5,7 @@ export default {
         ],
         validateTrigger: ['change', 'blur']
     },
-    password: {
+    userPwd: {
         rules: [
             {required: true, message: '请输入密码'}
         ],
