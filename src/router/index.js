@@ -36,10 +36,10 @@ router.beforeEach((to, from, next) => {
     // 设置页面标题
     window.document.title = to.meta.title === undefined ? config.name : config.name + " - " + to.meta.title
     // 获取权限
-    routerIntercepter(to, from, next).then(resolve => resolve)
+    routerInterceptor(to, from, next).then(resolve => resolve)
 })
 
-async function routerIntercepter(to, from, next) {
+async function routerInterceptor(to, from, next) {
     if (to.path === ROOT_URL) {
         next({path: LOGIN_URL})
         return
@@ -59,7 +59,7 @@ async function routerIntercepter(to, from, next) {
                 await store.dispatch('app/setAccessToken', accessToken)
 
                 // 1.登录后页面刷新，重新请求权限并生成动态路由表
-                await buildMenuAuth()
+              //  await buildMenuAuth()
 
                 next({path: to.path})
             }

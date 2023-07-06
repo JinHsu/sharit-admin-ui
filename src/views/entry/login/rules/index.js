@@ -1,4 +1,4 @@
-export default {
+const loginRules = {
     loginName: {
         rules: [
             {required: true, message: '请输入登录名'},
@@ -11,4 +11,8 @@ export default {
         ],
         validateTrigger: ['change', 'blur']
     }
+};
+
+export {
+    loginRules
 }

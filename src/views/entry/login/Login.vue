@@ -32,17 +32,16 @@
 import {app} from '@/mixins'
 import {postLogin} from '@/auth/authc'
 import {HOME_UTL} from "@/config/auth"
-import rules from './rules'
+import {loginRules} from './rules'
 
 export default {
     name: "Login",
 
     data() {
         return {
-            form: this.$form.createForm(this),
-            rules: rules,
-            // 登录按钮状态
-            isLogin: false,
+            form: this.$form.createForm(this), // 登录表单
+            rules: loginRules, // 校验规则
+            isLogin: false, // 登录按钮状态
             token: null
         }
     },
@@ -52,14 +51,6 @@ export default {
     mixins: [app],
 
     methods: {
-        async onLoginSuccess() {
-            let redirect = this.$store.state.framework.multiTab.activeKey || HOME_UTL
-            await this.$router.push({path: redirect})
-
-            const {nickName} = this.userInfo || {}
-            this.$notification.success({message: `您好，${nickName}`, description: `欢迎回来`})
-        },
-
         // 登录
         doLogin() {
 
@@ -87,14 +78,19 @@ export default {
             )
         },
 
+        async onLoginSuccess() {
+            let redirect = this.$store.state.framework.multiTab.activeKey || HOME_UTL
+            await this.$router.push({path: redirect})
+
+            // TODO 迁移到首页
+            const {nickName} = this.userInfo || {}
+            this.$notification.success({message: `您好，${nickName}`, description: `欢迎回来`})
+        },
+
     },
 
     mounted() {
-        const {query: {token}} = this.$route
-        if (token) {
-            this.setAccessToken(token)
-            window.location.reload()
-        }
+
     }
 
 }
