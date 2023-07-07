@@ -32,7 +32,7 @@ async function doLogin(data) {
     // 2.6从localStorage中(没有则获取默认配置)提取配置信息并应用
     // 后续页面刷新时,vuex中的accessToken会丢失。此时，再次从localStorage中获取accessToken，
     // 若没有，则需要重新认证；否则保存到vuex并构建权限信息
-   // await buildMenuAuth()
+   await buildMenuAuth()
 }
 
 /**

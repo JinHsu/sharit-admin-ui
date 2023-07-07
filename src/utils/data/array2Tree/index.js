@@ -15,9 +15,9 @@ let idField = '', pIdField = '', sortField = '', disableNonLeaf, leafField
  */
 export default function array2Tree(array = [],
                                    {
-                                       idFieldName = 'id',
+                                       idFieldName = 'menuId',
                                        parentIdFieldName = 'parentId',
-                                       compareFieldName: sortFieldName = 'code',
+                                       compareFieldName: sortFieldName = 'orderNumber',
                                        leafFieldName = '',
                                        nonLeafDisabled = false,
                                    }) {

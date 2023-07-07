@@ -28,8 +28,8 @@ async function buildMenuAuth() {
     await store.dispatch('app/setMenus', menus)
 
     // 5.构建按钮权限数据
-    const buttonsMap = buildButtons(userMenus)
-    await store.dispatch('app/setButtons', buttonsMap)
+    // const buttonsMap = buildButtons(userMenus)
+    // await store.dispatch('app/setButtons', buttonsMap)
 
     // 6.获取并应用配置信息
     await fetchAndApplyConfig()
@@ -57,9 +57,9 @@ function buildRoutes(treeMenus, parent) {
         } // 根路由
     }
     treeMenus.forEach(treeMenu => {
-        const {id, title, icon, path, name, component, usePerm, pageId, redirect = '', children} = treeMenu
+        const {menuId, menuName, menuIcon, routePath, routeName, component, redirect = '', children} = treeMenu
         const current = {
-            path, name, redirect, meta: {icon, title, menuId: id, usePerm, pageId},
+            path: routePath, name: routeName, redirect, meta: {icon: menuIcon, title: menuName, id: menuId},
             // 懒加载
             component: component ?
                 () => import(/* webpackChunkName: "[request]" */ `@/${component}`)
@@ -82,9 +82,9 @@ function buildRoutes(treeMenus, parent) {
 function buildSideMenus(treeMenus = [], nextPath = "") {
     let navMenus = []
     treeMenus.forEach(treeMenu => {
-        const {title, icon, path, children, id, pageId} = treeMenu
-        const newPath = nextPath + "/" + path
-        let navMenu = {title, icon, path: newPath, id, pageId}
+        const {menuName, menuIcon, routePath, children, menuId} = treeMenu
+        const newPath = nextPath + "/" + routePath
+        let navMenu = {title: menuName, icon: menuIcon, path: newPath, id: menuId}
         if (children) {
             navMenu.children = buildSideMenus(children, newPath)
         }

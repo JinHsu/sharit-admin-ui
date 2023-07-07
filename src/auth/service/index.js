@@ -1,7 +1,5 @@
 import axios from "@/axios";
 
-const baseUrl = '/rbac/auth'
-
 export default {
 
     /**
@@ -18,7 +16,7 @@ export default {
      * 获取用户信息
      */
     fetchUser: () => axios({
-        url: `${baseUrl}/user`,
+        url: `/ps/usercenter/v1/user`,
         method: "GET"
     }),
 
@@ -26,7 +24,7 @@ export default {
      * 查询用户菜单
      */
     fetchUserMenu: () => axios({
-        url: `${baseUrl}/user/menu`,
+        url: `/ps/authz/v1/user-menus`,
         method: "GET"
     }),
 

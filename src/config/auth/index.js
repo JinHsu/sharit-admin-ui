@@ -1,6 +1,6 @@
 const ROOT_URL = '/'
 const LOGIN_URL = '/login'
-const HOME_UTL = '/home/workbench'
+const HOME_UTL = '/workbench'
 const ANON_URL = [LOGIN_URL]
 
 export {
